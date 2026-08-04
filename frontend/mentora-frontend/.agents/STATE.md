@@ -1,6 +1,6 @@
 # STATE — читать первым в каждой новой сессии
 
-status: SCAFFOLD_IN_PROGRESS
+status: SCAFFOLD_COMPLETE / AWAITING_ADMIN_COMMAND
 lastUpdated: 2026-08-05
 currentTask: none
 completedSchedules: []
