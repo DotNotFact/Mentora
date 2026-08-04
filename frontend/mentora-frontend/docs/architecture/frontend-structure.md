@@ -14,18 +14,19 @@ frontend/mentora-frontend/
 ├── openapi/openapi.yaml       — источник истины API-контракта
 │
 ├── src/
-│   ├── main.tsx                — точка входа
-│   ├── App.tsx                 — Статус: Planned — будет заменён на
-│   │                              RouterProvider в schedule/00
+│   ├── main.tsx                — точка входа, RouterProvider (готово)
 │   │
 │   ├── app/                    — тонкий слой компоновки приложения
-│   │   ├── router.tsx          — Статус: Planned (schedule/00)
+│   │   ├── router.tsx          — дерево роутов (code-based), готово
 │   │   ├── provider.tsx        — QueryClientProvider (готово)
-│   │   ├── routes/             — файловые роуты TanStack Router
-│   │   │   └── ...             — Статус: Planned (наполняются по мере
+│   │   ├── routes/             — роуты TanStack Router (code-based)
+│   │   │   ├── __root.tsx      — RootLayout + Outlet (готово)
+│   │   │   ├── index.tsx       — главная (минимальная, schedule/02
+│   │   │   │                      заменит на превью каталога)
+│   │   │   └── ...             — остальные: Planned (наполняются по мере
 │   │                              прохождения соответствующих schedule/*)
-│   │   └── layout/              — root-layout, header, sidebar, footer
-│   │                              Статус: Planned (schedule/00)
+│   │   └── layout/              — root-layout, header, footer (готово,
+│   │                              минимально); sidebar — Planned
 │   │
 │   ├── shared/                 — переиспользуемый код без бизнес-логики
 │   │   ├── ui/                 — shadcn/ui компоненты (только через CLI)
@@ -42,7 +43,7 @@ frontend/mentora-frontend/
 │   │   │                          orval-типов после первого codegen)
 │   │   └── config/
 │   │       ├── query-client.ts — QueryClient defaults (готово)
-│   │       └── router.ts        — Statuс: Planned (schedule/00)
+│   │       └── router.ts        — дефолты роутера (готово)
 │   │
 │   ├── features/                — feature-модули (изолированы друг от друга)
 │   │   ├── auth/                — Statуs: Planned (schedule/01)
@@ -55,8 +56,9 @@ frontend/mentora-frontend/
 │   └── styles/globals.css       — Tailwind v4 + CSS variables (готово)
 │
 └── tests/
-    ├── setup.ts                 — jest-dom matchers (готово)
-    ├── components/               — unit-тесты компонентов (Planned)
+    ├── setup.ts                 — jest-dom matchers + jsdom-полифиллы (готово)
+    ├── components/               — unit-тесты компонентов (наполняются
+    │                              по мере прохождения schedule/*)
     └── e2e/                      — Playwright (Planned, schedule/08)
 ```
 

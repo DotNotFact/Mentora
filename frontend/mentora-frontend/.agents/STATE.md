@@ -1,8 +1,8 @@
 # STATE — читать первым в каждой новой сессии
 
-status: SCAFFOLD_COMPLETE / AWAITING_ADMIN_COMMAND
+status: IN_PROGRESS: 00
 lastUpdated: 2026-08-05
-currentTask: none
+currentTask: 00-verify-setup
 completedSchedules: []
 
 ## Что это значит
