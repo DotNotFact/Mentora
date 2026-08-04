@@ -70,6 +70,22 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthResponse'
+  /auth/logout:
+    post:
+      tags: [auth]
+      operationId: logout
+      summary: Инвалидация refresh-токена на сервере
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshRequest'
+      responses:
+        '204':
+          description: No Content
   /courses:
     get:
       tags: [courses]
@@ -158,6 +174,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/InstructorAnalytics'
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
   schemas:
     LoginRequest:
       type: object
@@ -187,6 +208,7 @@ components:
           type: string
     AuthResponse:
       type: object
+      required: [accessToken, refreshToken, user]
       properties:
         accessToken:
           type: string
@@ -196,6 +218,7 @@ components:
           $ref: '#/components/schemas/User'
     User:
       type: object
+      required: [id, email, fullName, role]
       properties:
         id:
           type: string
@@ -204,10 +227,13 @@ components:
         fullName:
           type: string
         role:
-          type: string
-          enum: [student, instructor, admin]
+          $ref: '#/components/schemas/UserRole'
+    UserRole:
+      type: string
+      enum: [student, instructor, admin]
     Course:
       type: object
+      required: [id, title, description, price, instructorId]
       properties:
         id:
           type: string
@@ -221,6 +247,7 @@ components:
           type: string
     CoursePage:
       type: object
+      required: [items, total, page, pageSize]
       properties:
         items:
           type: array
@@ -240,6 +267,7 @@ components:
           type: string
     Enrollment:
       type: object
+      required: [id, courseId, userId, progress]
       properties:
         id:
           type: string
@@ -257,6 +285,7 @@ components:
           type: string
     CheckoutSession:
       type: object
+      required: [checkoutUrl, sessionId]
       properties:
         checkoutUrl:
           type: string
@@ -264,6 +293,7 @@ components:
           type: string
     InstructorAnalytics:
       type: object
+      required: [totalRevenue, totalEnrollments]
       properties:
         totalRevenue:
           type: number

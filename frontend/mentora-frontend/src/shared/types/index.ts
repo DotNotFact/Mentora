@@ -1,4 +1,5 @@
-export type UserRole = 'student' | 'instructor' | 'admin';
+// UserRole — использовать сгенерированный тип из '@shared/types/api'
+// (orval), не дублировать вручную (CLAUDE.md, правило #19).
 
 export interface PaginatedResponse<T> {
   items: T[];

@@ -23,10 +23,17 @@ frontend/mentora-frontend/
 │   │   │   ├── __root.tsx      — RootLayout + Outlet (готово)
 │   │   │   ├── index.tsx       — главная (минимальная, schedule/02
 │   │   │   │                      заменит на превью каталога)
+│   │   │   ├── login.tsx       — LoginForm (готово)
+│   │   │   ├── register.tsx    — RegisterForm (готово)
 │   │   │   └── ...             — остальные: Planned (наполняются по мере
 │   │                              прохождения соответствующих schedule/*)
-│   │   └── layout/              — root-layout, header, footer (готово,
-│   │                              минимально); sidebar — Planned
+│   │   ├── auth-guard.tsx      — редирект на /login для защищённых
+│   │   │                          роутов (готово, применяется начиная
+│   │   │                          с schedule/03/06, когда появятся сами
+│   │   │                          защищённые роуты)
+│   │   └── layout/              — root-layout, footer (готово, минимально);
+│   │                              header — auth-aware (войти/аватар+выйти,
+│   │                              готово); sidebar — Planned
 │   │
 │   ├── shared/                 — переиспользуемый код без бизнес-логики
 │   │   ├── ui/                 — shadcn/ui компоненты (только через CLI)
@@ -35,18 +42,21 @@ frontend/mentora-frontend/
 │   │   ├── hooks/               — useMedia/useDebounce/useLocalStorage
 │   │   │                          (готово)
 │   │   ├── api/
-│   │   │   ├── client.ts       — axios + interceptors (готово, refresh —
-│   │   │   │                      Planned, эндпоинт подключается в
-│   │   │   │                      schedule/01)
-│   │   │   └── generated/       — orval codegen, НЕ редактировать вручную
+│   │   │   ├── client.ts       — axios + interceptors (готово, включая
+│   │   │   │                      refresh-flow через сгенерированный
+│   │   │   │                      authApi)
+│   │   │   └── generated/       — orval codegen (auth/courses/enrollments/
+│   │   │                          payments/analytics), НЕ редактировать
+│   │   │                          вручную
 │   │   ├── types/               — index.ts (готово), api.ts (реэкспорт
-│   │   │                          orval-типов после первого codegen)
+│   │   │                          сгенерированных orval-типов, готово)
 │   │   └── config/
 │   │       ├── query-client.ts — QueryClient defaults (готово)
 │   │       └── router.ts        — дефолты роутера (готово)
 │   │
 │   ├── features/                — feature-модули (изолированы друг от друга)
-│   │   ├── auth/                — Statуs: Planned (schedule/01)
+│   │   ├── auth/                — готово (schedule/01): login/register,
+│   │   │                          Zustand store + persist, AuthGuard
 │   │   ├── courses/             — Planned (schedule/02)
 │   │   ├── course-editor/       — Planned (schedule/03)
 │   │   ├── enrollment/          — Planned (schedule/04, 05)
