@@ -1,8 +1,8 @@
 # STATE — читать первым в каждой новой сессии
 
-status: AWAITING_ADMIN_COMMAND
+status: IN_PROGRESS: 02,03,06 (параллельно, изолированные worktree)
 lastUpdated: 2026-08-05
-currentTask: none
+currentTask: 02-courses-catalog, 03-course-editor, 06-analytics-dashboard
 completedSchedules: [00-verify-setup, 01-auth]
 
 ## Что это значит
@@ -14,6 +14,12 @@ completedSchedules: [00-verify-setup, 01-auth]
   из schedule/. НЕ начинать реализацию по общим фразам вроде "продолжай".
 - IN_PROGRESS: <NN> — идёт реализация конкретной schedule-задачи NN.
   После завершения — вернуть статус в AWAITING_ADMIN_COMMAND.
+- IN_PROGRESS: <NN,NN,...> (параллельно) — несколько задач выполняются
+  одновременно, каждая в своём изолированном git worktree/ветке (см.
+  AGENTS.md → "Параллелизация задач" и "Multi-agent"). Этот файл в таком
+  режиме обновляет только оркестрирующая сессия (после того как все
+  параллельные PR смержены), не сами параллельные агенты — иначе
+  конкурентные правки этого файла конфликтовали бы друг с другом.
 
 ## Как обновлять
 
