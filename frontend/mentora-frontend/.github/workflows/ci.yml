@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'frontend/mentora-frontend/**'
+  pull_request:
+    paths:
+      - 'frontend/mentora-frontend/**'
+
+defaults:
+  run:
+    working-directory: frontend/mentora-frontend
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: yarn
+          cache-dependency-path: frontend/mentora-frontend/yarn.lock
+
+      - run: yarn install --frozen-lockfile
+      - run: yarn typecheck
+      - run: yarn lint
+      - run: yarn test
+      - run: yarn build

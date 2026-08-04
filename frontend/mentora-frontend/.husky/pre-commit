@@ -1,0 +1,1 @@
+cd frontend/mentora-frontend && yarn lint-staged
