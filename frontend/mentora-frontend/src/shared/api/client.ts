@@ -1,5 +1,7 @@
 import axios, { type AxiosError, type InternalAxiosRequestConfig } from 'axios';
 import { API_URL } from '@shared/lib/constants';
+import { tokenStorage } from '@shared/lib/token-storage';
+import { getAuth } from './generated/auth/auth';
 
 interface RetryableRequestConfig extends InternalAxiosRequestConfig {
   _retry?: boolean;
@@ -10,8 +12,16 @@ export const apiClient = axios.create({
   headers: { 'Content-Type': 'application/json' },
 });
 
+// Инстанс без интерсепторов — используется только для refresh-запроса,
+// чтобы не зациклиться на собственном response-интерсепторе apiClient.
+const refreshClient = axios.create({ baseURL: API_URL });
+export const authApi = getAuth(apiClient);
+const authRefreshApi = getAuth(refreshClient);
+
+const AUTH_ENDPOINTS = ['/auth/login', '/auth/register', '/auth/refresh'];
+
 apiClient.interceptors.request.use((config) => {
-  const token = localStorage.getItem('accessToken');
+  const token = tokenStorage.getAccessToken();
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
@@ -25,8 +35,16 @@ apiClient.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {
     const originalRequest = error.config as RetryableRequestConfig | undefined;
+    const isAuthEndpoint = AUTH_ENDPOINTS.some((endpoint) =>
+      originalRequest?.url?.includes(endpoint),
+    );
 
-    if (error.response?.status !== 401 || !originalRequest || originalRequest._retry) {
+    if (
+      error.response?.status !== 401 ||
+      !originalRequest ||
+      originalRequest._retry ||
+      isAuthEndpoint
+    ) {
       return Promise.reject(error);
     }
     originalRequest._retry = true;
@@ -39,16 +57,17 @@ apiClient.interceptors.response.use(
 
     isRefreshing = true;
     try {
-      // TODO: подключить реальный refresh-эндпоинт при выполнении schedule/01-auth
-      const refreshToken = localStorage.getItem('refreshToken');
-      const { data } = await axios.post(`${API_URL}/auth/refresh`, { refreshToken });
-      localStorage.setItem('accessToken', data.accessToken);
+      const refreshToken = tokenStorage.getRefreshToken();
+      if (!refreshToken) {
+        throw error;
+      }
+      const { data } = await authRefreshApi.refreshToken({ refreshToken });
+      tokenStorage.setTokens(data.accessToken, data.refreshToken);
       pendingRequests.forEach((run) => run());
       pendingRequests = [];
       return apiClient(originalRequest);
     } catch (refreshError) {
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
+      tokenStorage.clearTokens();
       return Promise.reject(refreshError);
     } finally {
       isRefreshing = false;
