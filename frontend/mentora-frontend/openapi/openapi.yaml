@@ -1,0 +1,271 @@
+openapi: 3.0.3
+info:
+  title: Mentora API
+  description: >
+    Плейсхолдер OpenAPI-спецификации. Реальный контракт экспортируется
+    бэкендом (C# ASP.NET Core) через Swagger и копируется сюда целиком
+    (см. openapi/README.md). Ниже — заготовка со скелетом эндпоинтов,
+    достаточная для первого прогона `yarn api:generate`.
+  version: 0.0.1
+servers:
+  - url: /api
+tags:
+  - name: auth
+  - name: courses
+  - name: enrollments
+  - name: payments
+  - name: analytics
+paths:
+  /auth/login:
+    post:
+      tags: [auth]
+      operationId: login
+      summary: Вход пользователя
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+  /auth/register:
+    post:
+      tags: [auth]
+      operationId: register
+      summary: Регистрация пользователя
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+  /auth/refresh:
+    post:
+      tags: [auth]
+      operationId: refreshToken
+      summary: Обновление access-токена
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+  /courses:
+    get:
+      tags: [courses]
+      operationId: listCourses
+      summary: Каталог курсов (пагинация/фильтры)
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+        - name: pageSize
+          in: query
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CoursePage'
+  /courses/{courseId}:
+    get:
+      tags: [courses]
+      operationId: getCourse
+      summary: Детали курса
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+  /enrollments:
+    post:
+      tags: [enrollments]
+      operationId: createEnrollment
+      summary: Записать пользователя на курс
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnrollmentRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Enrollment'
+  /payments/checkout:
+    post:
+      tags: [payments]
+      operationId: createCheckoutSession
+      summary: Создать сессию оплаты (Stripe Checkout)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CheckoutRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckoutSession'
+  /analytics/instructor:
+    get:
+      tags: [analytics]
+      operationId: getInstructorAnalytics
+      summary: Аналитика инструктора (доходы/зачисления)
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InstructorAnalytics'
+components:
+  schemas:
+    LoginRequest:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+    RegisterRequest:
+      type: object
+      required: [email, password, fullName]
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+        fullName:
+          type: string
+    RefreshRequest:
+      type: object
+      required: [refreshToken]
+      properties:
+        refreshToken:
+          type: string
+    AuthResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+        refreshToken:
+          type: string
+        user:
+          $ref: '#/components/schemas/User'
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        fullName:
+          type: string
+        role:
+          type: string
+          enum: [student, instructor, admin]
+    Course:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+        instructorId:
+          type: string
+    CoursePage:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Course'
+        total:
+          type: integer
+        page:
+          type: integer
+        pageSize:
+          type: integer
+    EnrollmentRequest:
+      type: object
+      required: [courseId]
+      properties:
+        courseId:
+          type: string
+    Enrollment:
+      type: object
+      properties:
+        id:
+          type: string
+        courseId:
+          type: string
+        userId:
+          type: string
+        progress:
+          type: number
+    CheckoutRequest:
+      type: object
+      required: [courseId]
+      properties:
+        courseId:
+          type: string
+    CheckoutSession:
+      type: object
+      properties:
+        checkoutUrl:
+          type: string
+        sessionId:
+          type: string
+    InstructorAnalytics:
+      type: object
+      properties:
+        totalRevenue:
+          type: number
+        totalEnrollments:
+          type: integer
