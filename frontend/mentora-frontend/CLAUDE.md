@@ -111,6 +111,10 @@ MIT, источник — [emilkowalski/skills](https://github.com/emilkowalski/
 `review-animations`/`improve-animations` особенно релевантны для
 `schedule/07-polish-animations.md`.
 
+Любая UI-задача из schedule/ проходит обязательный скриншот-QA гейт
+(375/768/1280px, `docs/qa-screenshots/`) — см. AGENTS.md → "Скриншот-QA
+гейт".
+
 ## Скрипты package.json
 
 - dev, build (tsc -b && vite build), typecheck, lint, lint:fix, format
@@ -129,9 +133,11 @@ Conventional Commits НА РУССКОМ:
 `docs: обновлён README`
 `test: добавлены тесты для CourseCard`
 
-В режиме B (schedule execution) — НЕ коммитить без явного разрешения
-администратора на конкретный шаг, если это не оговорено в самой задаче
-schedule/. НЕ автопушить произвольные ветки.
+В режиме B (schedule execution) коммит/push/PR/мерж разрешены только в
+рамках УЖЕ одобренной администратором schedule-задачи, по процессу из
+AGENTS.md → "Schedule-driven development" (включает автомерж PR после
+зелёного `yarn verify`). НЕ создавать и НЕ пушить ветки/задачи, не
+названные администратором явно.
 
 ## Красный список
 

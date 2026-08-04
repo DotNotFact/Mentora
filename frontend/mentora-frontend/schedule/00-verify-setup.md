@@ -42,6 +42,8 @@ text-foreground).
 - `yarn verify` проходит целиком.
 - `npx shadcn@latest add button` отрабатывает без ошибок алиасов.
 - `/` рендерится через TanStack Router, а не напрямую через `<App />`.
+- Скриншот-гейт (см. AGENTS.md): `/` на 375/768/1280px, сохранить в
+  `docs/qa-screenshots/schedule-00-verify-setup/`.
 
 ## Не входит
 
