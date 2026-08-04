@@ -25,7 +25,11 @@
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
 
-    /* Path aliases */
+    /* Path aliases — baseUrl required by tooling (shadcn CLI) that
+       resolves tsconfig "paths" relative to it; TS 6.0 deprecation
+       silenced deliberately, not an oversight. */
+    "ignoreDeprecations": "6.0",
+    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
       "@shared/*": ["./src/shared/*"],
