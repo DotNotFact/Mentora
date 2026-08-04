@@ -98,7 +98,18 @@ Query + Zustand + Zod + Tailwind v4 + shadcn/ui (new-york style).
 ## Дизайн-система
 
 См. `.agents/skills/mentora-design/SKILL.md` — единственный источник истины
-(не дублировать вручную в других местах, только ссылаться).
+токенов/паттернов Mentora (не дублировать вручную в других местах, только
+ссылаться).
+
+Для анимации и общего UI-качества (motion, полировка, ревью моушена)
+дополнительно применяются skills от Emil Kowalski
+(`.agents/skills/{apple-design,emil-design-eng,animation-vocabulary,
+find-animation-opportunities,improve-animations,review-animations}/`,
+MIT, источник — [emilkowalski/skills](https://github.com/emilkowalski/skills)).
+Они не заменяют `mentora-design` (токены/цвета остаются только там) — это
+источник экспертизы по мастерству анимации/интеракций поверх них.
+`review-animations`/`improve-animations` особенно релевантны для
+`schedule/07-polish-animations.md`.
 
 ## Скрипты package.json
 
