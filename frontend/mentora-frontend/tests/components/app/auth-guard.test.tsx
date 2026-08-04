@@ -9,14 +9,20 @@ import {
 import { beforeEach, describe, expect, it } from 'vitest';
 import { AuthGuard } from '@app/auth-guard';
 import { useAuthStore } from '@features/auth/store';
+import type { UserRole } from '@shared/types/api';
 
-function renderGuardedRoute(initialPath: string) {
+function renderGuardedRoute(initialPath: string, allowedRoles?: UserRole[]) {
   const rootRoute = createRootRoute();
+  const indexRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/',
+    component: () => <div>Главная</div>,
+  });
   const protectedRoute = createRoute({
     getParentRoute: () => rootRoute,
     path: '/protected',
     component: () => (
-      <AuthGuard>
+      <AuthGuard allowedRoles={allowedRoles}>
         <div>Секретный контент</div>
       </AuthGuard>
     ),
@@ -26,7 +32,7 @@ function renderGuardedRoute(initialPath: string) {
     path: '/login',
     component: () => <div>Страница входа</div>,
   });
-  const routeTree = rootRoute.addChildren([protectedRoute, loginRoute]);
+  const routeTree = rootRoute.addChildren([indexRoute, protectedRoute, loginRoute]);
   const router = createRouter({
     routeTree,
     history: createMemoryHistory({ initialEntries: [initialPath] }),
@@ -60,5 +66,32 @@ describe('AuthGuard', () => {
     await waitFor(() => {
       expect(screen.getByText('Секретный контент')).toBeInTheDocument();
     });
+  });
+
+  it('renders children when the user has one of the allowed roles', async () => {
+    useAuthStore.setState({
+      isAuthenticated: true,
+      user: { id: '1', email: 'i@example.com', fullName: 'Instructor', role: 'instructor' },
+    });
+
+    renderGuardedRoute('/protected', ['instructor', 'admin']);
+
+    await waitFor(() => {
+      expect(screen.getByText('Секретный контент')).toBeInTheDocument();
+    });
+  });
+
+  it('redirects to / when authenticated but role is not allowed', async () => {
+    useAuthStore.setState({
+      isAuthenticated: true,
+      user: { id: '1', email: 's@example.com', fullName: 'Student', role: 'student' },
+    });
+
+    renderGuardedRoute('/protected', ['instructor', 'admin']);
+
+    await waitFor(() => {
+      expect(screen.getByText('Главная')).toBeInTheDocument();
+    });
+    expect(screen.queryByText('Секретный контент')).not.toBeInTheDocument();
   });
 });
