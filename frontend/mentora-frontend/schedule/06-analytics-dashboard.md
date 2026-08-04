@@ -50,6 +50,9 @@ Grid дашборда: `grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6`. Гра
 - Роль-based доступ: студент не видит instructor/admin дашборды и наоборот.
 - Данные кэшируются TanStack Query с разумным `staleTime` (аналитика не
   обновляется поминутно).
+- Скриншот-гейт: `/dashboard`, `/dashboard/instructor`,
+  `/dashboard/admin` на 375/768/1280px →
+  `docs/qa-screenshots/schedule-06-analytics-dashboard/`.
 
 ## Не входит
 

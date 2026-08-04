@@ -46,6 +46,10 @@
 - Полный keyboard-only проход по основным сценариям без потери фокуса.
 - Lighthouse Accessibility ≥ 90 на ключевых страницах (предварительная
   проверка перед schedule/09).
+- Скриншот-гейт: пройтись `review-animations`/`apple-design` skills по
+  ключевым экранам (каталог, курс, редактор, плеер, checkout, дашборды),
+  375/768/1280px, зафиксировать в
+  `docs/qa-screenshots/schedule-07-polish-animations/`.
 
 ## Не входит
 

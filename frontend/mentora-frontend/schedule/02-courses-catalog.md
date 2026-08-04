@@ -50,6 +50,8 @@ CourseCard: `rounded-xl shadow-sm`, hover `scale-[1.02] shadow-md`
   перезагрузки.
 - Поиск debounce ~300ms.
 - Страница курса открывается по `/courses/:courseId` с реальными данными.
+- Скриншот-гейт: `/courses` (сетка с карточками) и `/courses/:courseId`
+  на 375/768/1280px → `docs/qa-screenshots/schedule-02-courses-catalog/`.
 
 ## Не входит
 
