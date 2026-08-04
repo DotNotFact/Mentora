@@ -1,9 +1,9 @@
 # STATE — читать первым в каждой новой сессии
 
-status: IN_PROGRESS: 00
+status: AWAITING_ADMIN_COMMAND
 lastUpdated: 2026-08-05
-currentTask: 00-verify-setup
-completedSchedules: []
+currentTask: none
+completedSchedules: [00-verify-setup, 01-auth]
 
 ## Что это значит
 
