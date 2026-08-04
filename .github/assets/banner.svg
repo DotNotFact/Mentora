@@ -1,0 +1,34 @@
+<svg width="1200" height="260" viewBox="0 0 1200 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Mentora — AI-first LMS platform">
+  <defs>
+    <linearGradient id="mentora-banner-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366F1" />
+      <stop offset="100%" stop-color="#4338CA" />
+    </linearGradient>
+    <linearGradient id="mentora-banner-mark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.24" />
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.08" />
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="260" rx="24" fill="url(#mentora-banner-bg)" />
+
+  <circle cx="1080" cy="40" r="120" fill="#FFFFFF" opacity="0.05" />
+  <circle cx="1150" cy="220" r="70" fill="#F59E0B" opacity="0.12" />
+
+  <rect x="64" y="72" width="116" height="116" rx="28" fill="url(#mentora-banner-mark)" stroke="#FFFFFF" stroke-opacity="0.25" />
+  <path
+    d="M96 152V108h10.1l18.9 29 18.9-29H154v44h-10.5v-30.6L126.4 168h-2.5l-17.1-24.6V152H96Z"
+    fill="#FFFFFF"
+  />
+  <circle cx="164" cy="90" r="8" fill="#F59E0B" />
+
+  <text x="214" y="130" font-family="'Inter', 'Segoe UI', ui-sans-serif, system-ui, sans-serif" font-size="56" font-weight="700" fill="#FFFFFF">
+    Mentora
+  </text>
+  <text x="216" y="164" font-family="'Inter', 'Segoe UI', ui-sans-serif, system-ui, sans-serif" font-size="21" font-weight="500" fill="#E0E7FF">
+    AI-first LMS платформа для онлайн-курсов
+  </text>
+  <text x="216" y="194" font-family="'Inter', 'Segoe UI', ui-sans-serif, system-ui, sans-serif" font-size="15" fill="#C7D2FE">
+    Student · Instructor · Admin — от каталога курсов до аналитики
+  </text>
+</svg>
