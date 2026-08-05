@@ -4,6 +4,7 @@ import { Badge } from '@shared/ui/badge';
 import { Button } from '@shared/ui/button';
 import { Skeleton } from '@shared/ui/skeleton';
 import { formatPrice } from '@shared/lib/utils';
+import { useDocumentMeta } from '@shared/hooks/use-document-meta';
 import { useAuthStore } from '@features/auth/store';
 import { useEnroll } from '@features/enrollment/hooks/use-enroll';
 import { useEnrollmentStatus } from '@features/enrollment/hooks/use-enrollment-status';
@@ -16,6 +17,13 @@ interface CourseDetailProps {
 
 export function CourseDetail({ courseId }: CourseDetailProps) {
   const { data, isPending, isError } = useCourse(courseId);
+
+  // Хук вызывается безусловно (до ранних return) — заголовок/описание
+  // становятся точными, как только данные курса подгрузятся.
+  useDocumentMeta({
+    title: data ? `${data.data.title} — Mentora` : 'Mentora',
+    description: data?.data.description,
+  });
 
   if (isPending) {
     return (

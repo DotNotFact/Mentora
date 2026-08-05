@@ -12,3 +12,11 @@ createRoot(document.getElementById('root')!).render(
     </AppProvider>
   </StrictMode>,
 );
+
+// Только в проде — в dev service worker конфликтует с Vite HMR
+// (перехватывает module-запросы, из-за чего обновления не подхватываются).
+if (import.meta.env.PROD && 'serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    void navigator.serviceWorker.register('/sw.js');
+  });
+}

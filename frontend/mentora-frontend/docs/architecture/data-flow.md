@@ -1,7 +1,8 @@
 # Data Flow
 
-Статус: Planned (шаблон потока — наполняется по мере прохождения
-schedule-задач).
+Статус: реализовано — паттерны ниже применяются одинаково во всех
+features (auth, courses, course-editor, enrollment, payments, analytics),
+прошедших schedule/00-09.
 
 ## Server-state (данные с бэкенда)
 

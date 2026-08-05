@@ -1,13 +1,23 @@
-import { createRoute } from '@tanstack/react-router';
+import { lazy, Suspense } from 'react';
+import { CatchBoundary, createRoute } from '@tanstack/react-router';
 import { AuthGuard } from '@app/auth-guard';
 import { PageContainer } from '@app/layout/page-container';
+import { WidgetErrorFallback } from '@app/error-fallback';
 import { CourseMetaForm } from '@features/course-editor/components/course-meta-form';
 import { ChapterList } from '@features/course-editor/components/chapter-list';
-import { LessonEditor } from '@features/course-editor/components/lesson-editor';
 import { VideoUpload } from '@features/course-editor/components/video-upload';
 import { useCourseEditor } from '@features/course-editor/hooks/use-course-editor';
 import { useCourseEditorStore } from '@features/course-editor/store';
 import { rootRoute } from '../../__root';
+
+// TipTap (rich-text) — самая тяжёлая библиотека курс-редактора после
+// vidstack, грузится собственным чанком только когда реально выбран урок
+// для редактирования, а не при каждом визите на /courses/edit/*.
+const LessonEditor = lazy(() =>
+  import('@features/course-editor/components/lesson-editor').then((m) => ({
+    default: m.LessonEditor,
+  })),
+);
 
 export const courseEditRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -64,15 +74,23 @@ function CourseEditorPage({ courseId }: { courseId: string }) {
 
           <section className="min-w-0 flex-1 space-y-4">
             {selectedLesson ? (
-              <>
-                <LessonEditor courseId={courseId} lesson={selectedLesson} />
+              // Изолирует сбой rich-text редактора/загрузки видео (тяжёлые
+              // внешние библиотеки — TipTap, аплоад файла) от остального
+              // редактора курса — список глав слева остаётся рабочим.
+              <CatchBoundary
+                getResetKey={() => selectedLesson.id}
+                errorComponent={() => <WidgetErrorFallback title="Не удалось отобразить редактор урока" />}
+              >
+                <Suspense fallback={<div className="bg-muted h-64 animate-pulse rounded-xl" />}>
+                  <LessonEditor courseId={courseId} lesson={selectedLesson} />
+                </Suspense>
                 <div className="bg-card rounded-xl border p-4 shadow-sm">
                   <h3 className="text-foreground mb-3 text-sm font-semibold tracking-tight">
                     Видео урока
                   </h3>
                   <VideoUpload courseId={courseId} lesson={selectedLesson} />
                 </div>
-              </>
+              </CatchBoundary>
             ) : (
               <div className="text-muted-foreground rounded-xl border border-dashed p-12 text-center text-sm">
                 Выберите урок слева или добавьте новый, чтобы редактировать его содержимое.

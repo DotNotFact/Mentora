@@ -1,5 +1,7 @@
 import { createRouter } from '@tanstack/react-router';
 import { routerDefaultOptions } from '@shared/config/router';
+import { RouteErrorFallback } from './error-fallback';
+import { NotFoundPage } from './not-found';
 import { rootRoute } from './routes/__root';
 import { indexRoute } from './routes/index';
 import { loginRoute } from './routes/login';
@@ -29,7 +31,12 @@ const routeTree = rootRoute.addChildren([
   learningRoute,
 ]);
 
-export const router = createRouter({ routeTree, ...routerDefaultOptions });
+export const router = createRouter({
+  routeTree,
+  ...routerDefaultOptions,
+  defaultErrorComponent: RouteErrorFallback,
+  defaultNotFoundComponent: NotFoundPage,
+});
 
 declare module '@tanstack/react-router' {
   interface Register {
