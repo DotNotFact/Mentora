@@ -3,6 +3,7 @@ import { CatchBoundary, createRoute } from '@tanstack/react-router';
 import { AuthGuard } from '@app/auth-guard';
 import { PageContainer } from '@app/layout/page-container';
 import { WidgetErrorFallback } from '@app/error-fallback';
+import { Card, CardContent, CardHeader, CardTitle } from '@shared/ui/card';
 import { CourseMetaForm } from '@features/course-editor/components/course-meta-form';
 import { ChapterList } from '@features/course-editor/components/chapter-list';
 import { VideoUpload } from '@features/course-editor/components/video-upload';
@@ -79,17 +80,23 @@ function CourseEditorPage({ courseId }: { courseId: string }) {
               // редактора курса — список глав слева остаётся рабочим.
               <CatchBoundary
                 getResetKey={() => selectedLesson.id}
-                errorComponent={() => <WidgetErrorFallback title="Не удалось отобразить редактор урока" />}
+                errorComponent={() => (
+                  <WidgetErrorFallback title="Не удалось отобразить редактор урока" />
+                )}
               >
                 <Suspense fallback={<div className="bg-muted h-64 animate-pulse rounded-xl" />}>
                   <LessonEditor courseId={courseId} lesson={selectedLesson} />
                 </Suspense>
-                <div className="bg-card rounded-xl border p-4 shadow-sm">
-                  <h3 className="text-foreground mb-3 text-lg leading-snug font-semibold tracking-tight">
-                    Видео урока
-                  </h3>
-                  <VideoUpload courseId={courseId} lesson={selectedLesson} />
-                </div>
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-lg leading-snug tracking-tight">
+                      Видео урока
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <VideoUpload courseId={courseId} lesson={selectedLesson} />
+                  </CardContent>
+                </Card>
               </CatchBoundary>
             ) : (
               <div className="text-muted-foreground rounded-xl border border-dashed p-12 text-center text-sm">

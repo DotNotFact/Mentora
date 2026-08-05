@@ -1,6 +1,7 @@
 import { Link } from '@tanstack/react-router';
 import { CheckCircle2, Loader2, XCircle } from 'lucide-react';
 import { Button } from '@shared/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@shared/ui/card';
 import { Skeleton } from '@shared/ui/skeleton';
 import { formatPrice } from '@shared/lib/utils';
 import { useCourse } from '@features/courses/hooks/use-course';
@@ -74,45 +75,42 @@ function CheckoutPrompt({ courseId }: { courseId: string }) {
 
   return (
     <div className="mx-auto max-w-md space-y-6 text-center">
-      <div className="bg-card space-y-4 rounded-xl border p-6 shadow-sm">
-        <h1 className="text-foreground text-xl leading-snug font-semibold tracking-tight">
-          {course.title}
-        </h1>
-        <p className="text-foreground text-2xl leading-tight font-semibold tracking-tight tabular-nums md:text-3xl">
-          {isFree ? 'Бесплатно' : formatPrice(course.price)}
-        </p>
-
-        {isFree ? (
-          <Button
-            type="button"
-            className="w-full"
-            disabled={enroll.isPending}
-            onClick={handleEnrollFree}
-          >
-            {enroll.isPending && <Loader2 className="animate-spin" aria-hidden="true" />}
-            Записаться бесплатно
-          </Button>
-        ) : (
-          <Button
-            type="button"
-            className="w-full"
-            disabled={isRedirecting}
-            onClick={handlePay}
-          >
-            {isRedirecting && <Loader2 className="animate-spin" aria-hidden="true" />}
-            Оплатить
-          </Button>
-        )}
-
-        {isRedirecting && (
-          <p className="text-muted-foreground text-xs">Перенаправляем на страницу оплаты…</p>
-        )}
-        {(createCheckout.isError || enroll.isError) && (
-          <p className="text-destructive text-xs" role="alert">
-            Не удалось начать оплату. Попробуйте ещё раз.
+      <Card className="space-y-4">
+        <CardHeader>
+          <CardTitle className="text-xl leading-snug tracking-tight">{course.title}</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <p className="text-foreground text-2xl leading-tight font-semibold tracking-tight tabular-nums md:text-3xl">
+            {isFree ? 'Бесплатно' : formatPrice(course.price)}
           </p>
-        )}
-      </div>
+
+          {isFree ? (
+            <Button
+              type="button"
+              className="w-full"
+              disabled={enroll.isPending}
+              onClick={handleEnrollFree}
+            >
+              {enroll.isPending && <Loader2 className="animate-spin" aria-hidden="true" />}
+              Записаться бесплатно
+            </Button>
+          ) : (
+            <Button type="button" className="w-full" disabled={isRedirecting} onClick={handlePay}>
+              {isRedirecting && <Loader2 className="animate-spin" aria-hidden="true" />}
+              Оплатить
+            </Button>
+          )}
+
+          {isRedirecting && (
+            <p className="text-muted-foreground text-xs">Перенаправляем на страницу оплаты…</p>
+          )}
+          {(createCheckout.isError || enroll.isError) && (
+            <p className="text-destructive text-xs" role="alert">
+              Не удалось начать оплату. Попробуйте ещё раз.
+            </p>
+          )}
+        </CardContent>
+      </Card>
       <Link
         to="/courses/$courseId"
         params={{ courseId }}

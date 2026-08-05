@@ -71,8 +71,18 @@ export function CourseGrid() {
   return (
     <div className="space-y-8">
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {courses.map((course) => (
-          <CourseCard key={course.id} course={course} />
+        {courses.map((course, index) => (
+          // Staggered reveal — см. .agents/skills/aaa-ui-polish/SKILL.md,
+          // "Появление списков — staggered, не разом". Задержка ограничена
+          // первым экраном (12 карточек), дальше подгруженные страницы
+          // появляются без искусственной паузы.
+          <div
+            key={course.id}
+            className="animate-in fade-in slide-in-from-bottom-2 fill-mode-backwards duration-500 [animation-timing-function:var(--ease-spring)]"
+            style={{ animationDelay: `${Math.min(index, 11) * 40}ms` }}
+          >
+            <CourseCard course={course} />
+          </div>
         ))}
       </div>
       {hasNextPage && (

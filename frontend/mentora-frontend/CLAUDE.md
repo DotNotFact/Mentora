@@ -72,7 +72,9 @@ sm:px-6 lg:px-8` — так новая страница не может случ
 13. Только Tailwind — никаких inline styles / CSS modules / styled-components.
 14. CSS variables для токенов — в globals.css.
 15. shadcn/ui — база, кастомизация через variants (cva).
-16. transition 150ms ease по умолчанию; hover scale 1.02 только у CourseCard.
+16. transition 150ms ease по умолчанию; hover scale/tilt/lift — см.
+    `.agents/skills/aaa-ui-polish/SKILL.md` (2026-08-06, снимает прежний
+    лимит "только у CourseCard" для UI, реализуемого по этому skill'у).
 
 ### Типы
 

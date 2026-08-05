@@ -54,8 +54,15 @@ export function MyCoursesGrid() {
 
   return (
     <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-      {enrollments.map((enrollment) => (
-        <CourseCard key={enrollment.id} course={enrollment.course} progress={enrollment.progress} />
+      {enrollments.map((enrollment, index) => (
+        // Staggered reveal — см. .agents/skills/aaa-ui-polish/SKILL.md.
+        <div
+          key={enrollment.id}
+          className="animate-in fade-in slide-in-from-bottom-2 fill-mode-backwards duration-500 [animation-timing-function:var(--ease-spring)]"
+          style={{ animationDelay: `${index * 40}ms` }}
+        >
+          <CourseCard course={enrollment.course} progress={enrollment.progress} />
+        </div>
       ))}
     </div>
   );

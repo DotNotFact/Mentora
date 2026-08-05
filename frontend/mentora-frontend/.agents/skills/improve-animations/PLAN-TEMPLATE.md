@@ -29,7 +29,7 @@ configs, media queries. Never "use a nicer easing":
 ​`css
 /* target */
 .dropdown {
-  transition: transform 200ms var(--ease-out), opacity 200ms var(--ease-out);
+  transition: transform 200ms var(--ease-out-expo), opacity 200ms var(--ease-out-expo);
   transform-origin: var(--transform-origin);
 }
 ​`
@@ -39,7 +39,12 @@ configs, media queries. Never "use a nicer easing":
 How this codebase already does it, with one exemplar the executor should
 imitate (token names, file placement, prop patterns):
 
-- Easing tokens live in `src/styles/tokens.css`; add new curves there, e.g. `--ease-out: cubic-bezier(0.23, 1, 0.32, 1);`
+- Mentora: easing tokens live in `src/styles/globals.css` (`@theme`
+  block) — NOT a separate `tokens.css` (that file doesn't exist in this
+  project). Reuse `--ease-spring`/`--ease-out-expo`/`--ease-in-out-smooth`
+  (added at schedule/10, 2026-08-06;
+  see `.agents/skills/aaa-ui-polish/SKILL.md`) — add new curves there
+  only if none of the three existing ones fit.
 - <exemplar file:line that already does this correctly>
 
 ## Steps

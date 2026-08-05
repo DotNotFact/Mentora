@@ -3,11 +3,13 @@ import { describe, expect, it } from 'vitest';
 import { StatCard } from '@features/analytics/components/stat-card';
 
 describe('StatCard', () => {
-  it('renders the label and value', () => {
+  it('renders the label and value', async () => {
     render(<StatCard label="Доход" value="$1,234.00" />);
 
     expect(screen.getByText('Доход')).toBeInTheDocument();
-    expect(screen.getByText('$1,234.00')).toBeInTheDocument();
+    // Значение анимированно "считает" от 0 до цели (count-up, см.
+    // .agents/skills/aaa-ui-polish/SKILL.md) — findByText ждёт финального кадра.
+    expect(await screen.findByText('$1,234.00')).toBeInTheDocument();
   });
 
   it('does not render a delta badge when deltaPercent is not provided', () => {

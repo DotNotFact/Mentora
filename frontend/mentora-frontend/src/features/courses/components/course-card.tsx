@@ -17,16 +17,18 @@ interface CourseCardProps {
   progress?: number;
 }
 
-// Единственное место в проекте с hover:scale-[1.02] — см.
-// .agents/skills/mentora-design/SKILL.md и CLAUDE.md, правило #16.
+// Расширенный AAA-hover (tilt+glow+lift) — см.
+// .agents/skills/aaa-ui-polish/SKILL.md, "Карточки — tilt + glow + lift".
+// Снимает прежний лимит "только CourseCard имеет hover:scale" из
+// mentora-design v2 (правило #16 в CLAUDE.md/AGENTS.md устарело).
 export function CourseCard({ course, progress }: CourseCardProps) {
   return (
     <Link
       to="/courses/$courseId"
       params={{ courseId: course.id }}
-      className="focus-visible:ring-ring block rounded-xl transition-transform duration-150 ease-out hover:scale-[1.02] focus-visible:ring-2 focus-visible:outline-none"
+      className="focus-visible:ring-ring block rounded-xl transition-transform duration-200 ease-[var(--ease-out-expo)] hover:-translate-y-1 hover:rotate-[0.5deg] hover:scale-[1.02] focus-visible:ring-2 focus-visible:outline-none"
     >
-      <Card className="gap-0 overflow-hidden rounded-xl py-0 shadow-sm hover:shadow-md">
+      <Card className="gap-0 overflow-hidden rounded-xl py-0 shadow-sm transition-shadow duration-200 ease-[var(--ease-out-expo)] hover:shadow-[0_4px_12px_-2px_rgba(15,23,42,0.15),0_8px_24px_-4px_rgba(99,102,241,0.25)]">
         <div className="bg-muted relative aspect-video overflow-hidden">
           <img
             src={course.thumbnailUrl}

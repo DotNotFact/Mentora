@@ -17,7 +17,8 @@ description: High-density, animation-rich "AAA game client"-grade UI polish for 
 > `mentora-design` (spacing, типографика, radius, палитра индиго/амбер)
 > остаются в силе без изменений — AAA-полировка добавляется ПОВЕРХ них.
 > AAA здесь значит: богатая анимированная обратная связь + spring-физика
-> + продуманный ambient-моушен, а не нагромождение элементов без смысла.
+>
+> - продуманный ambient-моушен, а не нагромождение элементов без смысла.
 
 ## Что этот skill явно переопределяет в mentora-design/SKILL.md
 
@@ -27,13 +28,13 @@ description: High-density, animation-rich "AAA game client"-grade UI polish for 
 (токены цвета, radius-шкала, spacing rhythm, типографическая шкала,
 `prefers-reduced-motion` killswitch из schedule/07) — БЕЗ изменений.
 
-| Было (mentora-design)                                                                 | Стало (aaa-ui-polish)                                                                                                          |
-| --------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| Вступительная цитата: "restrained motion"                                              | Выразительный, но управляемый моушен — см. "Принцип 3 фокусов" ниже.                                                          |
-| Elevation: "surface moves at most one level on interaction"                             | Ключевые интерактивные элементы (карточки курсов, CTA, progress) могут комбинировать подъём multi-layer: тень + scale + glow одновременно. |
-| "`hover:scale-[1.02]` ... the one component allowed that scale treatment"               | Снято — тактильный hover/press (`scale`, `translate-y`, spring easing) допустим на любом кликабельном элементе, не только `CourseCard`. |
-| "Optional glow accent for a single emphasized surface per screen"                       | Лимит "один глоу на экран" снят для геймифицированных элементов (progress rings, streak-счётчики, badge/achievement pop-in) — но не превращать КАЖДУЮ карточку в глоу, см. "3 фокуса". |
-| "never animate width/height on lists >10 items"                                         | ОСТАЁТСЯ в силе без исключений (перформанс) — плотность моушена не означает layout-thrashing; анимировать `transform`/`opacity`/`filter`, никогда `width`/`height`/`top`/`left`, даже в AAA-режиме. |
+| Было (mentora-design)                                                     | Стало (aaa-ui-polish)                                                                                                                                                                               |
+| ------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Вступительная цитата: "restrained motion"                                 | Выразительный, но управляемый моушен — см. "Принцип 3 фокусов" ниже.                                                                                                                                |
+| Elevation: "surface moves at most one level on interaction"               | Ключевые интерактивные элементы (карточки курсов, CTA, progress) могут комбинировать подъём multi-layer: тень + scale + glow одновременно.                                                          |
+| "`hover:scale-[1.02]` ... the one component allowed that scale treatment" | Снято — тактильный hover/press (`scale`, `translate-y`, spring easing) допустим на любом кликабельном элементе, не только `CourseCard`.                                                             |
+| "Optional glow accent for a single emphasized surface per screen"         | Лимит "один глоу на экран" снят для геймифицированных элементов (progress rings, streak-счётчики, badge/achievement pop-in) — но не превращать КАЖДУЮ карточку в глоу, см. "3 фокуса".              |
+| "never animate width/height on lists >10 items"                           | ОСТАЁТСЯ в силе без исключений (перформанс) — плотность моушена не означает layout-thrashing; анимировать `transform`/`opacity`/`filter`, никогда `width`/`height`/`top`/`left`, даже в AAA-режиме. |
 
 ## Принцип "3 фокуса"
 
