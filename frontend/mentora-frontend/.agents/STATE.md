@@ -1,9 +1,9 @@
 # STATE — читать первым в каждой новой сессии
 
-status: IN_PROGRESS: 02,03,06 (параллельно, изолированные worktree)
+status: AWAITING_ADMIN_COMMAND
 lastUpdated: 2026-08-05
-currentTask: 02-courses-catalog, 03-course-editor, 06-analytics-dashboard
-completedSchedules: [00-verify-setup, 01-auth]
+currentTask: none
+completedSchedules: [00-verify-setup, 01-auth, 02-courses-catalog, 03-course-editor, 06-analytics-dashboard]
 
 ## Что это значит
 
