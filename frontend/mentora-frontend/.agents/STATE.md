@@ -1,9 +1,9 @@
 # STATE — читать первым в каждой новой сессии
 
-status: IN_PROGRESS: 08
+status: IN_PROGRESS: 09
 lastUpdated: 2026-08-05
-currentTask: 08-e2e-tests
-completedSchedules: [00-verify-setup, 01-auth, 02-courses-catalog, 03-course-editor, 06-analytics-dashboard, 05-checkout, 04-learning-player]
+currentTask: 09-production-ready
+completedSchedules: [00-verify-setup, 01-auth, 02-courses-catalog, 03-course-editor, 06-analytics-dashboard, 05-checkout, 04-learning-player, 08-e2e-tests]
 
 ## Что это значит
 
