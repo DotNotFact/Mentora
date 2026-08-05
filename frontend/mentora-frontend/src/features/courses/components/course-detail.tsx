@@ -58,14 +58,18 @@ export function CourseDetail({ courseId }: CourseDetailProps) {
         </div>
         <div className="space-y-3">
           <Badge variant="secondary">{courseCategoryLabels[course.category]}</Badge>
-          <h1 className="text-foreground text-4xl font-bold tracking-tight">{course.title}</h1>
+          <h1 className="text-foreground text-4xl leading-tight font-bold tracking-tight">
+            {course.title}
+          </h1>
           <p className="text-muted-foreground text-sm">Преподаватель: {course.instructorName}</p>
         </div>
         <p className="text-foreground text-base whitespace-pre-line">{course.description}</p>
       </div>
 
       <aside className="bg-card h-fit space-y-4 rounded-xl border p-6 shadow-sm">
-        <p className="text-foreground text-3xl font-bold">{formatPrice(course.price)}</p>
+        <p className="text-foreground text-2xl leading-tight font-semibold tracking-tight tabular-nums md:text-3xl">
+          {formatPrice(course.price)}
+        </p>
         <EnrollCta courseId={courseId} isFree={course.price === 0} />
       </aside>
     </div>

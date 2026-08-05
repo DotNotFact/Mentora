@@ -126,7 +126,7 @@ export function LearningPage({ courseId }: LearningPageProps) {
               />
             </Suspense>
           </CatchBoundary>
-          <h1 className="text-foreground text-xl font-semibold tracking-tight">
+          <h1 className="text-foreground text-4xl leading-tight font-bold tracking-tight">
             {currentLesson.title}
           </h1>
           <LessonContent html={currentLesson.contentHtml} />

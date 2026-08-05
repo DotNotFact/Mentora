@@ -20,7 +20,7 @@ export function InstructorDashboard() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground">
+          <h1 className="text-foreground text-4xl leading-tight font-bold tracking-tight">
             Аналитика инструктора
           </h1>
           <p className="text-sm text-muted-foreground">Доходы и зачисления по вашим курсам</p>

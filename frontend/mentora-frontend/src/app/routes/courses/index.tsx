@@ -14,7 +14,9 @@ function CoursesCatalogPage() {
   return (
     <PageContainer className="space-y-8">
       <div>
-        <h1 className="text-foreground text-4xl font-bold tracking-tight">Каталог курсов</h1>
+        <h1 className="text-foreground text-4xl leading-tight font-bold tracking-tight">
+          Каталог курсов
+        </h1>
         <p className="text-muted-foreground mt-2 text-base">
           Найдите курс по интересам, отфильтруйте по категории и цене.
         </p>

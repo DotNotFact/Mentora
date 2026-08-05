@@ -33,7 +33,7 @@ export function CourseMetaForm({ courseId, course }: CourseMetaFormProps) {
 
   return (
     <div className="bg-card rounded-xl border p-6 shadow-sm">
-      <h2 className="text-foreground text-xl font-semibold tracking-tight">О курсе</h2>
+      <h2 className="text-foreground text-lg leading-snug font-semibold tracking-tight">О курсе</h2>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="mt-4 space-y-4" noValidate>
           <FormField

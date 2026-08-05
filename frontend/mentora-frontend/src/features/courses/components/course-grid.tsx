@@ -1,25 +1,12 @@
 import { useEffect, useRef } from 'react';
-import { Loader2 } from 'lucide-react';
-import { Skeleton } from '@shared/ui/skeleton';
+import { Loader2, SearchX } from 'lucide-react';
 import { Button } from '@shared/ui/button';
 import { useCoursesStore } from '../store';
 import { useCourses } from '../hooks/use-courses';
 import { CourseCard } from './course-card';
+import { CourseCardSkeleton } from './course-card-skeleton';
 
 const SKELETON_COUNT = 6;
-
-function CourseCardSkeleton() {
-  return (
-    <div className="space-y-3 rounded-xl border p-0 shadow-sm">
-      <Skeleton className="aspect-video w-full rounded-b-none rounded-t-xl" />
-      <div className="space-y-3 p-4">
-        <Skeleton className="h-5 w-3/4" />
-        <Skeleton className="h-4 w-1/2" />
-        <Skeleton className="ml-auto h-6 w-16" />
-      </div>
-    </div>
-  );
-}
 
 export function CourseGrid() {
   const filters = useCoursesStore((state) => state.filters);
@@ -67,9 +54,17 @@ export function CourseGrid() {
 
   if (courses.length === 0) {
     return (
-      <p className="text-muted-foreground py-12 text-center text-sm">
-        По заданным фильтрам курсы не найдены.
-      </p>
+      <div className="flex flex-col items-center gap-4 rounded-xl border border-dashed py-16 text-center">
+        <span className="bg-muted flex h-12 w-12 items-center justify-center rounded-full">
+          <SearchX className="text-muted-foreground h-6 w-6" aria-hidden="true" />
+        </span>
+        <div className="space-y-1">
+          <p className="text-foreground text-sm font-medium">По заданным фильтрам ничего нет</p>
+          <p className="text-muted-foreground mx-auto max-w-md text-sm">
+            Попробуйте сбросить или изменить фильтры.
+          </p>
+        </div>
+      </div>
     );
   }
 

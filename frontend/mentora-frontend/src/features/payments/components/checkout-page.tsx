@@ -75,8 +75,10 @@ function CheckoutPrompt({ courseId }: { courseId: string }) {
   return (
     <div className="mx-auto max-w-md space-y-6 text-center">
       <div className="bg-card space-y-4 rounded-xl border p-6 shadow-sm">
-        <h1 className="text-foreground text-xl font-semibold tracking-tight">{course.title}</h1>
-        <p className="text-foreground text-3xl font-bold">
+        <h1 className="text-foreground text-xl leading-snug font-semibold tracking-tight">
+          {course.title}
+        </h1>
+        <p className="text-foreground text-2xl leading-tight font-semibold tracking-tight tabular-nums md:text-3xl">
           {isFree ? 'Бесплатно' : formatPrice(course.price)}
         </p>
 

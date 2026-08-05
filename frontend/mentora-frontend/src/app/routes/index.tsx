@@ -12,7 +12,9 @@ function HomePage() {
 
   return (
     <PageContainer className="space-y-12">
-      <h1 className="text-foreground text-4xl font-bold tracking-tight">Mentora</h1>
+      <h1 className="text-foreground text-5xl leading-[1.05] font-bold tracking-tight md:text-6xl">
+        Mentora
+      </h1>
       <PopularCourses />
     </PageContainer>
   );
