@@ -4,6 +4,7 @@ import { tokenStorage } from '@shared/lib/token-storage';
 import { getAuth } from './generated/auth/auth';
 import { getCourses } from './generated/courses/courses';
 import { getAnalytics } from './generated/analytics/analytics';
+import { getLessons } from './generated/lessons/lessons';
 
 interface RetryableRequestConfig extends InternalAxiosRequestConfig {
   _retry?: boolean;
@@ -19,6 +20,7 @@ export const apiClient = axios.create({
 const refreshClient = axios.create({ baseURL: API_URL });
 export const authApi = getAuth(apiClient);
 export const coursesApi = getCourses(apiClient);
+export const lessonsApi = getLessons(apiClient);
 const authRefreshApi = getAuth(refreshClient);
 export const analyticsApi = getAnalytics(apiClient);
 
