@@ -119,7 +119,12 @@ describe('dashboard route role-gating', () => {
 
     renderDashboardRoute('/dashboard/instructor');
 
-    await waitFor(() => expect(screen.getByText('Аналитика инструктора')).toBeInTheDocument());
+    // InstructorDashboard — React.lazy (schedule/09, code-splitting) —
+    // резолвинг динамического import() иногда не укладывается в дефолтный
+    // таймаут waitFor.
+    await waitFor(() => expect(screen.getByText('Аналитика инструктора')).toBeInTheDocument(), {
+      timeout: 3000,
+    });
   });
 
   it('blocks an instructor from /dashboard/admin and redirects home', async () => {
@@ -143,6 +148,9 @@ describe('dashboard route role-gating', () => {
 
     renderDashboardRoute('/dashboard/admin');
 
-    await waitFor(() => expect(screen.getByText('Аналитика платформы')).toBeInTheDocument());
+    // AdminDashboard — тоже React.lazy, см. комментарий выше.
+    await waitFor(() => expect(screen.getByText('Аналитика платформы')).toBeInTheDocument(), {
+      timeout: 3000,
+    });
   });
 });

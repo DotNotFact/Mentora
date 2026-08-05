@@ -1,15 +1,20 @@
-import { useEffect, useMemo } from 'react';
-import { Link } from '@tanstack/react-router';
+import { lazy, Suspense, useEffect, useMemo } from 'react';
+import { CatchBoundary, Link } from '@tanstack/react-router';
 import { Skeleton } from '@shared/ui/skeleton';
 import { Button } from '@shared/ui/button';
+import { WidgetErrorFallback } from '@app/error-fallback';
 import { useCourseChapters } from '@features/courses/hooks/use-course-chapters';
 import { useEnrollmentStatus } from '../hooks/use-enrollment-status';
 import { useProgress } from '../hooks/use-progress';
 import { useUpdateProgress } from '../hooks/use-update-progress';
 import { useEnrollmentStore } from '../store';
-import { VideoPlayer } from './video-player';
 import { LessonSidebar } from './lesson-sidebar';
 import { ProgressBar } from './progress-bar';
+import { LessonContent } from './lesson-content';
+
+// vidstack — тяжёлая библиотека (media-ui чанк), нужна только на странице
+// обучения, не при каждом визите в приложение.
+const VideoPlayer = lazy(() => import('./video-player').then((m) => ({ default: m.VideoPlayer })));
 
 interface LearningPageProps {
   courseId: string;
@@ -100,20 +105,31 @@ export function LearningPage({ courseId }: LearningPageProps) {
       <ProgressBar value={progress.progressPercent} />
       <div className="flex flex-col gap-6 lg:flex-row">
         <div className="min-w-0 flex-1 space-y-4">
-          <VideoPlayer
-            key={currentLesson.id}
-            lessonId={currentLesson.id}
-            src={currentLesson.videoUrl ?? ''}
-            title={currentLesson.title}
-            initialPositionSeconds={currentLessonProgress?.positionSeconds ?? 0}
-            completed={currentLessonProgress?.completed ?? false}
-            onProgress={({ positionSeconds, completed }) =>
-              updateProgress.mutate({ lessonId: currentLesson.id, positionSeconds, completed })
-            }
-          />
+          {/* Изолирует сбой видеоплеера (внешняя библиотека, сетевая
+              загрузка видео) от остальной страницы — заголовок, текст
+              урока и сайдбар продолжают работать, даже если плеер упал. */}
+          <CatchBoundary
+            getResetKey={() => currentLesson.id}
+            errorComponent={() => <WidgetErrorFallback title="Не удалось загрузить видео" />}
+          >
+            <Suspense fallback={<Skeleton className="aspect-video w-full rounded-xl" />}>
+              <VideoPlayer
+                key={currentLesson.id}
+                lessonId={currentLesson.id}
+                src={currentLesson.videoUrl ?? ''}
+                title={currentLesson.title}
+                initialPositionSeconds={currentLessonProgress?.positionSeconds ?? 0}
+                completed={currentLessonProgress?.completed ?? false}
+                onProgress={({ positionSeconds, completed }) =>
+                  updateProgress.mutate({ lessonId: currentLesson.id, positionSeconds, completed })
+                }
+              />
+            </Suspense>
+          </CatchBoundary>
           <h1 className="text-foreground text-xl font-semibold tracking-tight">
             {currentLesson.title}
           </h1>
+          <LessonContent html={currentLesson.contentHtml} />
         </div>
         <LessonSidebar
           className="lg:w-80 lg:shrink-0"

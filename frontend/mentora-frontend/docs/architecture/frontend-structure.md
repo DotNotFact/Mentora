@@ -42,16 +42,31 @@ frontend/mentora-frontend/
 │   │   │   │   │                      allowedRoles=[instructor, admin])
 │   │   │   │   └── admin.tsx       — дашборд админа (готово, schedule/06;
 │   │   │   │                          AuthGuard allowedRoles=[admin])
-│   │   │   └── ...             — остальные: Planned (наполняются по мере
-│   │                              прохождения соответствующих schedule/*)
+│   │   │   ├── checkout/
+│   │   │   │   └── $courseId.tsx — CheckoutPage (готово, schedule/05):
+│   │   │   │         Оплатить/поллинг статуса/success-cancel, AuthGuard
+│   │   │   ├── my-courses.tsx      — MyCoursesGrid (готово, schedule/05),
+│   │   │   │         AuthGuard
+│   │   │   └── learning/
+│   │   │       └── $courseId.tsx — LearningPage (готово, schedule/04):
+│   │   │             VideoPlayer+LessonSidebar+ProgressBar, доступ только
+│   │   │             при реальной записи на курс, AuthGuard
 │   │   ├── auth-guard.tsx      — редирект на /login для защищённых
 │   │   │                          роутов (готово; используется
 │   │   │                          courses/edit/$courseId — schedule/03,
 │   │   │                          dashboard/instructor и dashboard/admin
 │   │   │                          — schedule/06)
+│   │   ├── error-fallback.tsx  — RouteErrorFallback/WidgetErrorFallback
+│   │   │                          (готово, schedule/09): defaultErrorComponent
+│   │   │                          роутера + CatchBoundary вокруг видеоплеера
+│   │   │                          и редактора урока
+│   │   ├── not-found.tsx       — NotFoundPage, defaultNotFoundComponent
+│   │   │                          (готово, schedule/09)
 │   │   └── layout/              — root-layout, footer (готово, минимально);
 │   │                              header — auth-aware (войти/аватар+выйти,
-│   │                              готово); sidebar — Planned
+│   │                              готово); sidebar — Planned (не
+│   │                              понадобился ни одной странице — у
+│   │                              редактора курса своя ChapterList-aside)
 │   │
 │   ├── shared/                 — переиспользуемый код без бизнес-логики
 │   │   ├── ui/                 — shadcn/ui компоненты (только через CLI):
@@ -59,9 +74,11 @@ frontend/mentora-frontend/
 │   │   │                          card/textarea/select/progress/separator
 │   │   │                          (schedule/03)
 │   │   ├── lib/                — utils.ts (cn/formatPrice/formatDate/
-│   │   │                          formatDuration), constants.ts (готово)
-│   │   ├── hooks/               — useMedia/useDebounce/useLocalStorage
-│   │   │                          (готово)
+│   │   │                          formatDuration), constants.ts,
+│   │   │                          sanitize-html.ts (DOMPurify, schedule/09)
+│   │   ├── hooks/               — useMedia/useDebounce/useLocalStorage,
+│   │   │                          useDocumentMeta (title/description/OG,
+│   │   │                          schedule/09)
 │   │   ├── api/
 │   │   │   ├── client.ts       — axios + interceptors (готово, включая
 │   │   │   │                      refresh-flow через сгенерированный
@@ -88,8 +105,15 @@ frontend/mentora-frontend/
 │   │   │                          (RHF+Zod), дерево глав/уроков
 │   │   │                          (@dnd-kit, keyboard-доступное), rich-text
 │   │   │                          урока (TipTap), загрузка видео (progress)
-│   │   ├── enrollment/          — Planned (schedule/04, 05)
-│   │   ├── payments/            — Planned (schedule/05)
+│   │   ├── enrollment/          — готово (schedule/04, 05): запись на
+│   │   │                          курс (бесплатная/после оплаты), список
+│   │   │                          "мои курсы", видеоплеер (@vidstack/react)
+│   │   │                          с трекингом прогресса (90%-порог),
+│   │   │                          LessonSidebar, санитизация HTML урока
+│   │   │                          (DOMPurify) — Zustand store: выбранный
+│   │   │                          урок (playback UI-state)
+│   │   ├── payments/            — готово (schedule/05): Stripe Checkout
+│   │   │                          редирект + поллинг статуса сессии
 │   │   └── analytics/           — готово (schedule/06): аналитика
 │   │                              инструктора/админа (RevenueChart,
 │   │                              EnrollmentChart, StatCard), дашборды
@@ -102,7 +126,11 @@ frontend/mentora-frontend/
     ├── setup.ts                 — jest-dom matchers + jsdom-полифиллы (готово)
     ├── components/               — unit-тесты компонентов (наполняются
     │                              по мере прохождения schedule/*)
-    └── e2e/                      — Playwright (Planned, schedule/08)
+    └── e2e/                      — Playwright (готово, schedule/08): auth,
+                                     catalog, course-editor,
+                                     checkout-and-learning, dashboard —
+                                     5 spec-файлов, моки API через
+                                     page.route (mocks/{db,api,session}.ts)
 ```
 
 ## Границы модулей
