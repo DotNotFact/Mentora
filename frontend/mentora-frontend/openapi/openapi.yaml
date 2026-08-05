@@ -365,6 +365,60 @@ paths:
                 $ref: '#/components/schemas/Enrollment'
         '404':
           description: Пользователь не записан на этот курс
+  /enrollments/{courseId}/progress:
+    get:
+      tags: [enrollments]
+      operationId: getCourseProgress
+      summary: Прогресс прохождения курса — по уроку и агрегированный процент
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CourseProgress'
+  /enrollments/{courseId}/lessons/{lessonId}/progress:
+    put:
+      tags: [enrollments]
+      operationId: updateLessonProgress
+      summary: >
+        Сохранить позицию воспроизведения и статус прохождения урока.
+        Возвращает пересчитанный агрегат по курсу целиком, чтобы клиент мог
+        напрямую заменить кэш GET .../progress без ручного мержа.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: lessonId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateLessonProgressRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CourseProgress'
   /payments/checkout:
     post:
       tags: [payments]
@@ -645,6 +699,36 @@ components:
           type: number
         course:
           $ref: '#/components/schemas/Course'
+    LessonProgress:
+      type: object
+      required: [lessonId, completed, positionSeconds]
+      properties:
+        lessonId:
+          type: string
+        completed:
+          type: boolean
+        positionSeconds:
+          type: number
+    CourseProgress:
+      type: object
+      required: [courseId, progressPercent, lessons]
+      properties:
+        courseId:
+          type: string
+        progressPercent:
+          type: number
+        lessons:
+          type: array
+          items:
+            $ref: '#/components/schemas/LessonProgress'
+    UpdateLessonProgressRequest:
+      type: object
+      required: [positionSeconds, completed]
+      properties:
+        positionSeconds:
+          type: number
+        completed:
+          type: boolean
     CheckoutRequest:
       type: object
       required: [courseId]

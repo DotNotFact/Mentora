@@ -57,11 +57,13 @@
     "clsx": "^2.1.1",
     "date-fns": "^4.4.0",
     "lucide-react": "^1.28.0",
+    "maverick.js": "0.37.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-hook-form": "^7.84.0",
     "recharts": "^3.10.1",
     "tailwind-merge": "^3.6.0",
+    "vidstack": "0.6.15",
     "zod": "^4.4.3",
     "zustand": "^5.0.14"
   },

@@ -9,7 +9,13 @@
 import * as axios from 'axios';
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 
-import type { Enrollment, EnrollmentRequest, EnrollmentWithCourse } from '../models';
+import type {
+  CourseProgress,
+  Enrollment,
+  EnrollmentRequest,
+  EnrollmentWithCourse,
+  UpdateLessonProgressRequest,
+} from '../models';
 
 export const getEnrollments = (axiosInstance: AxiosInstance = axios.default) => {
   /**
@@ -38,8 +44,41 @@ export const getEnrollments = (axiosInstance: AxiosInstance = axios.default) => 
   ): Promise<AxiosResponse<Enrollment>> => {
     return axiosInstance.get(`/enrollments/${courseId}`, options);
   };
-  return { listEnrollments, createEnrollment, getEnrollmentStatus };
+  /**
+   * @summary Прогресс прохождения курса — по уроку и агрегированный процент
+   */
+  const getCourseProgress = (
+    courseId: string,
+    options?: AxiosRequestConfig,
+  ): Promise<AxiosResponse<CourseProgress>> => {
+    return axiosInstance.get(`/enrollments/${courseId}/progress`, options);
+  };
+  /**
+ * @summary Сохранить позицию воспроизведения и статус прохождения урока. Возвращает пересчитанный агрегат по курсу целиком, чтобы клиент мог напрямую заменить кэш GET .../progress без ручного мержа.
+
+ */
+  const updateLessonProgress = (
+    courseId: string,
+    lessonId: string,
+    updateLessonProgressRequest: UpdateLessonProgressRequest,
+    options?: AxiosRequestConfig,
+  ): Promise<AxiosResponse<CourseProgress>> => {
+    return axiosInstance.put(
+      `/enrollments/${courseId}/lessons/${lessonId}/progress`,
+      updateLessonProgressRequest,
+      options,
+    );
+  };
+  return {
+    listEnrollments,
+    createEnrollment,
+    getEnrollmentStatus,
+    getCourseProgress,
+    updateLessonProgress,
+  };
 };
 export type ListEnrollmentsResult = AxiosResponse<EnrollmentWithCourse[]>;
 export type CreateEnrollmentResult = AxiosResponse<Enrollment>;
 export type GetEnrollmentStatusResult = AxiosResponse<Enrollment>;
+export type GetCourseProgressResult = AxiosResponse<CourseProgress>;
+export type UpdateLessonProgressResult = AxiosResponse<CourseProgress>;
