@@ -9,6 +9,7 @@ import { courseDetailRoute } from './routes/courses/$courseId';
 import { dashboardIndexRoute } from './routes/dashboard/index';
 import { dashboardInstructorRoute } from './routes/dashboard/instructor';
 import { dashboardAdminRoute } from './routes/dashboard/admin';
+import { courseEditRoute } from './routes/courses/edit/$courseId';
 
 const routeTree = rootRoute.addChildren([
   indexRoute,
@@ -19,6 +20,7 @@ const routeTree = rootRoute.addChildren([
   dashboardIndexRoute,
   dashboardInstructorRoute,
   dashboardAdminRoute,
+  courseEditRoute,
 ]);
 
 export const router = createRouter({ routeTree, ...routerDefaultOptions });

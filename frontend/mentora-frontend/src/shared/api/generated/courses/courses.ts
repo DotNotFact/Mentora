@@ -9,7 +9,7 @@
 import * as axios from 'axios';
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 
-import type { Course, CoursePage, ListCoursesParams } from '../models';
+import type { Chapter, Course, CourseMetaRequest, CoursePage, ListCoursesParams } from '../models';
 
 export const getCourses = (axiosInstance: AxiosInstance = axios.default) => {
   /**
@@ -25,6 +25,15 @@ export const getCourses = (axiosInstance: AxiosInstance = axios.default) => {
     });
   };
   /**
+   * @summary Создать курс (черновик, метаданные)
+   */
+  const createCourse = (
+    courseMetaRequest: CourseMetaRequest,
+    options?: AxiosRequestConfig,
+  ): Promise<AxiosResponse<Course>> => {
+    return axiosInstance.post(`/courses`, courseMetaRequest, options);
+  };
+  /**
    * @summary Детали курса
    */
   const getCourse = (
@@ -33,7 +42,41 @@ export const getCourses = (axiosInstance: AxiosInstance = axios.default) => {
   ): Promise<AxiosResponse<Course>> => {
     return axiosInstance.get(`/courses/${courseId}`, options);
   };
-  return { listCourses, getCourse };
+  /**
+   * @summary Обновить метаданные курса (только владелец-инструктор/админ)
+   */
+  const updateCourse = (
+    courseId: string,
+    courseMetaRequest: CourseMetaRequest,
+    options?: AxiosRequestConfig,
+  ): Promise<AxiosResponse<Course>> => {
+    return axiosInstance.put(`/courses/${courseId}`, courseMetaRequest, options);
+  };
+  /**
+   * @summary Структура курса — главы с вложенными уроками (в порядке order)
+   */
+  const listChapters = (
+    courseId: string,
+    options?: AxiosRequestConfig,
+  ): Promise<AxiosResponse<Chapter[]>> => {
+    return axiosInstance.get(`/courses/${courseId}/chapters`, options);
+  };
+  /**
+ * @summary Сохранить всё дерево глав/уроков курса целиком (создание, удаление, переименование и порядок — включая результат drag & drop). Клиент присылает полный актуальный массив; новые главы/уроки приходят с id, сгенерированным на клиенте (`crypto.randomUUID()`), сервер сохраняет их как есть (upsert по id внутри courseId).
+
+ */
+  const saveChapters = (
+    courseId: string,
+    chapter: Chapter[],
+    options?: AxiosRequestConfig,
+  ): Promise<AxiosResponse<Chapter[]>> => {
+    return axiosInstance.put(`/courses/${courseId}/chapters`, chapter, options);
+  };
+  return { listCourses, createCourse, getCourse, updateCourse, listChapters, saveChapters };
 };
 export type ListCoursesResult = AxiosResponse<CoursePage>;
+export type CreateCourseResult = AxiosResponse<Course>;
 export type GetCourseResult = AxiosResponse<Course>;
+export type UpdateCourseResult = AxiosResponse<Course>;
+export type ListChaptersResult = AxiosResponse<Chapter[]>;
+export type SaveChaptersResult = AxiosResponse<Chapter[]>;

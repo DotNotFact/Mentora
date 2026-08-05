@@ -12,6 +12,7 @@ servers:
 tags:
   - name: auth
   - name: courses
+  - name: lessons
   - name: enrollments
   - name: payments
   - name: analytics
@@ -128,6 +129,25 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CoursePage'
+    post:
+      tags: [courses]
+      operationId: createCourse
+      summary: Создать курс (черновик, метаданные)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CourseMetaRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
   /courses/{courseId}:
     get:
       tags: [courses]
@@ -146,6 +166,148 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Course'
+    put:
+      tags: [courses]
+      operationId: updateCourse
+      summary: Обновить метаданные курса (только владелец-инструктор/админ)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CourseMetaRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+  /courses/{courseId}/chapters:
+    get:
+      tags: [courses]
+      operationId: listChapters
+      summary: Структура курса — главы с вложенными уроками (в порядке order)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Chapter'
+    put:
+      tags: [courses]
+      operationId: saveChapters
+      summary: >
+        Сохранить всё дерево глав/уроков курса целиком (создание,
+        удаление, переименование и порядок — включая результат
+        drag & drop). Клиент присылает полный актуальный массив; новые
+        главы/уроки приходят с id, сгенерированным на клиенте
+        (`crypto.randomUUID()`), сервер сохраняет их как есть (upsert по
+        id внутри courseId).
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Chapter'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Chapter'
+  /lessons/{lessonId}/content:
+    put:
+      tags: [lessons]
+      operationId: saveLessonContent
+      summary: >
+        Сохранить rich-text содержимое урока. contentHtml — HTML-строка,
+        сериализованная из TipTap (editor.getHTML()), не JSON-документ
+        ProseMirror — см. openapi/README.md/деталь в schedule/03.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: lessonId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LessonContentRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lesson'
+  /lessons/{lessonId}/video:
+    post:
+      tags: [lessons]
+      operationId: uploadLessonVideo
+      summary: Загрузить видео урока (multipart, с прогрессом на клиенте)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: lessonId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [file]
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VideoUploadResponse'
   /enrollments:
     post:
       tags: [enrollments]
@@ -317,6 +479,65 @@ components:
     CourseSort:
       type: string
       enum: [newest, price_asc, price_desc, popular]
+    CourseMetaRequest:
+      type: object
+      required: [title, description, price, category]
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+        category:
+          $ref: '#/components/schemas/CourseCategory'
+    Chapter:
+      type: object
+      required: [id, courseId, title, order, lessons]
+      properties:
+        id:
+          type: string
+        courseId:
+          type: string
+        title:
+          type: string
+        order:
+          type: integer
+        lessons:
+          type: array
+          items:
+            $ref: '#/components/schemas/Lesson'
+    Lesson:
+      type: object
+      required: [id, chapterId, title, order, contentHtml, videoUrl]
+      properties:
+        id:
+          type: string
+        chapterId:
+          type: string
+        title:
+          type: string
+        order:
+          type: integer
+        contentHtml:
+          type: string
+          description: HTML из TipTap (editor.getHTML()), пустая строка если контента ещё нет.
+        videoUrl:
+          type: string
+          nullable: true
+          description: null, пока видео не загружено.
+    LessonContentRequest:
+      type: object
+      required: [contentHtml]
+      properties:
+        contentHtml:
+          type: string
+    VideoUploadResponse:
+      type: object
+      required: [videoUrl]
+      properties:
+        videoUrl:
+          type: string
     CoursePage:
       type: object
       required: [items, total, page, pageSize]

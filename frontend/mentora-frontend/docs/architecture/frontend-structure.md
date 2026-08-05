@@ -28,7 +28,11 @@ frontend/mentora-frontend/
 │   │   │   ├── courses/
 │   │   │   │   ├── index.tsx   — CourseFilters + CourseGrid (готово,
 │   │   │   │   │                  schedule/02)
-│   │   │   │   └── $courseId.tsx — CourseDetail (готово, schedule/02)
+│   │   │   │   ├── $courseId.tsx — CourseDetail (готово, schedule/02)
+│   │   │   │   └── edit/
+│   │   │   │       └── $courseId.tsx — редактор курса (готово,
+│   │   │   │             schedule/03), AuthGuard
+│   │   │   │             allowedRoles=[instructor,admin]
 │   │   │   ├── dashboard/
 │   │   │   │   ├── index.tsx       — дашборд студента (готово,
 │   │   │   │   │                      schedule/06; честная заглушка
@@ -41,15 +45,19 @@ frontend/mentora-frontend/
 │   │   │   └── ...             — остальные: Planned (наполняются по мере
 │   │                              прохождения соответствующих schedule/*)
 │   │   ├── auth-guard.tsx      — редирект на /login для защищённых
-│   │   │                          роутов (готово, применяется начиная
-│   │   │                          с schedule/06, dashboard/instructor и
-│   │   │                          dashboard/admin используют allowedRoles)
+│   │   │                          роутов (готово; используется
+│   │   │                          courses/edit/$courseId — schedule/03,
+│   │   │                          dashboard/instructor и dashboard/admin
+│   │   │                          — schedule/06)
 │   │   └── layout/              — root-layout, footer (готово, минимально);
 │   │                              header — auth-aware (войти/аватар+выйти,
 │   │                              готово); sidebar — Planned
 │   │
 │   ├── shared/                 — переиспользуемый код без бизнес-логики
-│   │   ├── ui/                 — shadcn/ui компоненты (только через CLI)
+│   │   ├── ui/                 — shadcn/ui компоненты (только через CLI):
+│   │   │                          button/input/label/form (schedule/00-01),
+│   │   │                          card/textarea/select/progress/separator
+│   │   │                          (schedule/03)
 │   │   ├── lib/                — utils.ts (cn/formatPrice/formatDate/
 │   │   │                          formatDuration), constants.ts (готово)
 │   │   ├── hooks/               — useMedia/useDebounce/useLocalStorage
@@ -57,11 +65,11 @@ frontend/mentora-frontend/
 │   │   ├── api/
 │   │   │   ├── client.ts       — axios + interceptors (готово, включая
 │   │   │   │                      refresh-flow через сгенерированный
-│   │   │   │                      authApi; coursesApi добавлен в
-│   │   │   │                      schedule/02)
-│   │   │   └── generated/       — orval codegen (auth/courses/enrollments/
-│   │   │                          payments/analytics), НЕ редактировать
-│   │   │                          вручную
+│   │   │   │                      authApi; также экспортирует coursesApi
+│   │   │   │                      (schedule/02) и lessonsApi (schedule/03)
+│   │   │   └── generated/       — orval codegen (auth/courses/lessons/
+│   │   │                          enrollments/payments/analytics), НЕ
+│   │   │                          редактировать вручную
 │   │   ├── types/               — index.ts (готово), api.ts (реэкспорт
 │   │   │                          сгенерированных orval-типов, готово)
 │   │   └── config/
@@ -76,7 +84,10 @@ frontend/mentora-frontend/
 │   │   │                          CourseCard/CourseGrid/CourseFilters/
 │   │   │                          CourseDetail/PopularCourses, Zustand
 │   │   │                          store — только UI-state фильтров/вида
-│   │   ├── course-editor/       — Planned (schedule/03)
+│   │   ├── course-editor/       — готово (schedule/03): метаданные курса
+│   │   │                          (RHF+Zod), дерево глав/уроков
+│   │   │                          (@dnd-kit, keyboard-доступное), rich-text
+│   │   │                          урока (TipTap), загрузка видео (progress)
 │   │   ├── enrollment/          — Planned (schedule/04, 05)
 │   │   ├── payments/            — Planned (schedule/05)
 │   │   └── analytics/           — готово (schedule/06): аналитика
