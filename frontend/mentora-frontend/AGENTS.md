@@ -113,6 +113,14 @@ MIT, источник — [emilkowalski/skills](https://github.com/emilkowalski/
 `review-animations`/`improve-animations` особенно релевантны для
 `schedule/07-polish-animations.md`.
 
+`.agents/skills/aaa-ui-polish/SKILL.md` (2026-08-06) — AAA-уровень
+плотности/анимации по явному запросу администратора, явно переопределяет
+часть restraint-правил `mentora-design` (список — в самом файле).
+Обязателен для `schedule/10-design-overhaul-pixel-perfect.md` и всего,
+что от неё зависит (11, 12, 14) — не путать с общим краткосрочным
+motion-полишингом из `review-animations`/`improve-animations` выше, это
+про плотность UI в целом, не только про качество отдельных переходов.
+
 ## Рабочие skills (не про дизайн)
 
 Помимо дизайн-skills выше, в `.agents/skills/` есть общие process-skills
