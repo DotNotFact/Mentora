@@ -21,10 +21,14 @@ frontend/mentora-frontend/
 │   │   ├── provider.tsx        — QueryClientProvider (готово)
 │   │   ├── routes/             — роуты TanStack Router (code-based)
 │   │   │   ├── __root.tsx      — RootLayout + Outlet (готово)
-│   │   │   ├── index.tsx       — главная (минимальная, schedule/02
-│   │   │   │                      заменит на превью каталога)
+│   │   │   ├── index.tsx       — главная: h1 + PopularCourses (превью +
+│   │   │   │                      ссылка на каталог, готово, schedule/02)
 │   │   │   ├── login.tsx       — LoginForm (готово)
 │   │   │   ├── register.tsx    — RegisterForm (готово)
+│   │   │   ├── courses/
+│   │   │   │   ├── index.tsx   — CourseFilters + CourseGrid (готово,
+│   │   │   │   │                  schedule/02)
+│   │   │   │   └── $courseId.tsx — CourseDetail (готово, schedule/02)
 │   │   │   └── ...             — остальные: Planned (наполняются по мере
 │   │                              прохождения соответствующих schedule/*)
 │   │   ├── auth-guard.tsx      — редирект на /login для защищённых
@@ -44,7 +48,8 @@ frontend/mentora-frontend/
 │   │   ├── api/
 │   │   │   ├── client.ts       — axios + interceptors (готово, включая
 │   │   │   │                      refresh-flow через сгенерированный
-│   │   │   │                      authApi)
+│   │   │   │                      authApi; coursesApi добавлен в
+│   │   │   │                      schedule/02)
 │   │   │   └── generated/       — orval codegen (auth/courses/enrollments/
 │   │   │                          payments/analytics), НЕ редактировать
 │   │   │                          вручную
@@ -57,7 +62,11 @@ frontend/mentora-frontend/
 │   ├── features/                — feature-модули (изолированы друг от друга)
 │   │   ├── auth/                — готово (schedule/01): login/register,
 │   │   │                          Zustand store + persist, AuthGuard
-│   │   ├── courses/             — Planned (schedule/02)
+│   │   ├── courses/             — готово (schedule/02): каталог с
+│   │   │                          фильтрами (useInfiniteQuery),
+│   │   │                          CourseCard/CourseGrid/CourseFilters/
+│   │   │                          CourseDetail/PopularCourses, Zustand
+│   │   │                          store — только UI-state фильтров/вида
 │   │   ├── course-editor/       — Planned (schedule/03)
 │   │   ├── enrollment/          — Planned (schedule/04, 05)
 │   │   ├── payments/            — Planned (schedule/05)

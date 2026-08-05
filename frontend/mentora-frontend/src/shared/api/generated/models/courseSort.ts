@@ -6,16 +6,12 @@
  *
  * OpenAPI spec version: 0.0.1
  */
-import type { CourseCategory } from './courseCategory';
 
-export interface Course {
-  id: string;
-  title: string;
-  description: string;
-  price: number;
-  instructorId: string;
-  instructorName: string;
-  category: CourseCategory;
-  thumbnailUrl: string;
-  createdAt: string;
-}
+export type CourseSort = (typeof CourseSort)[keyof typeof CourseSort];
+
+export const CourseSort = {
+  newest: 'newest',
+  price_asc: 'price_asc',
+  price_desc: 'price_desc',
+  popular: 'popular',
+} as const;
