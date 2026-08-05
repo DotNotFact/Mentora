@@ -27,15 +27,20 @@ Decision order:
 
 **Never `ease-in` on UI.** It starts slow, delaying the exact moment the user is watching. `ease-out` at 200ms _feels_ faster than `ease-in` at 200ms.
 
-Built-in CSS easings are too weak. Use strong custom curves:
+Built-in CSS easings are too weak. Use strong custom curves — in Mentora
+these live in `src/styles/globals.css` (`@theme` block), added at
+schedule/10 (2026-08-06), not in a separate `tokens.css`:
 
 ```css
---ease-out: cubic-bezier(0.23, 1, 0.32, 1); /* strong ease-out for UI */
---ease-in-out: cubic-bezier(0.77, 0, 0.175, 1); /* strong ease-in-out for on-screen movement */
---ease-drawer: cubic-bezier(0.32, 0.72, 0, 1); /* iOS-like drawer curve (Ionic) */
+--ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1); /* bouncy pop-in — badges, counters, card mount */
+--ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1); /* strong ease-out for UI — snappy hover/press */
+--ease-in-out-smooth: cubic-bezier(0.65, 0, 0.35, 1); /* on-screen movement — page/tab transitions */
 ```
 
-Find curves at [easing.dev](https://easing.dev/) or [easings.co](https://easings.co/) — don't hand-roll from scratch.
+(This project has no drawer/sheet component yet — no `--ease-drawer`
+token; add one only when a drawer is actually built.) Find curves at
+[easing.dev](https://easing.dev/) or [easings.co](https://easings.co/)
+— don't hand-roll from scratch.
 
 ## Duration
 

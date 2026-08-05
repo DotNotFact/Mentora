@@ -1,6 +1,6 @@
 # 10 — Design Overhaul: Pixel-Perfect Craft
 
-Статус: [ ] не начата
+Статус: [x] выполнена
 
 ## Контекст
 
@@ -110,7 +110,7 @@ staggered-появление списков, скользящий индикат
    доступности fonts.googleapis.com). Импортировать в `main.tsx` или
    `globals.css`. Обновить `--font-sans` → Space Grotesk (с тем же
    fallback-стеком) и добавить `--font-mono: 'Fira Code', ui-monospace,
-   monospace` в `@theme` (`globals.css`). `mentora-design/SKILL.md` →
+monospace` в `@theme` (`globals.css`). `mentora-design/SKILL.md` →
    раздел "Typography" — обновить с Inter на актуальные шрифты.
 2. **`cursor-pointer` — аудит всех интерактивных элементов.** Не только
    `<button>`/shadcn `Button` (там уже есть) — явно проверить: карточки-
@@ -192,6 +192,58 @@ rhythm и типографика из `mentora-design` (v2) остаются б�
 
 Смена цветовой палитры и тёмная тема — отдельная задача
 (schedule/11-settings-personalization.md).
+
+## Отклонения от исходного плана (осознанные, по факту реализации)
+
+- **`tailwind.config.ts` — синхронизирован, не удалён.** Проверка
+  показала, что `components.json` → `tailwind.config` указывает на этот
+  файл для shadcn CLI (`npx shadcn@latest add`) — файл НЕ мёртвый,
+  просто не является источником рантайм-стилей в Tailwind v4 (это
+  `@theme` в `globals.css`). Синхронизирован вручную (все токены/пары,
+  шрифты), с комментарием в файле объясняющим разделение обязанностей.
+  `docs/architecture/design-system.md` обновлён с точным описанием.
+- **Найден и починен более серьёзный баг, чем ожидалось на этапе
+  подготовки: `animate-in`/`fade-in`/`zoom-in-95`/`slide-in-from-*`
+  классы использовались в `select.tsx` и упоминались в
+  `mentora-design/SKILL.md`, но пакет-плагин для них никогда не был
+  установлен** — эти классы были полностью неработающими (no-op) с
+  самого начала проекта. Установлен `tw-animate-css` (Tailwind
+  v4-совместимый форк `tailwindcss-animate`), подключён в `globals.css`.
+  Это разблокировало staggered-появление сеток и весь шаг 5.
+- **`hover:bg-accent`-баг оказался шире изначально найденных 3 файлов**
+  — тот же паттерн нашёлся в `shared/ui/select.tsx` (`SelectItem`,
+  `focus:bg-accent`). Исправлен туда же, куда и остальные (`hover:bg-secondary`/`focus:bg-secondary`).
+- **`Card` получил `asChild`** (по паттерну уже существующего
+  `Button`) — понадобилось для миграции `course-detail.tsx`'s `<aside>`
+  на композицию `Card`, не теряя landmark-семантику `<aside>`. Не было
+  в исходном плане шага 4, но необходимо для его буквального выполнения
+  без регрессии в доступности.
+- **Найден и исправлен хардкод `text-emerald-600`** в
+  `course-meta-form.tsx` (должен был быть токен `text-success`) — не
+  входил в исходные находки, замечен по ходу миграции этого файла на
+  `Card`.
+- **Реальный баг в `useCountUp`**: неограниченный снизу `progress` в
+  exponential easing-формуле уходил в астрономические значения при
+  `now < start` (воспроизводится в jsdom/тестах, где таймстемп
+  `requestAnimationFrame` не гарантированно синхронизирован с
+  `performance.now()`) — исправлено чтением `performance.now()` внутри
+  тика вместо доверия аргументу callback'а, плюс двусторонний clamp
+  `progress` в `[0, 1]`.
+- **`tests/setup.ts` не имел полифилла `window.matchMedia`** — jsdom не
+  реализует его нативно; `useMedia`/`useCountUp` впервые оказались
+  реально отрендерены в unit-тесте (`StatCard`) этой задачей, что и
+  вскрыло пробел. Добавлен минимальный полифилл (`matches: false` по
+  умолчанию).
+- Обновлены (не входило явно в шаги, но необходимо для непротиворечивости
+  документации): `CLAUDE.md`/`AGENTS.md` правило #16 и три места в
+  `mentora-design/SKILL.md`, ссылавшиеся на "hover:scale только у
+  CourseCard" как на всё ещё действующее ограничение — явно помечены
+  как переопределённые `aaa-ui-polish` (2026-08-06).
+- Скриншот-гейт — 8 экранов × 375/768/1280px = 24 файла в
+  `docs/qa-screenshots/schedule-10-design-overhaul-pixel-perfect/`.
+  Генерировались временным Playwright-скриптом (переиспользующим моки
+  `tests/e2e/mocks/*`, тот же приём, что в schedule/04-09) — скрипт
+  удалён после генерации, в репозитории остались только PNG.
 
 ## Коммит
 

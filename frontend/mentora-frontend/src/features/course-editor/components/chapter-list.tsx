@@ -116,9 +116,7 @@ export function ChapterList({ courseId, chapters }: ChapterListProps) {
       selectLesson(null);
     }
     persist(
-      chapters
-        .filter((c) => c.id !== chapter.id)
-        .map((c, index) => ({ ...c, order: index })),
+      chapters.filter((c) => c.id !== chapter.id).map((c, index) => ({ ...c, order: index })),
     );
   }
 
@@ -142,9 +140,7 @@ export function ChapterList({ courseId, chapters }: ChapterListProps) {
     }
     handleLessonReorder(
       chapter.id,
-      chapter.lessons
-        .filter((l) => l.id !== lesson.id)
-        .map((l, index) => ({ ...l, order: index })),
+      chapter.lessons.filter((l) => l.id !== lesson.id).map((l, index) => ({ ...l, order: index })),
     );
   }
 
@@ -265,15 +261,12 @@ function ChapterItem({
     <li
       ref={setNodeRef}
       style={{ transform: CSS.Transform.toString(transform), transition: transition ?? undefined }}
-      className={cn(
-        'bg-card rounded-lg border',
-        isActiveDrag && 'shadow-lg',
-      )}
+      className={cn('bg-card rounded-lg border', isActiveDrag && 'shadow-lg')}
     >
       <div className="flex items-center gap-1 p-2">
         <button
           type="button"
-          className="text-muted-foreground cursor-grab touch-none rounded p-1 hover:bg-accent active:cursor-grabbing"
+          className="text-muted-foreground hover:bg-secondary cursor-grab touch-none rounded p-1 active:cursor-grabbing"
           aria-label={`Перетащить главу «${chapter.title}»`}
           {...attributes}
           {...listeners}
@@ -285,7 +278,7 @@ function ChapterItem({
           onClick={onToggleExpand}
           aria-expanded={isExpanded}
           aria-label={isExpanded ? 'Свернуть главу' : 'Развернуть главу'}
-          className="text-muted-foreground rounded p-1 hover:bg-accent"
+          className="text-muted-foreground hover:bg-secondary rounded p-1"
         >
           {isExpanded ? (
             <ChevronDown className="size-4" aria-hidden="true" />
@@ -297,7 +290,7 @@ function ChapterItem({
           defaultValue={chapter.title}
           onBlur={(event) => onRename(event.target.value)}
           aria-label="Название главы"
-          className="min-w-0 flex-1 rounded bg-transparent px-1 py-0.5 text-sm font-medium focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+          className="focus-visible:ring-ring min-w-0 flex-1 rounded bg-transparent px-1 py-0.5 text-sm font-medium focus-visible:ring-1 focus-visible:outline-none"
         />
         <Button
           type="button"
@@ -312,7 +305,7 @@ function ChapterItem({
       </div>
 
       {isExpanded && (
-        <div className="space-y-1 border-t px-2 pb-2 pt-2">
+        <div className="space-y-1 border-t px-2 pt-2 pb-2">
           {chapter.lessons.length === 0 ? (
             <p className="text-muted-foreground px-2 py-1 text-xs">Нет уроков.</p>
           ) : (
@@ -362,7 +355,14 @@ interface LessonRowProps {
   onRename: (title: string) => void;
 }
 
-function LessonRow({ lesson, isSelected, isActiveDrag, onSelect, onDelete, onRename }: LessonRowProps) {
+function LessonRow({
+  lesson,
+  isSelected,
+  isActiveDrag,
+  onSelect,
+  onDelete,
+  onRename,
+}: LessonRowProps) {
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
     id: lesson.id,
   });
@@ -372,14 +372,14 @@ function LessonRow({ lesson, isSelected, isActiveDrag, onSelect, onDelete, onRen
       ref={setNodeRef}
       style={{ transform: CSS.Transform.toString(transform), transition: transition ?? undefined }}
       className={cn(
-        'flex items-center gap-1 rounded-md pl-1 pr-1',
+        'flex items-center gap-1 rounded-md pr-1 pl-1',
         isSelected && 'bg-primary/10',
         isActiveDrag && 'shadow-lg',
       )}
     >
       <button
         type="button"
-        className="text-muted-foreground cursor-grab touch-none rounded p-1 hover:bg-accent active:cursor-grabbing"
+        className="text-muted-foreground hover:bg-secondary cursor-grab touch-none rounded p-1 active:cursor-grabbing"
         aria-label={`Перетащить урок «${lesson.title}»`}
         {...attributes}
         {...listeners}
@@ -396,7 +396,7 @@ function LessonRow({ lesson, isSelected, isActiveDrag, onSelect, onDelete, onRen
         aria-label={`Название урока «${lesson.title}»`}
         aria-current={isSelected ? 'true' : undefined}
         className={cn(
-          'min-w-0 flex-1 truncate rounded bg-transparent px-1 py-1 text-left text-sm hover:bg-accent focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring',
+          'hover:bg-secondary focus-visible:ring-ring min-w-0 flex-1 truncate rounded bg-transparent px-1 py-1 text-left text-sm focus-visible:ring-1 focus-visible:outline-none',
           isSelected && 'font-medium',
         )}
       />

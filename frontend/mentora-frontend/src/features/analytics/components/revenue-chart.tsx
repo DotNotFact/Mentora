@@ -20,13 +20,13 @@ interface RevenueChartProps {
 // центру карточки вместо падения графика на пустом наборе данных.
 export function RevenueChart({ data, title = 'Доход по периодам' }: RevenueChartProps) {
   return (
-    <Card className="rounded-xl border p-6 shadow-sm">
+    <Card className="p-6">
       <CardHeader className="p-0 pb-4">
         <CardTitle className="text-lg">{title}</CardTitle>
       </CardHeader>
       <CardContent className="p-0">
         {data.length === 0 ? (
-          <div className="flex h-[280px] items-center justify-center text-center text-sm text-muted-foreground">
+          <div className="text-muted-foreground flex h-[280px] items-center justify-center text-center text-sm">
             Нет данных о доходе за выбранный период
           </div>
         ) : (

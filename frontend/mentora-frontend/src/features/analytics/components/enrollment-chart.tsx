@@ -1,12 +1,4 @@
-import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from 'recharts';
+import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import type { CourseEnrollmentPoint } from '@shared/api/generated/models';
 import { Card, CardContent, CardHeader, CardTitle } from '@shared/ui/card';
 
@@ -19,13 +11,13 @@ interface EnrollmentChartProps {
 // центру карточки вместо падения графика на пустом наборе данных.
 export function EnrollmentChart({ data, title = 'Зачисления по курсам' }: EnrollmentChartProps) {
   return (
-    <Card className="rounded-xl border p-6 shadow-sm">
+    <Card className="p-6">
       <CardHeader className="p-0 pb-4">
         <CardTitle className="text-lg">{title}</CardTitle>
       </CardHeader>
       <CardContent className="p-0">
         {data.length === 0 ? (
-          <div className="flex h-[300px] items-center justify-center text-center text-sm text-muted-foreground">
+          <div className="text-muted-foreground flex h-[300px] items-center justify-center text-center text-sm">
             Нет зачислений за выбранный период
           </div>
         ) : (

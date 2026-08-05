@@ -25,12 +25,12 @@ Decision order for easing:
 - Constant motion (marquee, progress) → **`linear`**
 - Default → **`ease-out`**
 
-**`ease-in` on UI is always a finding** — it starts slow, delaying the exact moment the user is watching. Built-in CSS easings are too weak for deliberate motion; plans should introduce strong custom curves (as tokens, matching repo conventions):
+**`ease-in` on UI is always a finding** — it starts slow, delaying the exact moment the user is watching. Built-in CSS easings are too weak for deliberate motion; use the strong custom curves already defined in Mentora's `src/styles/globals.css` (`@theme` block, added at schedule/10, 2026-08-06) — matching repo conventions means reusing these, not inventing new token names:
 
 ```css
---ease-out: cubic-bezier(0.23, 1, 0.32, 1); /* strong ease-out for UI */
---ease-in-out: cubic-bezier(0.77, 0, 0.175, 1); /* strong ease-in-out for on-screen movement */
---ease-drawer: cubic-bezier(0.32, 0.72, 0, 1); /* iOS-like drawer curve */
+--ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1); /* bouncy pop-in — badges, counters, card mount */
+--ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1); /* strong ease-out for UI */
+--ease-in-out-smooth: cubic-bezier(0.65, 0, 0.35, 1); /* strong ease-in-out for on-screen movement */
 ```
 
 Duration budgets — **UI animations stay under 300ms**:

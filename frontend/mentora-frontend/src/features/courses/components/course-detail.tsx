@@ -2,6 +2,7 @@ import { Link } from '@tanstack/react-router';
 import { Loader2 } from 'lucide-react';
 import { Badge } from '@shared/ui/badge';
 import { Button } from '@shared/ui/button';
+import { Card, CardContent } from '@shared/ui/card';
 import { Skeleton } from '@shared/ui/skeleton';
 import { formatPrice } from '@shared/lib/utils';
 import { useDocumentMeta } from '@shared/hooks/use-document-meta';
@@ -66,12 +67,16 @@ export function CourseDetail({ courseId }: CourseDetailProps) {
         <p className="text-foreground text-base whitespace-pre-line">{course.description}</p>
       </div>
 
-      <aside className="bg-card h-fit space-y-4 rounded-xl border p-6 shadow-sm">
-        <p className="text-foreground text-2xl leading-tight font-semibold tracking-tight tabular-nums md:text-3xl">
-          {formatPrice(course.price)}
-        </p>
-        <EnrollCta courseId={courseId} isFree={course.price === 0} />
-      </aside>
+      <Card asChild className="h-fit">
+        <aside>
+          <CardContent className="space-y-4">
+            <p className="text-foreground text-2xl leading-tight font-semibold tracking-tight tabular-nums md:text-3xl">
+              {formatPrice(course.price)}
+            </p>
+            <EnrollCta courseId={courseId} isFree={course.price === 0} />
+          </CardContent>
+        </aside>
+      </Card>
     </div>
   );
 }

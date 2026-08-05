@@ -36,7 +36,7 @@ export function LessonSidebar({
                     onClick={() => onSelectLesson(lesson.id)}
                     aria-current={isCurrent ? 'true' : undefined}
                     className={cn(
-                      'hover:bg-accent flex w-full items-center gap-2 rounded-md border-l-2 border-transparent px-2 py-2 text-left text-sm transition-colors duration-150',
+                      'hover:bg-secondary flex w-full items-center gap-2 rounded-md border-l-2 border-transparent px-2 py-2 text-left text-sm transition-colors duration-150',
                       isCurrent && 'bg-primary/10 border-primary font-medium',
                     )}
                   >
@@ -45,7 +45,10 @@ export function LessonSidebar({
                     ) : isCurrent ? (
                       <PlayCircle className="text-primary size-4 shrink-0" aria-hidden="true" />
                     ) : (
-                      <Circle className="text-muted-foreground size-4 shrink-0" aria-hidden="true" />
+                      <Circle
+                        className="text-muted-foreground size-4 shrink-0"
+                        aria-hidden="true"
+                      />
                     )}
                     <span className="truncate">{lesson.title}</span>
                   </button>

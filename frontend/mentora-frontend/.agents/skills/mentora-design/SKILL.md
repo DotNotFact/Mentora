@@ -18,7 +18,7 @@ description: Mentora LMS design system constraints. ALWAYS apply when creating o
 Brand/status tokens — the ones you reach for directly when building UI:
 
 | Token            | Value                 | Usage                         |
-| ---------------- | --------------------- | ------------------------------ |
+| ---------------- | --------------------- | ----------------------------- |
 | primary          | #6366F1 (indigo-500)  | Buttons, links, active states |
 | primary-hover    | #4F46E5 (indigo-600)  | Hover                         |
 | accent           | #F59E0B (amber-500)   | CTAs, progress, badges        |
@@ -26,7 +26,7 @@ Brand/status tokens — the ones you reach for directly when building UI:
 | foreground       | #0F172A (slate-900)   | Primary text                  |
 | muted-foreground | #64748B (slate-500)   | Secondary text                |
 | destructive      | #EF4444 (red-500)     | Errors                        |
-| success          | #10B981 (emerald-500) | Completed states               |
+| success          | #10B981 (emerald-500) | Completed states              |
 
 shadcn/ui contract tokens — every color above (and below) also has its
 `-foreground` pair generated in `src/styles/globals.css`; use these when
@@ -34,7 +34,7 @@ composing shadcn primitives (Button, Card, Dialog, Input…), not just the
 brand table:
 
 | Token          | Value               | Usage                                   |
-| -------------- | ------------------- | ---------------------------------------- |
+| -------------- | ------------------- | --------------------------------------- |
 | card / popover | #FFFFFF             | Cards, modals, popovers (= surface)     |
 | secondary      | #F1F5F9 (slate-100) | Low-emphasis buttons/badges backgrounds |
 | muted          | #F1F5F9 (slate-100) | Subtle backgrounds (disabled, skeleton) |
@@ -69,13 +69,13 @@ shadow utility outside this table without a documented reason — random
 `shadow-md`/`shadow-lg` sprinkled per-component is exactly the "not
 polished" flatness this scale exists to fix.
 
-| Level | Utility                   | When                                                                                             |
-| ----- | -------------------------- | -------------------------------------------------------------------------------------------------- |
-| 0     | none (border only)         | Inline/flat elements inside a surface: table rows, list items, nested list cards, filter chips.  |
-| 1     | `shadow-sm`                | Resting state of any card/panel/tile on the page background (CourseCard, StatCard, form panels). |
-| 2     | `shadow-md`                | Hover/focus state of an interactive card (`hover:shadow-md`), sticky toolbars, page header bar.  |
-| 3     | `shadow-lg`                | Popovers, dropdown menus, select content, tooltips with rich content, toasts.                    |
-| 4     | `shadow-xl`                | Dialog/modal/sheet content — the highest elevation in the app, reserved for things that block interaction with everything behind them. |
+| Level | Utility            | When                                                                                                                                   |
+| ----- | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------- |
+| 0     | none (border only) | Inline/flat elements inside a surface: table rows, list items, nested list cards, filter chips.                                        |
+| 1     | `shadow-sm`        | Resting state of any card/panel/tile on the page background (CourseCard, StatCard, form panels).                                       |
+| 2     | `shadow-md`        | Hover/focus state of an interactive card (`hover:shadow-md`), sticky toolbars, page header bar.                                        |
+| 3     | `shadow-lg`        | Popovers, dropdown menus, select content, tooltips with rich content, toasts.                                                          |
+| 4     | `shadow-xl`        | Dialog/modal/sheet content — the highest elevation in the app, reserved for things that block interaction with everything behind them. |
 
 Rules:
 
@@ -96,13 +96,13 @@ Rules:
 
 ## Border radius
 
-| Scale | Utility        | Px    | Usage                                                                                     |
-| ----- | -------------- | ----- | -------------------------------------------------------------------------------------------- |
-| xs    | `rounded-md`   | 6px   | Buttons, inputs, badges/chips, checkboxes, tabs, dropdown/select items — anything you click or type into. |
-| sm    | `rounded-lg`   | 8px   | Toolbars, alert/banner containers, small popovers, tooltips.                              |
-| md    | `rounded-xl`   | 12px  | Cards, panels, dialogs/sheets, media thumbnails (course cover, video poster).             |
-| lg    | `rounded-2xl`  | 16px  | Large marketing/feature surfaces, empty-state containers, hero panels — bigger surface, bigger radius. |
-| full  | `rounded-full` | —     | Avatars, status dots, pill badges you deliberately want pill-shaped, progress bar track & indicator, icon-only circular buttons. |
+| Scale | Utility        | Px   | Usage                                                                                                                            |
+| ----- | -------------- | ---- | -------------------------------------------------------------------------------------------------------------------------------- |
+| xs    | `rounded-md`   | 6px  | Buttons, inputs, badges/chips, checkboxes, tabs, dropdown/select items — anything you click or type into.                        |
+| sm    | `rounded-lg`   | 8px  | Toolbars, alert/banner containers, small popovers, tooltips.                                                                     |
+| md    | `rounded-xl`   | 12px | Cards, panels, dialogs/sheets, media thumbnails (course cover, video poster).                                                    |
+| lg    | `rounded-2xl`  | 16px | Large marketing/feature surfaces, empty-state containers, hero panels — bigger surface, bigger radius.                           |
+| full  | `rounded-full` | —    | Avatars, status dots, pill badges you deliberately want pill-shaped, progress bar track & indicator, icon-only circular buttons. |
 
 A surface never mixes radius sizes with its own children at the same
 nesting level (e.g. a `rounded-xl` card must not contain a
@@ -114,22 +114,26 @@ never up. Media that touches a card edge (thumbnail at the top of
 
 ## Typography
 
-Font Inter (400/500/600/700). Every heading level is `font-*` weight +
+Font Space Grotesk Variable (self-hosted via `@fontsource-variable/
+space-grotesk`, imported in `main.tsx` — weights 400/500/600/700 via the
+variable axis) for all UI text; Fira Code (`@fontsource/fira-code`,
+`--font-mono`) for code blocks and numeric/technical values that benefit
+from monospace tabular digits. Every heading level is `font-*` weight +
 `tracking-tight` + an explicit line-height — size alone is not what makes
 a heading read as "designed."
 
-| Level          | Classes                                              | Usage                                                     |
-| -------------- | ----------------------------------------------------- | ---------------------------------------------------------- |
-| Display        | `text-5xl md:text-6xl font-bold tracking-tight leading-[1.05]` | Marketing/landing hero only (e.g. `routes/index.tsx`) — never inside app chrome. |
-| H1             | `text-4xl font-bold tracking-tight leading-tight`     | One per page: page title (catalog, course detail, "Мои курсы", course editor). |
-| H2             | `text-3xl font-semibold tracking-tight leading-snug`  | Major section within a page.                              |
-| H3             | `text-2xl font-semibold tracking-tight leading-snug`  | Card/subsection title, dialog title.                       |
-| H4             | `text-lg font-semibold tracking-tight leading-snug`   | Widget/group title inside a card (e.g. `CardTitle` in a stat tile or settings block). |
-| Body           | `text-base leading-relaxed`                           | Default paragraph text.                                    |
-| Body small     | `text-sm leading-relaxed text-muted-foreground`       | Secondary/supporting text, descriptions, list metadata.    |
-| Caption        | `text-xs font-medium text-muted-foreground`           | Timestamps, helper text under inputs, table footnotes.     |
-| Eyebrow/label  | `text-xs font-medium uppercase tracking-wide text-muted-foreground` | Small label above a heading or section (e.g. "КАТЕГОРИЯ", stat tile pre-label) — use sparingly, not on every caption. |
-| Numeric/stat   | `text-2xl md:text-3xl font-semibold tracking-tight tabular-nums` | Large standalone numbers: `StatCard` value, price, course count. `tabular-nums` keeps digits from jittering in width on updates. |
+| Level         | Classes                                                             | Usage                                                                                                                            |
+| ------------- | ------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| Display       | `text-5xl md:text-6xl font-bold tracking-tight leading-[1.05]`      | Marketing/landing hero only (e.g. `routes/index.tsx`) — never inside app chrome.                                                 |
+| H1            | `text-4xl font-bold tracking-tight leading-tight`                   | One per page: page title (catalog, course detail, "Мои курсы", course editor).                                                   |
+| H2            | `text-3xl font-semibold tracking-tight leading-snug`                | Major section within a page.                                                                                                     |
+| H3            | `text-2xl font-semibold tracking-tight leading-snug`                | Card/subsection title, dialog title.                                                                                             |
+| H4            | `text-lg font-semibold tracking-tight leading-snug`                 | Widget/group title inside a card (e.g. `CardTitle` in a stat tile or settings block).                                            |
+| Body          | `text-base leading-relaxed`                                         | Default paragraph text.                                                                                                          |
+| Body small    | `text-sm leading-relaxed text-muted-foreground`                     | Secondary/supporting text, descriptions, list metadata.                                                                          |
+| Caption       | `text-xs font-medium text-muted-foreground`                         | Timestamps, helper text under inputs, table footnotes.                                                                           |
+| Eyebrow/label | `text-xs font-medium uppercase tracking-wide text-muted-foreground` | Small label above a heading or section (e.g. "КАТЕГОРИЯ", stat tile pre-label) — use sparingly, not on every caption.            |
+| Numeric/stat  | `text-2xl md:text-3xl font-semibold tracking-tight tabular-nums`    | Large standalone numbers: `StatCard` value, price, course count. `tabular-nums` keeps digits from jittering in width on updates. |
 
 Notes:
 
@@ -175,18 +179,26 @@ choice.
 
 ## Surfaces & cards
 
-- **Border vs shadow**: every card/panel gets both — `border` (1px,
-  `--color-border`) for crisp edge definition at any zoom level, plus a
-  level-1 shadow (`shadow-sm`) for depth. Border alone reads flat;
-  shadow alone reads blurry on light backgrounds. Use them together, not
-  as alternatives.
+- **Border vs shadow**: every card/panel gets both — `border-border/60`
+  (1px, softened to 60% opacity — a solid `border-border` reads
+  "картонно"/flat, pinned down at schedule/10, 2026-08-06) for crisp but
+  understated edge definition, plus a level-1 shadow (`shadow-sm`) for
+  depth. Border alone reads flat; shadow alone reads blurry on light
+  backgrounds. Use them together, not as alternatives. This is the
+  `Card` primitive's default (`shared/ui/card.tsx`) — don't override it
+  per-component unless the component is intentionally borderless (see
+  "Featured/emphasized surface" below for the one exception pattern).
 - **Resting → hover**: only cards that are themselves a link/button
   (clickable as a whole — `CourseCard`) get a hover elevation change
-  (`hover:shadow-md`) and the existing `hover:scale-[1.02]` (still the
-  only component allowed that scale treatment — see `AGENTS.md`/`CLAUDE.md`
-  rule #16). Cards that just contain content (a settings panel, a stat
-  tile, a dashboard summary card) stay at level 1 always — they don't
-  hover-lift, because they're not clickable as a unit.
+  (`hover:shadow-md`) and a scale/tilt treatment. `CourseCard` was
+  historically the only component allowed `hover:scale-[1.02]` — as of
+  `.agents/skills/aaa-ui-polish/SKILL.md` (2026-08-06) that limit is
+  lifted for UI built under that skill (any clickable card may use the
+  richer tilt+glow+lift pattern documented there), see its override
+  table for the full list of what it supersedes here. Cards that just
+  contain content (a settings panel, a stat tile, a dashboard summary
+  card) stay at level 1 always — they don't hover-lift, because they're
+  not clickable as a unit.
 - **Featured/emphasized surface**: `border-2 border-primary` instead of
   the default 1px border (see `PricingCard` below), optionally combined
   with the primary glow shadow from the elevation section. Use for at
@@ -260,8 +272,9 @@ legitimately empty, not just there):
 ## Component patterns
 
 CourseCard: rounded-xl border shadow-sm hover:shadow-md, 16:9 AspectRatio,
-line-clamp-2 title, price bottom-right, Progress bar if enrolled. The one
-component allowed `hover:scale-[1.02]`.
+line-clamp-2 title, price bottom-right, Progress bar if enrolled.
+Extended AAA hover (tilt+glow+lift) per aaa-ui-polish — no longer the
+only component allowed `hover:scale-[1.02]`.
 PricingCard: rounded-xl border-2, border-primary + optional primary glow
 shadow if featured, badge "Популярный".
 VideoPlayer: @vidstack/react, aspect-video, custom Mentora theme.
@@ -283,7 +296,8 @@ inline next to text — not `rounded-full` unless it's a deliberate pill
 
 ## Animation
 
-Default transition-all duration-150 · hover:scale-[1.02] (CourseCard only) ·
+Default transition-all duration-150 · hover:scale-[1.02]/tilt/lift (see
+`aaa-ui-polish` skill for which components — no longer CourseCard-only) ·
 Modal animate-in fade-in zoom-in-95 · Sidebar transition-[width] duration-200 ·
 never animate width/height on lists >10 items · elevation changes
 (shadow-sm → shadow-md on hover) ride the same duration-150 transition,

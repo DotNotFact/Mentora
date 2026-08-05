@@ -1,9 +1,9 @@
 # STATE — читать первым в каждой новой сессии
 
-status: AWAITING_ADMIN_COMMAND
-lastUpdated: 2026-08-05
-currentTask: none
-completedSchedules: [00-verify-setup, 01-auth, 02-courses-catalog, 03-course-editor, 06-analytics-dashboard, 05-checkout, 04-learning-player, 08-e2e-tests, 09-production-ready, 07-polish-animations]
+status: IN_PROGRESS: 11
+lastUpdated: 2026-08-06
+currentTask: 11-settings-personalization (пачка 10 → 11 → 12, одобрено администратором; 10 выполнена и смержена)
+completedSchedules: [00-verify-setup, 01-auth, 02-courses-catalog, 03-course-editor, 06-analytics-dashboard, 05-checkout, 04-learning-player, 08-e2e-tests, 09-production-ready, 07-polish-animations, 10-design-overhaul-pixel-perfect]
 
 ## Что это значит
 

@@ -107,17 +107,17 @@ Is it constant motion (marquee, progress bar)?
 Yes → linear
 Default → ease-out
 
-**Critical: use custom easing curves.** The built-in CSS easings are too weak. They lack the punch that makes animations feel intentional.
+**Critical: use custom easing curves.** The built-in CSS easings are too weak. They lack the punch that makes animations feel intentional. In Mentora these already exist in `src/styles/globals.css` (`@theme` block, added at schedule/10, 2026-08-06) — reuse them rather than inventing new names:
 
 ```css
+/* Bouncy pop-in — badges, counters, card mount */
+--ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
 /* Strong ease-out for UI interactions */
---ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+--ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 
 /* Strong ease-in-out for on-screen movement */
---ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
-
-/* iOS-like drawer curve (from Ionic Framework) */
---ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+--ease-in-out-smooth: cubic-bezier(0.65, 0, 0.35, 1);
 ```
 
 **Never use ease-in for UI animations.** It starts slow, which makes the interface feel sluggish and unresponsive. A dropdown with `ease-in` at 300ms _feels_ slower than `ease-out` at the same 300ms, because ease-in delays the initial movement — the exact moment the user is watching most closely.
