@@ -65,8 +65,9 @@
   плана" уже выполненных задач — там часто явно отмечены кандидаты
   ("хорошая цель для отдельной задачи", "не входит в эту задачу, но...").
 - Функциональность, которая есть практически у любой LMS-платформы, но
-  которой пока нет у Mentora (сертификаты об окончании, отзывы/рейтинги
-  курсов, поиск, уведомления, реферальная программа и т.п.).
+  которой пока нет у Mentora (отзывы/рейтинги курсов, поиск,
+  уведомления, реферальная программа, обсуждения/Q&A под уроком,
+  геймификация — streaks/бейджи за прогресс — и т.п.).
 - Функциональность, которая выделяет Mentora на фоне конкурентов —
   не "как у всех", а то, чего нет у типичных LMS (Coursera, Udemy,
   Skillbox и т.п.). Отдавай предпочтение конкретным, проверяемым идеям
@@ -84,3 +85,8 @@
 - [07-polish-animations](./07-polish-animations.md) — анимации, transitions, доступность
 - [08-e2e-tests](./08-e2e-tests.md) — Playwright по критическим путям, CI
 - [09-production-ready](./09-production-ready.md) — error boundaries, SEO, PWA, security, Lighthouse
+- [10-design-overhaul-pixel-perfect](./10-design-overhaul-pixel-perfect.md) — шрифты (Space Grotesk + Fira Code), cursor-pointer, border/shadow, Card, анимации
+- [11-settings-personalization](./11-settings-personalization.md) — тёмная тема по умолчанию, готовые цветовые темы
+- [12-dashboard-shell-navigation](./12-dashboard-shell-navigation.md) — sidebar-навигация по ролям вместо Header
+- [13-roles-and-collaboration](./13-roles-and-collaboration.md) — гостевой просмотр, групповое обучение по инвайт-ссылке
+- [14-certificates-and-completion](./14-certificates-and-completion.md) — сертификаты о прохождении курса с публичной верификацией
