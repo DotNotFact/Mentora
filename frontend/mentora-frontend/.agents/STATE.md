@@ -1,8 +1,8 @@
 # STATE — читать первым в каждой новой сессии
 
-status: AWAITING_ADMIN_COMMAND
+status: IN_PROGRESS: 05
 lastUpdated: 2026-08-05
-currentTask: none
+currentTask: 05-checkout
 completedSchedules: [00-verify-setup, 01-auth, 02-courses-catalog, 03-course-editor, 06-analytics-dashboard]
 
 ## Что это значит

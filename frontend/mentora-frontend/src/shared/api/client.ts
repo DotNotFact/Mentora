@@ -5,6 +5,8 @@ import { getAuth } from './generated/auth/auth';
 import { getCourses } from './generated/courses/courses';
 import { getAnalytics } from './generated/analytics/analytics';
 import { getLessons } from './generated/lessons/lessons';
+import { getEnrollments } from './generated/enrollments/enrollments';
+import { getPayments } from './generated/payments/payments';
 
 interface RetryableRequestConfig extends InternalAxiosRequestConfig {
   _retry?: boolean;
@@ -23,6 +25,8 @@ export const coursesApi = getCourses(apiClient);
 export const lessonsApi = getLessons(apiClient);
 const authRefreshApi = getAuth(refreshClient);
 export const analyticsApi = getAnalytics(apiClient);
+export const enrollmentsApi = getEnrollments(apiClient);
+export const paymentsApi = getPayments(apiClient);
 
 const AUTH_ENDPOINTS = ['/auth/login', '/auth/register', '/auth/refresh'];
 

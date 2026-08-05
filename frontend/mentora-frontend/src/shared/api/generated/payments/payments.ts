@@ -9,7 +9,7 @@
 import * as axios from 'axios';
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 
-import type { CheckoutRequest, CheckoutSession } from '../models';
+import type { CheckoutRequest, CheckoutSession, CheckoutSessionStatus } from '../models';
 
 export const getPayments = (axiosInstance: AxiosInstance = axios.default) => {
   /**
@@ -21,6 +21,16 @@ export const getPayments = (axiosInstance: AxiosInstance = axios.default) => {
   ): Promise<AxiosResponse<CheckoutSession>> => {
     return axiosInstance.post(`/payments/checkout`, checkoutRequest, options);
   };
-  return { createCheckoutSession };
+  /**
+   * @summary Статус сессии оплаты (поллинг после возврата со Stripe)
+   */
+  const getCheckoutSessionStatus = (
+    sessionId: string,
+    options?: AxiosRequestConfig,
+  ): Promise<AxiosResponse<CheckoutSessionStatus>> => {
+    return axiosInstance.get(`/payments/sessions/${sessionId}`, options);
+  };
+  return { createCheckoutSession, getCheckoutSessionStatus };
 };
 export type CreateCheckoutSessionResult = AxiosResponse<CheckoutSession>;
+export type GetCheckoutSessionStatusResult = AxiosResponse<CheckoutSessionStatus>;

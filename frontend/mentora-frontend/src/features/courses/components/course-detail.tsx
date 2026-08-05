@@ -1,8 +1,12 @@
-import { useState } from 'react';
+import { Link } from '@tanstack/react-router';
+import { Loader2 } from 'lucide-react';
 import { Badge } from '@shared/ui/badge';
 import { Button } from '@shared/ui/button';
 import { Skeleton } from '@shared/ui/skeleton';
 import { formatPrice } from '@shared/lib/utils';
+import { useAuthStore } from '@features/auth/store';
+import { useEnroll } from '@features/enrollment/hooks/use-enroll';
+import { useEnrollmentStatus } from '@features/enrollment/hooks/use-enrollment-status';
 import { useCourse } from '../hooks/use-course';
 import { courseCategoryLabels } from '../schemas';
 
@@ -12,9 +16,6 @@ interface CourseDetailProps {
 
 export function CourseDetail({ courseId }: CourseDetailProps) {
   const { data, isPending, isError } = useCourse(courseId);
-  // Заглушка CTA "Записаться" — реальная запись на курс (enrollment) и
-  // оплата реализуются в schedule/05, здесь только UI-плейсхолдер.
-  const [enrollClicked, setEnrollClicked] = useState(false);
 
   if (isPending) {
     return (
@@ -57,15 +58,71 @@ export function CourseDetail({ courseId }: CourseDetailProps) {
 
       <aside className="bg-card h-fit space-y-4 rounded-xl border p-6 shadow-sm">
         <p className="text-foreground text-3xl font-bold">{formatPrice(course.price)}</p>
-        <Button type="button" className="w-full" onClick={() => setEnrollClicked(true)}>
-          Записаться
-        </Button>
-        {enrollClicked && (
-          <p className="text-muted-foreground text-xs">
-            Запись на курс появится в ближайшем обновлении.
-          </p>
-        )}
+        <EnrollCta courseId={courseId} isFree={course.price === 0} />
       </aside>
     </div>
+  );
+}
+
+function EnrollCta({ courseId, isFree }: { courseId: string; isFree: boolean }) {
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const { isEnrolled, isLoading: isStatusLoading } = useEnrollmentStatus(
+    isAuthenticated ? courseId : '',
+  );
+  const enroll = useEnroll();
+
+  if (!isAuthenticated) {
+    return (
+      <Button asChild className="w-full">
+        <Link to="/login">Войти, чтобы записаться</Link>
+      </Button>
+    );
+  }
+
+  if (isStatusLoading) {
+    return (
+      <Button type="button" className="w-full" disabled>
+        <Loader2 className="animate-spin" aria-hidden="true" />
+      </Button>
+    );
+  }
+
+  if (isEnrolled || enroll.isSuccess) {
+    return (
+      <Button asChild className="w-full">
+        <Link to="/learning/$courseId" params={{ courseId }}>
+          Продолжить обучение
+        </Link>
+      </Button>
+    );
+  }
+
+  if (isFree) {
+    return (
+      <div className="space-y-2">
+        <Button
+          type="button"
+          className="w-full"
+          disabled={enroll.isPending}
+          onClick={() => enroll.mutate(courseId)}
+        >
+          {enroll.isPending && <Loader2 className="animate-spin" aria-hidden="true" />}
+          Записаться бесплатно
+        </Button>
+        {enroll.isError && (
+          <p className="text-destructive text-xs" role="alert">
+            Не удалось записаться. Попробуйте ещё раз.
+          </p>
+        )}
+      </div>
+    );
+  }
+
+  return (
+    <Button asChild className="w-full">
+      <Link to="/checkout/$courseId" params={{ courseId }}>
+        Записаться
+      </Link>
+    </Button>
   );
 }
