@@ -30,3 +30,25 @@ jobs:
       - run: yarn lint
       - run: yarn test
       - run: yarn build
+
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: yarn
+          cache-dependency-path: frontend/mentora-frontend/yarn.lock
+
+      - run: yarn install --frozen-lockfile
+      - run: yarn playwright install --with-deps chromium
+      - run: yarn test:e2e --reporter=html
+
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: frontend/mentora-frontend/playwright-report/
+          retention-days: 14
