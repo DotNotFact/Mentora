@@ -113,6 +113,21 @@ MIT, источник — [emilkowalski/skills](https://github.com/emilkowalski/
 `review-animations`/`improve-animations` особенно релевантны для
 `schedule/07-polish-animations.md`.
 
+## Рабочие skills (не про дизайн)
+
+Помимо дизайн-skills выше, в `.agents/skills/` есть общие process-skills
+для разработки — используй их по ситуации, не только когда явно
+попросили:
+
+- `diagnose` — отладка проблем (рендер, API, state, роутинг).
+- `implement` — реализация UI-фичи компонента (только после явной
+  команды администратора на конкретную schedule-задачу).
+- `new-feature` — скаффолдинг нового `features/<name>/` модуля (тоже
+  только с явным одобрением соответствующей schedule-задачи).
+- `review` — чек-лист код-ревью под архитектурные правила этого файла.
+- `component-with-screenshot` — цикл "реализация → скриншот → сверка"
+  для скриншот-QA гейта (см. ниже).
+
 ## Скрипты package.json
 
 - dev, build (tsc -b && vite build), typecheck, lint, lint:fix, format
@@ -227,6 +242,18 @@ create/view/merge`, `gh repo`, `gh issue`, `gh run` (просмотр CI). Вн�
 client.ts`, `app/router.tsx`, `app/layout/*`) — это сигнал
   переупорядочить задачи так, чтобы shared-файл трогала только одна из
   них, а не решать конфликт мержа постфактум.
+- `10-design-overhaul-pixel-perfect` — сквозная, как `07`/`08`/`09`:
+  запускать отдельно, не параллельно с другими UI-задачами (правит
+  `globals.css`, `SKILL.md`, кнопки/карточки по всему приложению).
+- `11-settings-personalization` — по своим "Дизайн-заметкам" опирается
+  на решения `10` (шрифты/border) — запускать после неё, не параллельно.
+- `12-dashboard-shell-navigation` — по собственному тексту задачи
+  согласовать порядок с `13-roles-and-collaboration` перед стартом (меню
+  зависит от набора ролей); использует решения `10`, если та уже
+  выполнена.
+- `13-roles-and-collaboration` и `14-certificates-and-completion` оба
+  правят `openapi/openapi.yaml` — не запускать параллельно (см. правило
+  про shared-файл выше), либо явно согласовать разделение секций спеки.
 
 ## Скриншот-QA гейт (обязателен для UI-задач)
 
