@@ -8,25 +8,31 @@ description: Mentora LMS design system constraints. ALWAYS apply when creating o
 > Craft-level baseline: modern shadcn/ui-based SaaS/LMS products circa
 > 2025-2026 (generous whitespace, a real elevation scale instead of ad-hoc
 > `shadow-sm`, a consistent radius scale, tight heading tracking, restrained
-> motion, well-designed empty/loading states). Mentora's own palette
-> (indigo primary, amber accent) is fixed — do not introduce new colors to
-> chase this look; the lift comes from spacing, elevation, typography and
-> state design, not new hues.
+> motion, well-designed empty/loading states). Mentora's palette is
+> themeable since schedule/11 (2026-08-06) — see "Themes" below — but the
+> STRUCTURE is fixed: indigo primary/amber accent by default, and every
+> theme keeps the same token roles (primary/accent/success/destructive
+> stay semantically stable across themes). Don't introduce ad-hoc new
+> colors outside the theme system to chase this look; the lift comes from
+> spacing, elevation, typography and state design, not new hues.
 
 ## Colors
 
-Brand/status tokens — the ones you reach for directly when building UI:
+Brand/status tokens — the ones you reach for directly when building UI.
+Values below are the `dark-indigo` theme (the default since schedule/11 —
+NOT light, despite this table historically showing light values). See
+"Themes" for the other 4 presets and how values swap at runtime:
 
 | Token            | Value                 | Usage                         |
 | ---------------- | --------------------- | ----------------------------- |
 | primary          | #6366F1 (indigo-500)  | Buttons, links, active states |
-| primary-hover    | #4F46E5 (indigo-600)  | Hover                         |
-| accent           | #F59E0B (amber-500)   | CTAs, progress, badges        |
-| background       | #F8FAFC (slate-50)    | Page background               |
-| foreground       | #0F172A (slate-900)   | Primary text                  |
-| muted-foreground | #64748B (slate-500)   | Secondary text                |
-| destructive      | #EF4444 (red-500)     | Errors                        |
-| success          | #10B981 (emerald-500) | Completed states              |
+| primary-hover    | #818CF8 (indigo-400, lighter than base — dark-mode hover brightens) | Hover (named-token cases only) |
+| accent           | #F59E0B (amber-500)   | CTAs, progress, badges — same across all themes |
+| background       | #020617 (slate-950)   | Page background               |
+| foreground       | #F8FAFC (slate-50)    | Primary text                  |
+| muted-foreground | #94A3B8 (slate-400)   | Secondary text                |
+| destructive      | #EF4444 (red-500)     | Errors — same across all themes |
+| success          | #10B981 (emerald-500) | Completed states — same across all themes |
 
 shadcn/ui contract tokens — every color above (and below) also has its
 `-foreground` pair generated in `src/styles/globals.css`; use these when
@@ -35,10 +41,10 @@ brand table:
 
 | Token          | Value               | Usage                                   |
 | -------------- | ------------------- | --------------------------------------- |
-| card / popover | #FFFFFF             | Cards, modals, popovers (= surface)     |
-| secondary      | #F1F5F9 (slate-100) | Low-emphasis buttons/badges backgrounds |
-| muted          | #F1F5F9 (slate-100) | Subtle backgrounds (disabled, skeleton) |
-| border, input  | #E2E8F0 (slate-200) | Borders, input outlines                 |
+| card / popover | #0F172A (slate-900) | Cards, modals, popovers (= surface) — one step lighter than background, not black |
+| secondary      | #1E293B (slate-800) | Low-emphasis buttons/badges backgrounds |
+| muted          | #1E293B (slate-800) | Subtle backgrounds (disabled, skeleton) |
+| border, input  | #334155 (slate-700) | Borders, input outlines                 |
 | ring           | #6366F1 (= primary) | Focus ring                              |
 
 Не путать `muted` (светлый фон) и `muted-foreground` (серый текст) —
@@ -61,6 +67,43 @@ intentional, don't add `accent-hover`, `success-hover`, etc. to
   compositing looks wrong against a non-white ancestor — e.g. gradients,
   or a primary-colored parent where `/90` would blend with the wrong
   backdrop. Default to the opacity modifier unless you hit that case.
+
+## Themes
+
+5 готовых тем (schedule/11, 2026-08-06) — `shared/config/themes.ts`
+(метаданные для UI: id/название/превью) + `src/styles/globals.css`
+(фактические значения токенов). Дефолт — `dark-indigo`, НЕ светлая тема.
+
+| id            | primary   | Поверхности                                     |
+| ------------- | --------- | ------------------------------------------------ |
+| dark-indigo   | #6366F1   | background #020617, card #0F172A (дефолт)         |
+| dark-green    | #10B981   | те же тёмные поверхности, что и dark-indigo       |
+| dark-red      | #F43F5E   | те же тёмные поверхности                          |
+| dark-purple   | #8B5CF6   | те же тёмные поверхности                          |
+| light-indigo  | #6366F1   | background #F8FAFC, card #FFFFFF (исходная светлая палитра) |
+
+Механика: `@theme` в `globals.css` объявляет `--color-primary: var(--theme-primary)`
+и т.д. (не прямые hex-значения) — Tailwind генерирует утилиты
+(`bg-primary`) один раз при сборке, но их значения читаются в рантайме
+из `--theme-*`, которые переопределяются на `[data-theme="..."]`. Смена
+темы = смена одного атрибута на `<html>`, без пересборки CSS и без
+перезагрузки страницы. `accent`/`success`/`destructive` НЕ варьируются
+по темам (остаются amber/emerald/red во всех пяти) — только
+`primary`/`primary-hover`/`ring` (все три вместе) и весь набор
+"тёмная/светлая" поверхностей (background/card/popover/secondary/muted/
+border/input/foreground/-foreground-пары).
+
+Тёмные поверхности — НЕ инверсия светлой палитры "в лоб" и не чистый
+чёрный: `background` #020617 (slate-950), `card`/`popover` на один шаг
+светлее — #0F172A (slate-900), `secondary`/`muted` — #1E293B
+(slate-800), `border`/`input` — #334155 (slate-700). Приподнятые
+поверхности читаются заметно светлее фона, как и требует "не инверсия
+в лоб" — не полагаться на одну лишь тень для разделения уровней в
+тёмном режиме.
+
+Добавляя новую тему: копировать структуру существующего `[data-theme=
+'dark-*']`-блока в `globals.css`, добавить запись в `THEMES` в
+`themes.ts`, не менять `@theme`-блок (он не привязан к конкретной теме).
 
 ## Elevation (shadow scale)
 

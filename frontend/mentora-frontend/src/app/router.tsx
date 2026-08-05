@@ -15,6 +15,7 @@ import { courseEditRoute } from './routes/courses/edit/$courseId';
 import { checkoutRoute } from './routes/checkout/$courseId';
 import { myCoursesRoute } from './routes/my-courses';
 import { learningRoute } from './routes/learning/$courseId';
+import { settingsPersonalizationRoute } from './routes/settings/personalization';
 
 const routeTree = rootRoute.addChildren([
   indexRoute,
@@ -29,6 +30,7 @@ const routeTree = rootRoute.addChildren([
   checkoutRoute,
   myCoursesRoute,
   learningRoute,
+  settingsPersonalizationRoute,
 ]);
 
 export const router = createRouter({
