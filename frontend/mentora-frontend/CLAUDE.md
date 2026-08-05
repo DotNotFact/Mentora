@@ -23,6 +23,11 @@ Query + Zustand + Zod + Tailwind v4 + shadcn/ui (new-york style).
 
 - `src/app/` — роутинг, провайдеры, layouts (тонкий слой компоновки)
 - `src/app/routes/` — файловые роуты TanStack Router
+- `src/app/layout/page-container.tsx` — единая обёртка контента страницы
+  (центрирование + отступы). Каждый роут оборачивает свой контент в
+  `<PageContainer>` вместо ручного повтора `mx-auto max-w-7xl px-4 py-12
+sm:px-6 lg:px-8` — так новая страница не может случайно "прилипнуть" к
+  краю, забыв один из классов.
 - `src/features/<name>/` — feature-модули (auth, courses, course-editor,
   enrollment, payments, analytics)
 - `src/features/<name>/components/` — компоненты фичи

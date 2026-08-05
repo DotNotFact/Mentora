@@ -1,14 +1,15 @@
 import { createRoute } from '@tanstack/react-router';
 import { AuthGuard } from '@app/auth-guard';
+import { PageContainer } from '@app/layout/page-container';
 import { InstructorDashboard } from '@features/analytics/components/instructor-dashboard';
 import { rootRoute } from '../__root';
 
 function InstructorDashboardPage() {
   return (
     <AuthGuard allowedRoles={['instructor', 'admin']}>
-      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+      <PageContainer>
         <InstructorDashboard />
-      </div>
+      </PageContainer>
     </AuthGuard>
   );
 }

@@ -1,5 +1,6 @@
 import { createRoute } from '@tanstack/react-router';
 import { AuthGuard } from '@app/auth-guard';
+import { PageContainer } from '@app/layout/page-container';
 import { CourseMetaForm } from '@features/course-editor/components/course-meta-form';
 import { ChapterList } from '@features/course-editor/components/chapter-list';
 import { LessonEditor } from '@features/course-editor/components/lesson-editor';
@@ -37,14 +38,14 @@ function CourseEditorPage({ courseId }: { courseId: string }) {
 
   if (isLoading) {
     return (
-      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+      <PageContainer>
         <p className="text-muted-foreground text-sm">Загрузка курса…</p>
-      </div>
+      </PageContainer>
     );
   }
 
   return (
-    <div className="mx-auto max-w-7xl space-y-6 px-4 py-8 sm:px-6 lg:px-8">
+    <PageContainer className="space-y-6 py-8">
       <h1 className="text-foreground text-4xl font-bold tracking-tight">
         {isNew ? 'Новый курс' : 'Редактирование курса'}
       </h1>
@@ -80,6 +81,6 @@ function CourseEditorPage({ courseId }: { courseId: string }) {
           </section>
         </div>
       )}
-    </div>
+    </PageContainer>
   );
 }
