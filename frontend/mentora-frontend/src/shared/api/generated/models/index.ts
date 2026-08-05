@@ -7,19 +7,25 @@
  * OpenAPI spec version: 0.0.1
  */
 
+export * from './adminAnalytics';
+export * from './analyticsPeriod';
 export * from './authResponse';
 export * from './checkoutRequest';
 export * from './checkoutSession';
 export * from './course';
 export * from './courseCategory';
+export * from './courseEnrollmentPoint';
 export * from './coursePage';
 export * from './courseSort';
 export * from './enrollment';
 export * from './enrollmentRequest';
+export * from './getAdminAnalyticsParams';
+export * from './getInstructorAnalyticsParams';
 export * from './instructorAnalytics';
 export * from './listCoursesParams';
 export * from './loginRequest';
 export * from './refreshRequest';
 export * from './registerRequest';
+export * from './revenuePoint';
 export * from './user';
 export * from './userRole';

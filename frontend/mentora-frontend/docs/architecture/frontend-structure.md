@@ -29,12 +29,21 @@ frontend/mentora-frontend/
 │   │   │   │   ├── index.tsx   — CourseFilters + CourseGrid (готово,
 │   │   │   │   │                  schedule/02)
 │   │   │   │   └── $courseId.tsx — CourseDetail (готово, schedule/02)
+│   │   │   ├── dashboard/
+│   │   │   │   ├── index.tsx       — дашборд студента (готово,
+│   │   │   │   │                      schedule/06; честная заглушка
+│   │   │   │   │                      прогресса до schedule/04/05)
+│   │   │   │   ├── instructor.tsx  — дашборд инструктора (готово,
+│   │   │   │   │                      schedule/06; AuthGuard
+│   │   │   │   │                      allowedRoles=[instructor, admin])
+│   │   │   │   └── admin.tsx       — дашборд админа (готово, schedule/06;
+│   │   │   │                          AuthGuard allowedRoles=[admin])
 │   │   │   └── ...             — остальные: Planned (наполняются по мере
 │   │                              прохождения соответствующих schedule/*)
 │   │   ├── auth-guard.tsx      — редирект на /login для защищённых
 │   │   │                          роутов (готово, применяется начиная
-│   │   │                          с schedule/03/06, когда появятся сами
-│   │   │                          защищённые роуты)
+│   │   │                          с schedule/06, dashboard/instructor и
+│   │   │                          dashboard/admin используют allowedRoles)
 │   │   └── layout/              — root-layout, footer (готово, минимально);
 │   │                              header — auth-aware (войти/аватар+выйти,
 │   │                              готово); sidebar — Planned
@@ -70,7 +79,11 @@ frontend/mentora-frontend/
 │   │   ├── course-editor/       — Planned (schedule/03)
 │   │   ├── enrollment/          — Planned (schedule/04, 05)
 │   │   ├── payments/            — Planned (schedule/05)
-│   │   └── analytics/           — Planned (schedule/06)
+│   │   └── analytics/           — готово (schedule/06): аналитика
+│   │                              инструктора/админа (RevenueChart,
+│   │                              EnrollmentChart, StatCard), дашборды
+│   │                              /dashboard, /dashboard/instructor,
+│   │                              /dashboard/admin
 │   │
 │   └── styles/globals.css       — Tailwind v4 + CSS variables (готово)
 │
