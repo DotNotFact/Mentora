@@ -1,11 +1,12 @@
 import { createRoute } from '@tanstack/react-router';
+import { PageContainer } from '@app/layout/page-container';
 import { CourseFilters } from '@features/courses/components/course-filters';
 import { CourseGrid } from '@features/courses/components/course-grid';
 import { rootRoute } from '../__root';
 
 function CoursesCatalogPage() {
   return (
-    <div className="mx-auto max-w-7xl space-y-8 px-4 py-12 sm:px-6 lg:px-8">
+    <PageContainer className="space-y-8">
       <div>
         <h1 className="text-foreground text-4xl font-bold tracking-tight">Каталог курсов</h1>
         <p className="text-muted-foreground mt-2 text-base">
@@ -14,7 +15,7 @@ function CoursesCatalogPage() {
       </div>
       <CourseFilters />
       <CourseGrid />
-    </div>
+    </PageContainer>
   );
 }
 

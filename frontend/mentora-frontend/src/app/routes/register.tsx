@@ -1,12 +1,13 @@
 import { createRoute } from '@tanstack/react-router';
+import { PageContainer } from '@app/layout/page-container';
 import { RegisterForm } from '@features/auth/components/register-form';
 import { rootRoute } from './__root';
 
 function RegisterPage() {
   return (
-    <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+    <PageContainer>
       <RegisterForm />
-    </div>
+    </PageContainer>
   );
 }
 
