@@ -19,6 +19,9 @@ export function Header() {
 
         {isAuthenticated && user ? (
           <div className="flex items-center gap-3">
+            <Button asChild variant="ghost" size="sm">
+              <Link to="/settings/personalization">Персонализация</Link>
+            </Button>
             <span className="text-foreground text-sm font-medium">{user.fullName}</span>
             <Button
               type="button"

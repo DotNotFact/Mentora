@@ -2,36 +2,32 @@
 @import 'tw-animate-css';
 
 @theme {
-  /* Brand */
-  --color-primary: #6366f1;
-  --color-primary-hover: #4f46e5;
-  --color-primary-foreground: #ffffff;
-  --color-accent: #f59e0b;
-  --color-accent-foreground: #0f172a;
-  --color-success: #10b981;
-  --color-success-foreground: #ffffff;
-  --color-destructive: #ef4444;
-  --color-destructive-foreground: #ffffff;
+  --color-primary: var(--theme-primary);
+  --color-primary-hover: var(--theme-primary-hover);
+  --color-primary-foreground: var(--theme-primary-foreground);
+  --color-accent: var(--theme-accent);
+  --color-accent-foreground: var(--theme-accent-foreground);
+  --color-success: var(--theme-success);
+  --color-success-foreground: var(--theme-success-foreground);
+  --color-destructive: var(--theme-destructive);
+  --color-destructive-foreground: var(--theme-destructive-foreground);
 
-  /* Surfaces */
-  --color-background: #f8fafc;
-  --color-foreground: #0f172a;
-  --color-surface: #ffffff;
-  --color-card: #ffffff;
-  --color-card-foreground: #0f172a;
-  --color-popover: #ffffff;
-  --color-popover-foreground: #0f172a;
+  --color-background: var(--theme-background);
+  --color-foreground: var(--theme-foreground);
+  --color-surface: var(--theme-surface);
+  --color-card: var(--theme-card);
+  --color-card-foreground: var(--theme-card-foreground);
+  --color-popover: var(--theme-popover);
+  --color-popover-foreground: var(--theme-popover-foreground);
 
-  /* Secondary / muted (shadcn contract) */
-  --color-secondary: #f1f5f9;
-  --color-secondary-foreground: #0f172a;
-  --color-muted: #f1f5f9;
-  --color-muted-foreground: #64748b;
+  --color-secondary: var(--theme-secondary);
+  --color-secondary-foreground: var(--theme-secondary-foreground);
+  --color-muted: var(--theme-muted);
+  --color-muted-foreground: var(--theme-muted-foreground);
 
-  /* Chrome */
-  --color-border: #e2e8f0;
-  --color-input: #e2e8f0;
-  --color-ring: #6366f1;
+  --color-border: var(--theme-border);
+  --color-input: var(--theme-input);
+  --color-ring: var(--theme-ring);
 
   --font-sans: 'Space Grotesk Variable', ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-mono: 'Fira Code', ui-monospace, 'Cascadia Code', monospace;
@@ -42,39 +38,192 @@
   --ease-in-out-smooth: cubic-bezier(0.65, 0, 0.35, 1);
 }
 
+/*
+ * Значения тем — --theme-* переменные, на которые @theme выше ссылается
+ * через var(). Tailwind v4 генерирует утилиты (bg-primary, text-foreground
+ * и т.д.) один раз при сборке из --color-* имён, но их ЗНАЧЕНИЯ читаются в
+ * рантайме из этих --theme-* переменных — смена [data-theme] на <html>
+ * мгновенно перекрашивает всё приложение без пересборки CSS.
+ * См. .agents/skills/mentora-design/SKILL.md → "Themes" и
+ * shared/config/themes.ts (schedule/11).
+ */
+
+/* dark-indigo — дефолт (schedule/11: тёмная тема по умолчанию, не светлая) */
+:root,
+[data-theme='dark-indigo'] {
+  --theme-primary: #6366f1;
+  --theme-primary-hover: #818cf8;
+  --theme-primary-foreground: #ffffff;
+  --theme-accent: #f59e0b;
+  --theme-accent-foreground: #0f172a;
+  --theme-success: #10b981;
+  --theme-success-foreground: #ffffff;
+  --theme-destructive: #ef4444;
+  --theme-destructive-foreground: #ffffff;
+
+  --theme-background: #020617;
+  --theme-foreground: #f8fafc;
+  --theme-surface: #0f172a;
+  --theme-card: #0f172a;
+  --theme-card-foreground: #f8fafc;
+  --theme-popover: #0f172a;
+  --theme-popover-foreground: #f8fafc;
+
+  --theme-secondary: #1e293b;
+  --theme-secondary-foreground: #f1f5f9;
+  --theme-muted: #1e293b;
+  --theme-muted-foreground: #94a3b8;
+
+  --theme-border: #334155;
+  --theme-input: #334155;
+  --theme-ring: #6366f1;
+}
+
+[data-theme='dark-green'] {
+  --theme-primary: #10b981;
+  --theme-primary-hover: #34d399;
+  --theme-primary-foreground: #052e1f;
+  --theme-accent: #f59e0b;
+  --theme-accent-foreground: #0f172a;
+  --theme-success: #10b981;
+  --theme-success-foreground: #ffffff;
+  --theme-destructive: #ef4444;
+  --theme-destructive-foreground: #ffffff;
+
+  --theme-background: #020617;
+  --theme-foreground: #f8fafc;
+  --theme-surface: #0f172a;
+  --theme-card: #0f172a;
+  --theme-card-foreground: #f8fafc;
+  --theme-popover: #0f172a;
+  --theme-popover-foreground: #f8fafc;
+
+  --theme-secondary: #1e293b;
+  --theme-secondary-foreground: #f1f5f9;
+  --theme-muted: #1e293b;
+  --theme-muted-foreground: #94a3b8;
+
+  --theme-border: #334155;
+  --theme-input: #334155;
+  --theme-ring: #10b981;
+}
+
+[data-theme='dark-red'] {
+  --theme-primary: #f43f5e;
+  --theme-primary-hover: #fb7185;
+  --theme-primary-foreground: #ffffff;
+  --theme-accent: #f59e0b;
+  --theme-accent-foreground: #0f172a;
+  --theme-success: #10b981;
+  --theme-success-foreground: #ffffff;
+  --theme-destructive: #ef4444;
+  --theme-destructive-foreground: #ffffff;
+
+  --theme-background: #020617;
+  --theme-foreground: #f8fafc;
+  --theme-surface: #0f172a;
+  --theme-card: #0f172a;
+  --theme-card-foreground: #f8fafc;
+  --theme-popover: #0f172a;
+  --theme-popover-foreground: #f8fafc;
+
+  --theme-secondary: #1e293b;
+  --theme-secondary-foreground: #f1f5f9;
+  --theme-muted: #1e293b;
+  --theme-muted-foreground: #94a3b8;
+
+  --theme-border: #334155;
+  --theme-input: #334155;
+  --theme-ring: #f43f5e;
+}
+
+[data-theme='dark-purple'] {
+  --theme-primary: #8b5cf6;
+  --theme-primary-hover: #a78bfa;
+  --theme-primary-foreground: #ffffff;
+  --theme-accent: #f59e0b;
+  --theme-accent-foreground: #0f172a;
+  --theme-success: #10b981;
+  --theme-success-foreground: #ffffff;
+  --theme-destructive: #ef4444;
+  --theme-destructive-foreground: #ffffff;
+
+  --theme-background: #020617;
+  --theme-foreground: #f8fafc;
+  --theme-surface: #0f172a;
+  --theme-card: #0f172a;
+  --theme-card-foreground: #f8fafc;
+  --theme-popover: #0f172a;
+  --theme-popover-foreground: #f8fafc;
+
+  --theme-secondary: #1e293b;
+  --theme-secondary-foreground: #f1f5f9;
+  --theme-muted: #1e293b;
+  --theme-muted-foreground: #94a3b8;
+
+  --theme-border: #334155;
+  --theme-input: #334155;
+  --theme-ring: #8b5cf6;
+}
+
+/* light-indigo — исходная светлая палитра Mentora, сохранена как опция */
+[data-theme='light-indigo'] {
+  --theme-primary: #6366f1;
+  --theme-primary-hover: #4f46e5;
+  --theme-primary-foreground: #ffffff;
+  --theme-accent: #f59e0b;
+  --theme-accent-foreground: #0f172a;
+  --theme-success: #10b981;
+  --theme-success-foreground: #ffffff;
+  --theme-destructive: #ef4444;
+  --theme-destructive-foreground: #ffffff;
+
+  --theme-background: #f8fafc;
+  --theme-foreground: #0f172a;
+  --theme-surface: #ffffff;
+  --theme-card: #ffffff;
+  --theme-card-foreground: #0f172a;
+  --theme-popover: #ffffff;
+  --theme-popover-foreground: #0f172a;
+
+  --theme-secondary: #f1f5f9;
+  --theme-secondary-foreground: #0f172a;
+  --theme-muted: #f1f5f9;
+  --theme-muted-foreground: #64748b;
+
+  --theme-border: #e2e8f0;
+  --theme-input: #e2e8f0;
+  --theme-ring: #6366f1;
+}
+
 body {
   @apply bg-background text-foreground font-sans antialiased;
 }
 
-/* Отключает/сокращает все transition-*/
-animate-in-*/scroll-анимации
-  приложения
-  до
-  почти-нулевой
-  длительности
-  для
-  пользователей
-  с
-  этой
-  настройкой
-  ОС
-  —
-  см.
-  schedule/07,
-критерий
-  готовности.
-  Один
-  глобальный
-  переключатель
-  вместо
-  ручного
-  prefers-reduced-motion
-  в
-  каждом
-  компоненте.
-  */
-  @media
-  (prefers-reduced-motion: reduce) {
+/* Нативные спиннер-стрелки number-инпутов — OS/браузерный chrome, не
+   стилизуются под тему обычным CSS (белый фон стрелок на тёмной теме —
+   найдено визуально на "Цена от"/"Цена до" в фильтрах каталога). Убраны
+   полностью, а не перекрашены — Chrome/Safari/Firefox всё равно не дают
+   единообразно перекрасить их в цвета темы. */
+input[type='number'] {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  appearance: none;
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Отключает/сокращает все анимации и transition'ы приложения до
+   почти-нулевой длительности для пользователей с prefers-reduced-motion —
+   см. schedule/07, критерий готовности. Один глобальный переключатель
+   вместо ручной проверки в каждом компоненте. Комментарий НЕ содержит
+   буквальную последовательность "звёздочка-слэш" внутри текста — именно
+   она сломала этот блок при schedule/10 (prettier закрыл комментарий
+   раньше времени, см. schedule/11 → "Отклонения"). */
+@media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {

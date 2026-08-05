@@ -1,9 +1,9 @@
 # STATE — читать первым в каждой новой сессии
 
-status: IN_PROGRESS: 11
+status: IN_PROGRESS: 12
 lastUpdated: 2026-08-06
-currentTask: 11-settings-personalization (пачка 10 → 11 → 12, одобрено администратором; 10 выполнена и смержена)
-completedSchedules: [00-verify-setup, 01-auth, 02-courses-catalog, 03-course-editor, 06-analytics-dashboard, 05-checkout, 04-learning-player, 08-e2e-tests, 09-production-ready, 07-polish-animations, 10-design-overhaul-pixel-perfect]
+currentTask: 12-dashboard-shell-navigation (пачка 10 → 11 → 12, одобрено администратором; 10 и 11 выполнены и смержены)
+completedSchedules: [00-verify-setup, 01-auth, 02-courses-catalog, 03-course-editor, 06-analytics-dashboard, 05-checkout, 04-learning-player, 08-e2e-tests, 09-production-ready, 07-polish-animations, 10-design-overhaul-pixel-perfect, 11-settings-personalization]
 
 ## Что это значит
 
