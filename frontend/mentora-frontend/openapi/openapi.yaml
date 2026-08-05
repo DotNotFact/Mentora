@@ -309,10 +309,27 @@ paths:
               schema:
                 $ref: '#/components/schemas/VideoUploadResponse'
   /enrollments:
+    get:
+      tags: [enrollments]
+      operationId: listEnrollments
+      summary: Курсы, на которые записан текущий пользователь (с прогрессом)
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EnrollmentWithCourse'
     post:
       tags: [enrollments]
       operationId: createEnrollment
-      summary: Записать пользователя на курс
+      summary: Записать пользователя на курс (бесплатный или уже оплаченный)
+      security:
+        - bearerAuth: []
       requestBody:
         required: true
         content:
@@ -326,11 +343,35 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Enrollment'
+  /enrollments/{courseId}:
+    get:
+      tags: [enrollments]
+      operationId: getEnrollmentStatus
+      summary: Проверить, записан ли текущий пользователь на конкретный курс
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK — пользователь записан
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Enrollment'
+        '404':
+          description: Пользователь не записан на этот курс
   /payments/checkout:
     post:
       tags: [payments]
       operationId: createCheckoutSession
       summary: Создать сессию оплаты (Stripe Checkout)
+      security:
+        - bearerAuth: []
       requestBody:
         required: true
         content:
@@ -344,6 +385,26 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CheckoutSession'
+  /payments/sessions/{sessionId}:
+    get:
+      tags: [payments]
+      operationId: getCheckoutSessionStatus
+      summary: Статус сессии оплаты (поллинг после возврата со Stripe)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckoutSessionStatus'
   /analytics/instructor:
     get:
       tags: [analytics]
@@ -570,6 +631,20 @@ components:
           type: string
         progress:
           type: number
+    EnrollmentWithCourse:
+      type: object
+      required: [id, courseId, userId, progress, course]
+      properties:
+        id:
+          type: string
+        courseId:
+          type: string
+        userId:
+          type: string
+        progress:
+          type: number
+        course:
+          $ref: '#/components/schemas/Course'
     CheckoutRequest:
       type: object
       required: [courseId]
@@ -583,6 +658,23 @@ components:
         checkoutUrl:
           type: string
         sessionId:
+          type: string
+    CheckoutSessionStatusValue:
+      type: string
+      description: >
+        pending — оплата ещё не завершена (ждём вебхук/подтверждение от
+        Stripe); completed/failed/expired — финальные статусы, поллинг
+        останавливается.
+      enum: [pending, completed, failed, expired]
+    CheckoutSessionStatus:
+      type: object
+      required: [sessionId, status, courseId]
+      properties:
+        sessionId:
+          type: string
+        status:
+          $ref: '#/components/schemas/CheckoutSessionStatusValue'
+        courseId:
           type: string
     AnalyticsPeriod:
       type: string

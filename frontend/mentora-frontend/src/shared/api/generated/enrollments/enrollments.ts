@@ -9,11 +9,19 @@
 import * as axios from 'axios';
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 
-import type { Enrollment, EnrollmentRequest } from '../models';
+import type { Enrollment, EnrollmentRequest, EnrollmentWithCourse } from '../models';
 
 export const getEnrollments = (axiosInstance: AxiosInstance = axios.default) => {
   /**
-   * @summary Записать пользователя на курс
+   * @summary Курсы, на которые записан текущий пользователь (с прогрессом)
+   */
+  const listEnrollments = (
+    options?: AxiosRequestConfig,
+  ): Promise<AxiosResponse<EnrollmentWithCourse[]>> => {
+    return axiosInstance.get(`/enrollments`, options);
+  };
+  /**
+   * @summary Записать пользователя на курс (бесплатный или уже оплаченный)
    */
   const createEnrollment = (
     enrollmentRequest: EnrollmentRequest,
@@ -21,6 +29,17 @@ export const getEnrollments = (axiosInstance: AxiosInstance = axios.default) => 
   ): Promise<AxiosResponse<Enrollment>> => {
     return axiosInstance.post(`/enrollments`, enrollmentRequest, options);
   };
-  return { createEnrollment };
+  /**
+   * @summary Проверить, записан ли текущий пользователь на конкретный курс
+   */
+  const getEnrollmentStatus = (
+    courseId: string,
+    options?: AxiosRequestConfig,
+  ): Promise<AxiosResponse<Enrollment>> => {
+    return axiosInstance.get(`/enrollments/${courseId}`, options);
+  };
+  return { listEnrollments, createEnrollment, getEnrollmentStatus };
 };
+export type ListEnrollmentsResult = AxiosResponse<EnrollmentWithCourse[]>;
 export type CreateEnrollmentResult = AxiosResponse<Enrollment>;
+export type GetEnrollmentStatusResult = AxiosResponse<Enrollment>;
