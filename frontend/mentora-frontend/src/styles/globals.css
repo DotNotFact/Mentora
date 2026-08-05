@@ -38,3 +38,18 @@
 body {
   @apply bg-background text-foreground font-sans antialiased;
 }
+
+/* Отключает/сокращает все transition-*/animate-in-*/scroll-анимации
+   приложения до почти-нулевой длительности для пользователей с этой
+   настройкой ОС — см. schedule/07, критерий готовности. Один глобальный
+   переключатель вместо ручного prefers-reduced-motion в каждом компоненте. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

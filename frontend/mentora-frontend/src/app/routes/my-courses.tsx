@@ -8,7 +8,9 @@ function MyCoursesPage() {
   return (
     <AuthGuard>
       <PageContainer className="space-y-8">
-        <h1 className="text-foreground text-4xl font-bold tracking-tight">Мои курсы</h1>
+        <h1 className="text-foreground text-4xl leading-tight font-bold tracking-tight">
+          Мои курсы
+        </h1>
         <MyCoursesGrid />
       </PageContainer>
     </AuthGuard>

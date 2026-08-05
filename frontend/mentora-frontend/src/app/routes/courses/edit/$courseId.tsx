@@ -56,7 +56,7 @@ function CourseEditorPage({ courseId }: { courseId: string }) {
 
   return (
     <PageContainer className="space-y-6 py-8">
-      <h1 className="text-foreground text-4xl font-bold tracking-tight">
+      <h1 className="text-foreground text-4xl leading-tight font-bold tracking-tight">
         {isNew ? 'Новый курс' : 'Редактирование курса'}
       </h1>
 
@@ -85,7 +85,7 @@ function CourseEditorPage({ courseId }: { courseId: string }) {
                   <LessonEditor courseId={courseId} lesson={selectedLesson} />
                 </Suspense>
                 <div className="bg-card rounded-xl border p-4 shadow-sm">
-                  <h3 className="text-foreground mb-3 text-sm font-semibold tracking-tight">
+                  <h3 className="text-foreground mb-3 text-lg leading-snug font-semibold tracking-tight">
                     Видео урока
                   </h3>
                   <VideoUpload courseId={courseId} lesson={selectedLesson} />

@@ -20,7 +20,7 @@ export function LoginForm() {
 
   return (
     <div className="bg-surface mx-auto max-w-md rounded-xl p-6 shadow-sm">
-      <h1 className="text-foreground text-2xl font-semibold tracking-tight">Вход</h1>
+      <h1 className="text-foreground text-2xl leading-snug font-semibold tracking-tight">Вход</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="mt-6 space-y-4" noValidate>
           <FormField

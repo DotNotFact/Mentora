@@ -3,7 +3,7 @@
 status: AWAITING_ADMIN_COMMAND
 lastUpdated: 2026-08-05
 currentTask: none
-completedSchedules: [00-verify-setup, 01-auth, 02-courses-catalog, 03-course-editor, 06-analytics-dashboard, 05-checkout, 04-learning-player, 08-e2e-tests, 09-production-ready]
+completedSchedules: [00-verify-setup, 01-auth, 02-courses-catalog, 03-course-editor, 06-analytics-dashboard, 05-checkout, 04-learning-player, 08-e2e-tests, 09-production-ready, 07-polish-animations]
 
 ## Что это значит
 

@@ -14,18 +14,21 @@ import { dashboardIndexRoute } from '@app/routes/dashboard/index';
 import { useAuthStore } from '@features/auth/store';
 import { mockAxiosResponse } from '../../../test-utils';
 
-// Роуты дашбордов вызывают TanStack Query хуки поверх analyticsApi — мокаем
-// клиент, чтобы тесты роль-based доступа не делали реальных запросов
-// (зеркалим tests/components/features/auth/hooks/use-login.test.tsx).
+// Роуты дашбордов вызывают TanStack Query хуки поверх analyticsApi/
+// enrollmentsApi — мокаем клиент, чтобы тесты роль-based доступа не делали
+// реальных запросов (зеркалим tests/components/features/auth/hooks/use-login.test.tsx).
 vi.mock('@shared/api/client', () => ({
   authApi: { login: vi.fn(), register: vi.fn(), logout: vi.fn() },
   analyticsApi: {
     getInstructorAnalytics: vi.fn(),
     getAdminAnalytics: vi.fn(),
   },
+  enrollmentsApi: {
+    listEnrollments: vi.fn(),
+  },
 }));
 
-import { analyticsApi } from '@shared/api/client';
+import { analyticsApi, enrollmentsApi } from '@shared/api/client';
 
 function renderDashboardRoute(initialPath: string) {
   const loginRoute = createRoute({
@@ -77,6 +80,7 @@ describe('dashboard route role-gating', () => {
         enrollmentsByCourse: [],
       }),
     );
+    vi.mocked(enrollmentsApi.listEnrollments).mockResolvedValue(mockAxiosResponse([]));
   });
 
   it('redirects unauthenticated users away from /dashboard to /login', async () => {
@@ -93,8 +97,10 @@ describe('dashboard route role-gating', () => {
 
     renderDashboardRoute('/dashboard');
 
+    // dashboard/index.tsx переиспользует MyCoursesGrid (schedule/07) —
+    // с пустым списком записей рендерит её канонический empty-state.
     await waitFor(() =>
-      expect(screen.getByText('Пока нет активных курсов')).toBeInTheDocument(),
+      expect(screen.getByText('Вы пока не записаны ни на один курс')).toBeInTheDocument(),
     );
   });
 
