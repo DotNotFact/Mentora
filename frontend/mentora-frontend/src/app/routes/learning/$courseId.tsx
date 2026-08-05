@@ -1,6 +1,7 @@
 import { createRoute } from '@tanstack/react-router';
 import { AuthGuard } from '@app/auth-guard';
 import { PageContainer } from '@app/layout/page-container';
+import { LearningPage } from '@features/enrollment/components/learning-page';
 import { rootRoute } from '../__root';
 
 export const learningRoute = createRoute({
@@ -9,18 +10,16 @@ export const learningRoute = createRoute({
   component: LearningRoutePage,
 });
 
-// Честная заглушка: маршрут регистрируется в schedule/05 (успешная оплата/
-// запись должна вести на реальный, кликабельный /learning/:courseId — см.
-// критерии готовности schedule/05-checkout.md), но сам плеер обучения
-// (VideoPlayer/LessonSidebar/ProgressBar) реализуется в
-// schedule/04-learning-player — см. тот же приём в dashboard/index.tsx.
+// Тонкий роут: параметр из URL + AuthGuard. Проверка "записан ли
+// пользователь на курс" — уже внутри LearningPage (нужны и данные
+// enrollment-статуса для этого решения, не только факт логина).
 function LearningRoutePage() {
+  const { courseId } = learningRoute.useParams();
+
   return (
     <AuthGuard>
       <PageContainer>
-        <p className="text-muted-foreground text-sm">
-          Доступ к курсу открыт. Плеер обучения появится здесь в ближайшем обновлении.
-        </p>
+        <LearningPage courseId={courseId} />
       </PageContainer>
     </AuthGuard>
   );
