@@ -57,14 +57,21 @@ design-system.md` заявляет обратное. В Tailwind v4 источн
   `@theme` в `globals.css`, `tailwind.config.ts`, вероятно, просто
   мёртвый/дублирующий конфиг — проверить, действительно ли он на что-то
   влияет, и либо синхронизировать, либо удалить с пояснением в ADR.
-- **`.agents/skills/{animation-vocabulary,find-animation-opportunities}
-/SKILL.md` ссылаются на несуществующие вещи** — `--ease-out`/
-  `--ease-in-out`/`--ease-drawer` CSS-переменные и страницу `/vocabulary`,
-  которых в этом проекте нет (неадаптированная копия из
-  emilkowalski/skills). Если шаг 5 использует эти skills — начать с
-  правки самих skill-файлов под реальность Mentora (либо завести
-  `--ease-*` токены в `globals.css`, либо убрать ссылки на
-  несуществующее), не следовать им вслепую.
+- **Ссылки на несуществующие `--ease-*` переменные и файлы — системная
+  проблема во ВСЕМ наборе Emil Kowalski skills, не только в двух ранее
+  найденных.** Кроме `.agents/skills/{animation-vocabulary,
+find-animation-opportunities}/SKILL.md` (`--ease-out`/`--ease-in-out`/
+  `--ease-drawer`, страница `/vocabulary` — ничего из этого в проекте
+  нет), то же самое найдено в `review-animations/STANDARDS.md:33-35`,
+  `emil-design-eng/SKILL.md:114-120`, `improve-animations/AUDIT.md:31-33`,
+  и особенно `improve-animations/PLAN-TEMPLATE.md:32,42` — утверждает
+  "Easing tokens live in `src/styles/tokens.css`", а такого файла в
+  проекте вообще нет (`globals.css` — единственный файл токенов, и в нём
+  сейчас **ноль** `--ease-*` переменных). Если шаг 5 использует
+  какой-либо из этих skills — начать с правки самих skill-файлов под
+  реальность Mentora (завести `--ease-*` токены в `globals.css` и
+  поправить все шесть файлов на реальный путь, либо убрать ссылки на
+  несуществующее), не следовать им вслепую ни в одном из шести файлов.
 
 ## Цель
 
