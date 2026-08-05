@@ -187,6 +187,12 @@ paths:
       tags: [analytics]
       operationId: getInstructorAnalytics
       summary: Аналитика инструктора (доходы/зачисления)
+      parameters:
+        - name: period
+          in: query
+          description: Предустановленный период агрегации. По умолчанию 30d.
+          schema:
+            $ref: '#/components/schemas/AnalyticsPeriod'
       responses:
         '200':
           description: OK
@@ -194,6 +200,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InstructorAnalytics'
+  /analytics/admin:
+    get:
+      tags: [analytics]
+      operationId: getAdminAnalytics
+      summary: Агрегированная аналитика платформы (админ)
+      parameters:
+        - name: period
+          in: query
+          description: Предустановленный период агрегации. По умолчанию 30d.
+          schema:
+            $ref: '#/components/schemas/AnalyticsPeriod'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminAnalytics'
 components:
   securitySchemes:
     bearerAuth:
@@ -339,11 +363,97 @@ components:
           type: string
         sessionId:
           type: string
+    AnalyticsPeriod:
+      type: string
+      description: Предустановленный период агрегации аналитики (без произвольного диапазона дат).
+      enum: [7d, 30d, 90d]
+    RevenuePoint:
+      type: object
+      required: [date, amount]
+      properties:
+        date:
+          type: string
+          format: date
+        amount:
+          type: number
+    CourseEnrollmentPoint:
+      type: object
+      required: [courseId, courseTitle, enrollments]
+      properties:
+        courseId:
+          type: string
+        courseTitle:
+          type: string
+        enrollments:
+          type: integer
     InstructorAnalytics:
       type: object
-      required: [totalRevenue, totalEnrollments]
+      required:
+        [
+          totalRevenue,
+          totalEnrollments,
+          revenueChangePercent,
+          enrollmentsChangePercent,
+          revenueByPeriod,
+          enrollmentsByCourse,
+        ]
       properties:
         totalRevenue:
           type: number
         totalEnrollments:
           type: integer
+        revenueChangePercent:
+          type: number
+          description: Изменение дохода в % относительно предыдущего периода той же длины.
+        enrollmentsChangePercent:
+          type: number
+          description: Изменение числа зачислений в % относительно предыдущего периода той же длины.
+        revenueByPeriod:
+          type: array
+          items:
+            $ref: '#/components/schemas/RevenuePoint'
+        enrollmentsByCourse:
+          type: array
+          items:
+            $ref: '#/components/schemas/CourseEnrollmentPoint'
+    AdminAnalytics:
+      type: object
+      required:
+        [
+          totalRevenue,
+          totalUsers,
+          totalCourses,
+          totalEnrollments,
+          revenueChangePercent,
+          userGrowthPercent,
+          revenueByPeriod,
+          enrollmentsByCourse,
+        ]
+      properties:
+        totalRevenue:
+          type: number
+          description: Суммарный доход платформы за период.
+        totalUsers:
+          type: integer
+          description: Общее число зарегистрированных пользователей.
+        totalCourses:
+          type: integer
+          description: Общее число опубликованных курсов на платформе.
+        totalEnrollments:
+          type: integer
+          description: Общее число зачислений за период.
+        revenueChangePercent:
+          type: number
+          description: Изменение дохода в % относительно предыдущего периода той же длины.
+        userGrowthPercent:
+          type: number
+          description: Прирост пользователей в % относительно предыдущего периода той же длины.
+        revenueByPeriod:
+          type: array
+          items:
+            $ref: '#/components/schemas/RevenuePoint'
+        enrollmentsByCourse:
+          type: array
+          items:
+            $ref: '#/components/schemas/CourseEnrollmentPoint'
+          description: Топ курсов платформы по числу зачислений за период.

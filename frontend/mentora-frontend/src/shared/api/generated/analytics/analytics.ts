@@ -9,17 +9,39 @@
 import * as axios from 'axios';
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 
-import type { InstructorAnalytics } from '../models';
+import type {
+  AdminAnalytics,
+  GetAdminAnalyticsParams,
+  GetInstructorAnalyticsParams,
+  InstructorAnalytics,
+} from '../models';
 
 export const getAnalytics = (axiosInstance: AxiosInstance = axios.default) => {
   /**
    * @summary Аналитика инструктора (доходы/зачисления)
    */
   const getInstructorAnalytics = (
+    params?: GetInstructorAnalyticsParams,
     options?: AxiosRequestConfig,
   ): Promise<AxiosResponse<InstructorAnalytics>> => {
-    return axiosInstance.get(`/analytics/instructor`, options);
+    return axiosInstance.get(`/analytics/instructor`, {
+      ...options,
+      params: { ...params, ...options?.params },
+    });
   };
-  return { getInstructorAnalytics };
+  /**
+   * @summary Агрегированная аналитика платформы (админ)
+   */
+  const getAdminAnalytics = (
+    params?: GetAdminAnalyticsParams,
+    options?: AxiosRequestConfig,
+  ): Promise<AxiosResponse<AdminAnalytics>> => {
+    return axiosInstance.get(`/analytics/admin`, {
+      ...options,
+      params: { ...params, ...options?.params },
+    });
+  };
+  return { getInstructorAnalytics, getAdminAnalytics };
 };
 export type GetInstructorAnalyticsResult = AxiosResponse<InstructorAnalytics>;
+export type GetAdminAnalyticsResult = AxiosResponse<AdminAnalytics>;

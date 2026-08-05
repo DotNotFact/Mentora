@@ -9,13 +9,20 @@
 import type { CourseEnrollmentPoint } from './courseEnrollmentPoint';
 import type { RevenuePoint } from './revenuePoint';
 
-export interface InstructorAnalytics {
+export interface AdminAnalytics {
+  /** Суммарный доход платформы за период. */
   totalRevenue: number;
+  /** Общее число зарегистрированных пользователей. */
+  totalUsers: number;
+  /** Общее число опубликованных курсов на платформе. */
+  totalCourses: number;
+  /** Общее число зачислений за период. */
   totalEnrollments: number;
   /** Изменение дохода в % относительно предыдущего периода той же длины. */
   revenueChangePercent: number;
-  /** Изменение числа зачислений в % относительно предыдущего периода той же длины. */
-  enrollmentsChangePercent: number;
+  /** Прирост пользователей в % относительно предыдущего периода той же длины. */
+  userGrowthPercent: number;
   revenueByPeriod: RevenuePoint[];
+  /** Топ курсов платформы по числу зачислений за период. */
   enrollmentsByCourse: CourseEnrollmentPoint[];
 }
