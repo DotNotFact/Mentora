@@ -6,8 +6,18 @@
  *
  * OpenAPI spec version: 0.0.1
  */
+import type { CourseCategory } from './courseCategory';
+import type { CourseSort } from './courseSort';
 
 export type ListCoursesParams = {
   page?: number;
   pageSize?: number;
+  /**
+   * Полнотекстовый поиск по названию/описанию курса
+   */
+  search?: string;
+  category?: CourseCategory;
+  priceMin?: number;
+  priceMax?: number;
+  sort?: CourseSort;
 };

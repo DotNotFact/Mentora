@@ -100,6 +100,27 @@ paths:
           in: query
           schema:
             type: integer
+        - name: search
+          in: query
+          description: Полнотекстовый поиск по названию/описанию курса
+          schema:
+            type: string
+        - name: category
+          in: query
+          schema:
+            $ref: '#/components/schemas/CourseCategory'
+        - name: priceMin
+          in: query
+          schema:
+            type: number
+        - name: priceMax
+          in: query
+          schema:
+            type: number
+        - name: sort
+          in: query
+          schema:
+            $ref: '#/components/schemas/CourseSort'
       responses:
         '200':
           description: OK
@@ -233,7 +254,18 @@ components:
       enum: [student, instructor, admin]
     Course:
       type: object
-      required: [id, title, description, price, instructorId]
+      required:
+        [
+          id,
+          title,
+          description,
+          price,
+          instructorId,
+          instructorName,
+          category,
+          thumbnailUrl,
+          createdAt,
+        ]
       properties:
         id:
           type: string
@@ -245,6 +277,22 @@ components:
           type: number
         instructorId:
           type: string
+        instructorName:
+          type: string
+        category:
+          $ref: '#/components/schemas/CourseCategory'
+        thumbnailUrl:
+          type: string
+          format: uri
+        createdAt:
+          type: string
+          format: date-time
+    CourseCategory:
+      type: string
+      enum: [development, design, business, marketing, it, other]
+    CourseSort:
+      type: string
+      enum: [newest, price_asc, price_desc, popular]
     CoursePage:
       type: object
       required: [items, total, page, pageSize]

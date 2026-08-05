@@ -2,6 +2,7 @@ import axios, { type AxiosError, type InternalAxiosRequestConfig } from 'axios';
 import { API_URL } from '@shared/lib/constants';
 import { tokenStorage } from '@shared/lib/token-storage';
 import { getAuth } from './generated/auth/auth';
+import { getCourses } from './generated/courses/courses';
 
 interface RetryableRequestConfig extends InternalAxiosRequestConfig {
   _retry?: boolean;
@@ -16,6 +17,7 @@ export const apiClient = axios.create({
 // чтобы не зациклиться на собственном response-интерсепторе apiClient.
 const refreshClient = axios.create({ baseURL: API_URL });
 export const authApi = getAuth(apiClient);
+export const coursesApi = getCourses(apiClient);
 const authRefreshApi = getAuth(refreshClient);
 
 const AUTH_ENDPOINTS = ['/auth/login', '/auth/register', '/auth/refresh'];
