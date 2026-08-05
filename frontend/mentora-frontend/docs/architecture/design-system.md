@@ -13,5 +13,14 @@
 ## Реализация токенов
 
 CSS-переменные темы определены в `src/styles/globals.css` (`@theme` блок
-Tailwind v4) и продублированы в `tailwind.config.ts` → `theme.extend.colors`
-для совместимости с shadcn/ui и утилитами вида `bg-primary`.
+Tailwind v4) — это единственный актуальный источник токенов для
+утилит вида `bg-primary`.
+
+`tailwind.config.ts` содержит устаревшую плоскую палитру (без
+`card`/`popover`/`secondary`/`border`/`input`/`ring`/`-foreground`-пар,
+которые уже есть в `globals.css`) — файл НЕ синхронизирован и, судя по
+всему, избыточен при `@tailwindcss/vite` (Tailwind v4 берёт тему из
+`@theme` в CSS, не из JS-конфига). Найдено при аудите 2026-08-05,
+не исправлено здесь намеренно — см.
+`schedule/10-design-overhaul-pixel-perfect.md`, раздел "Найдено при
+подготовке задачи", для решения (синхронизировать или удалить).
