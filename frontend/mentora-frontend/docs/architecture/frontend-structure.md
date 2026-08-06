@@ -62,11 +62,13 @@ frontend/mentora-frontend/
 │   │   │                          и редактора урока
 │   │   ├── not-found.tsx       — NotFoundPage, defaultNotFoundComponent
 │   │   │                          (готово, schedule/09)
-│   │   └── layout/              — root-layout, footer (готово, минимально);
-│   │                              header — auth-aware (войти/аватар+выйти,
-│   │                              готово); sidebar — Planned (не
-│   │                              понадобился ни одной странице — у
-│   │                              редактора курса своя ChapterList-aside)
+│   │   └── layout/              — root-layout (dashboard shell), footer,
+│   │                              top-bar (компактная замена прежнего
+│   │                              header — профиль/выход/персонализация),
+│   │                              sidebar (готово, schedule/12 — постоянная
+│   │                              навигация по роли, скользящий активный
+│   │                              индикатор), mobile-nav (bottom nav
+│   │                              <640px), nav-items (пункты меню по роли)
 │   │
 │   ├── shared/                 — переиспользуемый код без бизнес-логики
 │   │   ├── ui/                 — shadcn/ui компоненты (только через CLI):

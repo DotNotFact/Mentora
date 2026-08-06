@@ -141,8 +141,10 @@ describe('dashboard route role-gating', () => {
 
     renderDashboardRoute('/dashboard/admin');
 
+    // getByRole('heading', ...), не getByText — с schedule/12 тот же текст
+    // дублируется в пункте меню Sidebar (видимом только для admin).
     await waitFor(() =>
-      expect(screen.queryByText('Аналитика платформы')).not.toBeInTheDocument(),
+      expect(screen.queryByRole('heading', { name: 'Аналитика платформы' })).not.toBeInTheDocument(),
     );
   });
 
@@ -154,9 +156,12 @@ describe('dashboard route role-gating', () => {
 
     renderDashboardRoute('/dashboard/admin');
 
-    // AdminDashboard — тоже React.lazy, см. комментарий выше.
-    await waitFor(() => expect(screen.getByText('Аналитика платформы')).toBeInTheDocument(), {
-      timeout: 3000,
-    });
+    // AdminDashboard — тоже React.lazy, см. комментарий выше. getByRole
+    // ('heading', ...) — с schedule/12 текст дублируется в пункте меню.
+    await waitFor(
+      () =>
+        expect(screen.getByRole('heading', { name: 'Аналитика платформы' })).toBeInTheDocument(),
+      { timeout: 3000 },
+    );
   });
 });
