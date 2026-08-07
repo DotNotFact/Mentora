@@ -24,7 +24,10 @@ export function RootLayout({ children }: RootLayoutProps) {
   return (
     <div className="flex min-h-screen">
       {showNav && (
-        <Sidebar items={items} className="border-border/60 shrink-0 border-r sm:w-16 lg:w-64" />
+        <Sidebar
+          items={items}
+          className="bg-sidebar border-border/60 shrink-0 border-r sm:w-16 lg:w-64"
+        />
       )}
       <div className="flex min-h-screen flex-1 flex-col">
         <TopBar />

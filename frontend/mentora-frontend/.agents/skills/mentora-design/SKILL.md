@@ -5,47 +5,52 @@ description: Mentora LMS design system constraints. ALWAYS apply when creating o
 
 # Mentora Design System
 
-> Craft-level baseline: modern shadcn/ui-based SaaS/LMS products circa
-> 2025-2026 (generous whitespace, a real elevation scale instead of ad-hoc
-> `shadow-sm`, a consistent radius scale, tight heading tracking, restrained
-> motion, well-designed empty/loading states). Mentora's palette is
-> themeable since schedule/11 (2026-08-06) — see "Themes" below — but the
-> STRUCTURE is fixed: indigo primary/amber accent by default, and every
-> theme keeps the same token roles (primary/accent/success/destructive
-> stay semantically stable across themes). Don't introduce ad-hoc new
-> colors outside the theme system to chase this look; the lift comes from
-> spacing, elevation, typography and state design, not new hues.
+> Craft-level baseline: a warm-neutral, minimal-radius dashboard aesthetic
+> (2026-08-07 redesign — see "Themes") — flat, low-contrast surfaces, near-
+> square corners, restrained near-invisible shadows, ONE saturated accent
+> color popping against an otherwise desaturated warm-gray UI. This is a
+> deliberate pivot away from this file's earlier "AAA-glow/rounded-2xl"
+> guidance (softer corners, colored glow shadows) — flat and sharp is now
+> correct, not a regression. Mentora's palette is themeable since
+> schedule/11 (2026-08-06) — see "Themes" below — but the STRUCTURE is
+> fixed: violet primary/amber accent by default, and every theme keeps the
+> same token roles (primary/accent/success/destructive stay semantically
+> stable across themes). Don't introduce ad-hoc new colors outside the
+> theme system to chase this look; the lift comes from spacing, typography
+> and state design, not new hues or shadow tricks.
 
 ## Colors
 
 Brand/status tokens — the ones you reach for directly when building UI.
-Values below are the `dark-indigo` theme (the default since schedule/11 —
-NOT light, despite this table historically showing light values). See
-"Themes" for the other 4 presets and how values swap at runtime:
+Values below are the `dark-purple` theme (the default since 2026-08-06,
+re-based 2026-08-07 onto a warm-neutral reference palette — see
+"Themes"). See "Themes" for the other 4 presets and how values swap at
+runtime:
 
-| Token            | Value                 | Usage                         |
-| ---------------- | --------------------- | ----------------------------- |
-| primary          | #6366F1 (indigo-500)  | Buttons, links, active states |
-| primary-hover    | #818CF8 (indigo-400, lighter than base — dark-mode hover brightens) | Hover (named-token cases only) |
-| accent           | #F59E0B (amber-500)   | CTAs, progress, badges — same across all themes |
-| background       | #020617 (slate-950)   | Page background               |
-| foreground       | #F8FAFC (slate-50)    | Primary text                  |
-| muted-foreground | #94A3B8 (slate-400)   | Secondary text                |
-| destructive      | #EF4444 (red-500)     | Errors — same across all themes |
-| success          | #10B981 (emerald-500) | Completed states — same across all themes |
+| Token            | Value                                                                                                  | Usage                                           |
+| ---------------- | ------------------------------------------------------------------------------------------------------ | ----------------------------------------------- |
+| primary          | #8B5CF6 (violet-500)                                                                                   | Buttons, links, active states                   |
+| primary-hover    | #A78BFA (violet-400, lighter than base — dark-mode hover brightens)                                    | Hover (named-token cases only)                  |
+| accent           | #F59E0B (amber-500)                                                                                    | CTAs, progress, badges — same across all themes |
+| background       | #262624 (warm stone, near-black with a faint yellow/olive cast — NOT neutral slate, NOT violet-tinted) | Page background                                 |
+| foreground       | #C3C0B6 (warm off-white/cream, not pure white)                                                         | Primary text                                    |
+| muted-foreground | #B7B5A9 (dimmer warm gray)                                                                             | Secondary text                                  |
+| destructive      | #EF4444 (red-500)                                                                                      | Errors — same across all themes                 |
+| success          | #10B981 (emerald-500)                                                                                  | Completed states — same across all themes       |
 
 shadcn/ui contract tokens — every color above (and below) also has its
 `-foreground` pair generated in `src/styles/globals.css`; use these when
 composing shadcn primitives (Button, Card, Dialog, Input…), not just the
 brand table:
 
-| Token          | Value               | Usage                                   |
-| -------------- | ------------------- | --------------------------------------- |
-| card / popover | #0F172A (slate-900) | Cards, modals, popovers (= surface) — one step lighter than background, not black |
-| secondary      | #1E293B (slate-800) | Low-emphasis buttons/badges backgrounds |
-| muted          | #1E293B (slate-800) | Subtle backgrounds (disabled, skeleton) |
-| border, input  | #334155 (slate-700) | Borders, input outlines                 |
-| ring           | #6366F1 (= primary) | Focus ring                              |
+| Token          | Value               | Usage                                                                                                                                                         |
+| -------------- | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| card / popover | #262624 / #30302E   | Card = SAME value as background (flat, not "raised" — see "Themes"); popover one step lighter, for menus/dialogs that need to visually separate from the page |
+| sidebar        | #1F1E1D             | Sidebar/MobileNav background — darker than page background, recedes rather than raises (new token, see "Themes")                                              |
+| secondary      | #30302E             | Low-emphasis buttons/badges backgrounds                                                                                                                       |
+| muted          | #1B1B19             | Subtle backgrounds (disabled, skeleton) — darker/"sunken", not lighter, than card                                                                             |
+| border, input  | #3E3E38 / #52514A   | Borders, input outlines                                                                                                                                       |
+| ring           | #8B5CF6 (= primary) | Focus ring                                                                                                                                                    |
 
 Не путать `muted` (светлый фон) и `muted-foreground` (серый текст) —
 это разные токены с разными значениями, несмотря на общий "muted"
@@ -72,15 +77,26 @@ intentional, don't add `accent-hover`, `success-hover`, etc. to
 
 5 готовых тем (schedule/11, 2026-08-06) — `shared/config/themes.ts`
 (метаданные для UI: id/название/превью) + `src/styles/globals.css`
-(фактические значения токенов). Дефолт — `dark-indigo`, НЕ светлая тема.
+(фактические значения токенов). Дефолт — `dark-purple`, НЕ светлая тема.
 
-| id            | primary   | Поверхности                                     |
-| ------------- | --------- | ------------------------------------------------ |
-| dark-indigo   | #6366F1   | background #020617, card #0F172A (дефолт)         |
-| dark-green    | #10B981   | те же тёмные поверхности, что и dark-indigo       |
-| dark-red      | #F43F5E   | те же тёмные поверхности                          |
-| dark-purple   | #8B5CF6   | те же тёмные поверхности                          |
-| light-indigo  | #6366F1   | background #F8FAFC, card #FFFFFF (исходная светлая палитра) |
+**2026-08-07 — 2й проход редизайна `dark-purple`.** Администратор указал
+конкретный дизайн-референс (тёплая нейтральная палитра, почти прямые
+углы, едва заметные тени) и попросил взять его палитру/структуру за
+основу, заменив его оранжевый primary на фиолетовый. Токены референса
+извлечены из его живого CSS (computed `oklch()` → hex) и адаптированы
+под роли токенов Mentora — palette values ARE the reference's actual
+tokens with only the primary hue swapped, structure otherwise unchanged:
+теплый серый (warm stone, едва жёлтый подтон) вместо холодного slate
+и вместо фиолетового тинта 1го прохода (2026-08-06, `#0F0A19`/`#1A1425`
+— полностью заменён, тот вариант устарел).
+
+| id           | primary | Поверхности                                                                                         |
+| ------------ | ------- | --------------------------------------------------------------------------------------------------- |
+| dark-purple  | #8B5CF6 | тёплые нейтральные (warm stone): background/card #262624, sidebar #1F1E1D, popover #30302E (дефолт) |
+| dark-indigo  | #6366F1 | нейтральные холодные (slate): background #020617, card #0F172A                                      |
+| dark-green   | #10B981 | те же холодные slate-поверхности, что и dark-indigo                                                 |
+| dark-red     | #F43F5E | те же холодные slate-поверхности                                                                    |
+| light-indigo | #6366F1 | background #F8FAFC, card #FFFFFF (исходная светлая палитра)                                         |
 
 Механика: `@theme` в `globals.css` объявляет `--color-primary: var(--theme-primary)`
 и т.д. (не прямые hex-значения) — Tailwind генерирует утилиты
@@ -89,28 +105,52 @@ intentional, don't add `accent-hover`, `success-hover`, etc. to
 темы = смена одного атрибута на `<html>`, без пересборки CSS и без
 перезагрузки страницы. `accent`/`success`/`destructive` НЕ варьируются
 по темам (остаются amber/emerald/red во всех пяти) — только
-`primary`/`primary-hover`/`ring` (все три вместе) и весь набор
-"тёмная/светлая" поверхностей (background/card/popover/secondary/muted/
-border/input/foreground/-foreground-пары).
+`primary`/`primary-hover`/`ring`, весь набор поверхностей
+(background/card/popover/sidebar/secondary/muted/border/input/foreground/
+-foreground-пары), и — только для `dark-purple`, глобально, не per-theme
+— радиус/тени (см. "Border radius" и "Elevation" ниже).
 
-Тёмные поверхности — НЕ инверсия светлой палитры "в лоб" и не чистый
-чёрный: `background` #020617 (slate-950), `card`/`popover` на один шаг
-светлее — #0F172A (slate-900), `secondary`/`muted` — #1E293B
-(slate-800), `border`/`input` — #334155 (slate-700). Приподнятые
-поверхности читаются заметно светлее фона, как и требует "не инверсия
-в лоб" — не полагаться на одну лишь тень для разделения уровней в
-тёмном режиме.
+Структура поверхностей `dark-purple` — намеренно ПЛОСКАЯ, не "приподнятая
+панель поверх фона" (в отличие от трёх нейтральных тёмных тем и правила
+"elevation" в старых записях этого файла):
+
+- `card` буквально равен `background` (`#262624` = `#262624`) — карточки
+  НЕ на шаг светлее страницы, разделяются только тонким `border`, не
+  контрастом фона. `popover`/dropdown-меню — на шаг светлее (`#30302E`),
+  им нужно визуально оторваться от страницы под собой.
+- `muted` (`#1B1B19`) ТЕМНЕЕ `card`, а не светлее — "утопленная" панель
+  (disabled/skeleton-фон), инверсия привычной иерархии.
+- `sidebar` (`#1F1E1D`, новый токен) — отдельная, более тёмная
+  поверхность: сайдбар/`MobileNav` "уходят" в тень, не служат ещё одной
+  приподнятой панелью, как раньше (`app/layout/root-layout.tsx`,
+  `mobile-nav.tsx` — `bg-sidebar`).
+
+Три нейтральные тёмные темы (`dark-indigo`, `dark-green`, `dark-red`,
+не тронуты этим проходом) сохраняют старую логику: `card`/`popover` на
+шаг светлее `background`, `muted` на шаг светлее `card`, `sidebar` =
+`background` (без отдельной "тени") — приподнятые поверхности читаются
+заметно светлее фона, обычная тёмная-тема иерархия. `light-indigo`
+получила `sidebar` = `muted` (едва заметно темнее страницы), остальное
+не менялось.
 
 Добавляя новую тему: копировать структуру существующего `[data-theme=
-'dark-*']`-блока в `globals.css`, добавить запись в `THEMES` в
-`themes.ts`, не менять `@theme`-блок (он не привязан к конкретной теме).
+'dark-*']`-блока в `globals.css` (не забыть `--theme-sidebar` — без
+него `bg-sidebar` не резолвится), добавить запись в `THEMES` в
+`themes.ts`, не менять `@theme`-блок (радиус/тени там — общие для всех
+тем, primary/поверхности — нет).
 
 ## Elevation (shadow scale)
 
-Tailwind's default shadow scale, given fixed meaning. Never reach for a
-shadow utility outside this table without a documented reason — random
-`shadow-md`/`shadow-lg` sprinkled per-component is exactly the "not
-polished" flatness this scale exists to fix.
+`shadow-*` utilities are overridden globally in `globals.css`'s `@theme`
+block (`--shadow-xs` through `--shadow-2xl`) to flat, neutral, low-opacity
+values (2026-08-07 redesign) — every `shadow-sm`/`shadow-md`/etc. usage
+across the app already renders flat automatically, no per-component
+change needed. **Never write a colored/tinted shadow** (no
+`shadow-[...rgba(primary...)]` "glow" — that pattern existed here before
+2026-08-07 and is now explicitly removed; `aaa-ui-polish`'s "tilt+glow+
+lift" card-hover guidance is overridden for this project — keep tilt+lift
+motion, drop glow). Never reach for a shadow utility outside this table
+without a documented reason.
 
 | Level | Utility            | When                                                                                                                                   |
 | ----- | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------- |
@@ -127,25 +167,28 @@ Rules:
 - Pair every elevation change with the existing motion rule
   (`transition-all duration-150` / `transition-shadow duration-150`) — an
   instant shadow snap is one of the cheapest-looking things a UI can do.
-- Optional "glow" accent for a single emphasized surface per screen (the
-  featured `PricingCard`, a primary hero CTA, an "upgrade" callout) —
-  layer a tinted shadow on top of the normal level instead of inventing a
-  level 5: `shadow-[0_8px_24px_-4px_rgba(99,102,241,0.25)]` (the rgba is
-  `--color-primary` at 25% — keep it at 20-25%, never opaque). Use for at
-  most one element in view; if everything glows, nothing does.
-- Dark, heavy shadows (`shadow-2xl` and beyond, or opacity above ~25% on a
-  tinted shadow) are not part of this system — Mentora's surfaces are
-  light and the palette is bright; heavy shadows read muddy against it.
+- Emphasis for a single featured surface per screen (the featured
+  `PricingCard`, a primary hero CTA) comes from a thicker/colored
+  **border** (`border-2 border-primary`, see "Surfaces & cards") or a
+  soft background wash (see `PageHeader`'s `from-primary/15` gradient),
+  never from a colored shadow — shadows stay neutral at every level.
 
 ## Border radius
 
-| Scale | Utility        | Px   | Usage                                                                                                                            |
-| ----- | -------------- | ---- | -------------------------------------------------------------------------------------------------------------------------------- |
-| xs    | `rounded-md`   | 6px  | Buttons, inputs, badges/chips, checkboxes, tabs, dropdown/select items — anything you click or type into.                        |
-| sm    | `rounded-lg`   | 8px  | Toolbars, alert/banner containers, small popovers, tooltips.                                                                     |
-| md    | `rounded-xl`   | 12px | Cards, panels, dialogs/sheets, media thumbnails (course cover, video poster).                                                    |
-| lg    | `rounded-2xl`  | 16px | Large marketing/feature surfaces, empty-state containers, hero panels — bigger surface, bigger radius.                           |
-| full  | `rounded-full` | —    | Avatars, status dots, pill badges you deliberately want pill-shaped, progress bar track & indicator, icon-only circular buttons. |
+Near-square corners (2026-08-07 redesign, reference-driven — was a much
+softer 6/8/12/16px scale before). Overridden globally via `--radius-md`/
+`--radius-lg`/`--radius-xl`/`--radius-2xl` in `globals.css`'s `@theme`
+block — every existing `rounded-md`/`rounded-lg`/`rounded-xl`/
+`rounded-2xl` usage in the codebase already renders at the new sharper
+values automatically, no per-component change needed:
+
+| Scale | Utility        | Px  | Usage                                                                                                                                                                           |
+| ----- | -------------- | --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| xs    | `rounded-md`   | 2px | Buttons, inputs, badges/chips, checkboxes, tabs, dropdown/select items — anything you click or type into.                                                                       |
+| sm    | `rounded-lg`   | 3px | Toolbars, alert/banner containers, small popovers, tooltips.                                                                                                                    |
+| md    | `rounded-xl`   | 4px | Cards, panels, dialogs/sheets, media thumbnails (course cover, video poster).                                                                                                   |
+| lg    | `rounded-2xl`  | 6px | Large marketing/feature surfaces, empty-state containers, hero panels — bigger surface, bigger radius (still nearly square).                                                    |
+| full  | `rounded-full` | —   | Avatars, status dots, pill badges you deliberately want pill-shaped, progress bar track & indicator, icon-only circular buttons. Unaffected by the override — pills stay pills. |
 
 A surface never mixes radius sizes with its own children at the same
 nesting level (e.g. a `rounded-xl` card must not contain a
@@ -231,21 +274,25 @@ choice.
   `Card` primitive's default (`shared/ui/card.tsx`) — don't override it
   per-component unless the component is intentionally borderless (see
   "Featured/emphasized surface" below for the one exception pattern).
+  Note: with the 2026-08-07 `dark-purple` palette, `card` background
+  literally equals `background` (see "Themes") — the border is doing
+  MORE of the separation work than it used to, don't skip it thinking
+  the shadow alone will read as a distinct surface.
 - **Resting → hover**: only cards that are themselves a link/button
   (clickable as a whole — `CourseCard`) get a hover elevation change
   (`hover:shadow-md`) and a scale/tilt treatment. `CourseCard` was
   historically the only component allowed `hover:scale-[1.02]` — as of
   `.agents/skills/aaa-ui-polish/SKILL.md` (2026-08-06) that limit is
-  lifted for UI built under that skill (any clickable card may use the
-  richer tilt+glow+lift pattern documented there), see its override
-  table for the full list of what it supersedes here. Cards that just
-  contain content (a settings panel, a stat tile, a dashboard summary
-  card) stay at level 1 always — they don't hover-lift, because they're
-  not clickable as a unit.
+  lifted for UI built under that skill (any clickable card may use a
+  tilt+lift hover), but see "Elevation" above — the "glow" half of that
+  skill's "tilt+glow+lift" pattern is overridden here, shadows stay
+  neutral even on hover. Cards that just contain content (a settings
+  panel, a stat tile, a dashboard summary card) stay at level 1 always —
+  they don't hover-lift, because they're not clickable as a unit.
 - **Featured/emphasized surface**: `border-2 border-primary` instead of
-  the default 1px border (see `PricingCard` below), optionally combined
-  with the primary glow shadow from the elevation section. Use for at
-  most one card in a set (the recommended plan, the featured course).
+  the default 1px border (see `PricingCard` below). Use for at most one
+  card in a set (the recommended plan, the featured course) — no glow
+  shadow layered on top, the thicker colored border alone is the signal.
 - **Nesting**: a card inside a card is a smell — prefer a `border-t`
   divider or `bg-muted` inset block instead of a second `shadow-sm`
   surface stacked on the first one.
@@ -314,12 +361,26 @@ legitimately empty, not just there):
 
 ## Component patterns
 
-CourseCard: rounded-xl border shadow-sm hover:shadow-md, 16:9 AspectRatio,
-line-clamp-2 title, price bottom-right, Progress bar if enrolled.
-Extended AAA hover (tilt+glow+lift) per aaa-ui-polish — no longer the
-only component allowed `hover:scale-[1.02]`.
-PricingCard: rounded-xl border-2, border-primary + optional primary glow
-shadow if featured, badge "Популярный".
+PageHeader (`app/layout/page-header.tsx`, 2026-08-07): the standard top-of-
+page banner — `rounded-2xl border bg-gradient-to-br from-primary/15
+via-card to-card p-8 shadow-sm`, an optional large faded decorative icon
+(`text-primary/10`, absolute top-right), title (H1) + optional
+description + optional right-aligned `actions` slot (period selectors,
+CTA buttons). Replaces a bare `<h1>` sitting directly on the page
+background for any route-level page (dashboards, catalog, "Мои курсы",
+settings, course editor) — use it there instead of hand-rolling the
+title block. It's the one deliberately "featured" surface a page gets —
+a soft background gradient wash, not a glow shadow (see "Elevation");
+pages that already have a bespoke hero (course detail's thumbnail +
+price card) keep their own treatment instead of also using `PageHeader`
+— don't stack two hero patterns on one page.
+CourseCard: rounded-xl border shadow-sm hover:shadow-md (flat, no tint —
+see "Elevation"), 16:9 AspectRatio, line-clamp-2 title, price
+bottom-right, Progress bar if enrolled. Tilt+lift hover per
+aaa-ui-polish (glow half of that skill's pattern overridden — see
+"Elevation") — no longer the only component allowed `hover:scale-[1.02]`.
+PricingCard: rounded-xl border-2, border-primary if featured (no glow
+shadow — see "Elevation"), badge "Популярный".
 VideoPlayer: @vidstack/react, aspect-video, custom Mentora theme.
 RichTextEditor: TipTap, min-h-[200px], sticky toolbar.
 ChapterList: @dnd-kit/sortable, drag handle, nested chapters→lessons.
@@ -354,14 +415,17 @@ collapsible sidebar. Desktop >1024px: 3 columns, fixed sidebar.
 ## Rules
 
 shadcn/ui as base, customize via variants. CSS variables for all colors —
-never hardcode a hex value in a component (the one exception is a tinted
-shadow's rgba, which must match an existing token's value, as in the
-elevation section above).
+never hardcode a hex value in a component. Never write a colored/tinted
+shadow (no glow) — shadows are flat and neutral at every level, see
+"Elevation".
 Radius: rounded-md controls/inputs/badges, rounded-lg small chrome,
 rounded-xl cards/dialogs, rounded-2xl large surfaces, rounded-full
-avatars/pills — see full scale above.
+avatars/pills — see full scale above (near-square since 2026-08-07,
+2-6px, overridden globally in `@theme` — don't hardcode a different px
+value locally).
 Elevation: shadow-sm resting, shadow-md hover, shadow-lg
-popovers/dropdowns/toasts, shadow-xl modals — see full scale above, and
+popovers/dropdowns/toasts, shadow-xl modals — see full scale above
+(flat/neutral since 2026-08-07, overridden globally in `@theme`), and
 move at most one level per interaction.
 Every heading gets `tracking-tight` and an explicit line-height, not just
 a font size.

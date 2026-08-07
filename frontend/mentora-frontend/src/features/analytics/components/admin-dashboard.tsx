@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { ShieldCheck } from 'lucide-react';
+import { PageHeader } from '@app/layout/page-header';
 import { formatPrice } from '@shared/lib/utils';
 import type { AnalyticsPeriod } from '@shared/api/generated/models';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@shared/ui/select';
@@ -18,31 +20,25 @@ export function AdminDashboard() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <div>
-          <h1 className="text-foreground text-4xl leading-tight font-bold tracking-tight">
-            Аналитика платформы
-          </h1>
-          <p className="text-sm text-muted-foreground">
-            Агрегированная статистика по всем курсам и пользователям
-          </p>
-        </div>
-        <Select
-          value={period}
-          onValueChange={(value) => setPeriod(value as AnalyticsPeriod)}
-        >
-          <SelectTrigger className="w-40" aria-label="Период">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            {ANALYTICS_PERIOD_OPTIONS.map((option) => (
-              <SelectItem key={option.value} value={option.value}>
-                {option.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
+      <PageHeader
+        icon={ShieldCheck}
+        title="Аналитика платформы"
+        description="Агрегированная статистика по всем курсам и пользователям"
+        actions={
+          <Select value={period} onValueChange={(value) => setPeriod(value as AnalyticsPeriod)}>
+            <SelectTrigger className="w-40" aria-label="Период">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {ANALYTICS_PERIOD_OPTIONS.map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        }
+      />
 
       {isLoading && (
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">

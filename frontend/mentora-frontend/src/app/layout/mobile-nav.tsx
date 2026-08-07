@@ -17,7 +17,7 @@ export function MobileNav({ items }: MobileNavProps) {
   return (
     <nav
       aria-label="Основная навигация"
-      className="bg-card border-border/60 fixed inset-x-0 bottom-0 z-10 flex border-t sm:hidden"
+      className="bg-sidebar border-border/60 fixed inset-x-0 bottom-0 z-10 flex border-t sm:hidden"
     >
       {items.map((item) => {
         const isActive = item.to === activeItem?.to;

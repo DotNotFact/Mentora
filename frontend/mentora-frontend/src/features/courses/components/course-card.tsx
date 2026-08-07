@@ -29,7 +29,7 @@ export function CourseCard({ course, progress }: CourseCardProps) {
       params={{ courseId: course.id }}
       className="focus-visible:ring-ring block rounded-xl transition-transform duration-200 ease-[var(--ease-out-expo)] hover:-translate-y-1 hover:scale-[1.02] hover:rotate-[0.5deg] focus-visible:ring-2 focus-visible:outline-none"
     >
-      <Card className="gap-0 overflow-hidden rounded-xl py-0 shadow-sm transition-shadow duration-200 ease-[var(--ease-out-expo)] hover:shadow-[0_4px_12px_-2px_rgba(15,23,42,0.15),0_8px_24px_-4px_rgba(99,102,241,0.25)]">
+      <Card className="gap-0 overflow-hidden rounded-xl py-0 shadow-sm transition-shadow duration-200 ease-[var(--ease-out-expo)] hover:shadow-md">
         <div className="bg-muted relative aspect-video overflow-hidden">
           <img
             src={course.thumbnailUrl}

@@ -1,6 +1,8 @@
+import { LayoutDashboard } from 'lucide-react';
 import { createRoute } from '@tanstack/react-router';
 import { AuthGuard } from '@app/auth-guard';
 import { PageContainer } from '@app/layout/page-container';
+import { PageHeader } from '@app/layout/page-header';
 import { useAuthStore } from '@features/auth/store';
 import { MyCoursesGrid } from '@features/enrollment/components/my-courses-grid';
 import { rootRoute } from '../__root';
@@ -15,12 +17,11 @@ function StudentDashboardContent() {
 
   return (
     <PageContainer className="space-y-8">
-      <div>
-        <h1 className="text-foreground text-4xl leading-tight font-bold tracking-tight">
-          {user ? `Здравствуйте, ${user.fullName}` : 'Мой дашборд'}
-        </h1>
-        <p className="text-muted-foreground mt-2 text-base">Прогресс по вашим активным курсам.</p>
-      </div>
+      <PageHeader
+        icon={LayoutDashboard}
+        title={user ? `Здравствуйте, ${user.fullName}` : 'Мой дашборд'}
+        description="Прогресс по вашим активным курсам."
+      />
       <MyCoursesGrid />
     </PageContainer>
   );
