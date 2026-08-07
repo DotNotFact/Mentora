@@ -1,20 +1,23 @@
 # STATE — читать первым в каждой новой сессии
 
-status: IN_PROGRESS: 17
+status: IN_PROGRESS: 13,14,15,16,18,19,20,21 (параллельно)
 lastUpdated: 2026-08-07
-currentTask: schedule/17 (отзывы и рейтинги) реализована на ветке
-  feature/17-course-reviews-ratings, verify зелёный (typecheck/lint/test/
-  e2e/скриншот-гейт), PR открывается — после мержа вернуть статус в
-  AWAITING_ADMIN_COMMAND. schedule/13,14,15,16,18,19,21 (аудит 2026-08-06)
-  запускались параллельно через 7 изолированных worktree-агентов, все 7
-  прервались на внешнем лимите API-сессии платформы (не код-ошибка) —
-  ещё не перезапущены, остаются pending. schedule/20 (профиль
-  инструктора) намеренно отложена до мержа 17 — оба трогают
-  course-detail.tsx/course-card.tsx. Вне очереди по прямому запросу
-  администратора отдельно выполнен редизайн (не из schedule/): дефолтная
-  тема сменена на фиолетовую (dark-purple) + добавлен постраничный
-  PageHeader-баннер — ветка design/purple-theme-and-page-headers, PR #29.
-completedSchedules: [00-verify-setup, 01-auth, 02-courses-catalog, 03-course-editor, 06-analytics-dashboard, 05-checkout, 04-learning-player, 08-e2e-tests, 09-production-ready, 07-polish-animations, 10-design-overhaul-pixel-perfect, 11-settings-personalization, 12-dashboard-shell-navigation]
+currentTask: schedule/17 (отзывы и рейтинги) смержена в main (PR #30,
+  2026-08-07). Перезапускаются параллельно 8 задач из аудита 2026-08-06 —
+  7 изолированных worktree-агентов для 13,14,15,16,18,19,21 (первая
+  попытка прервалась на внешнем лимите API-сессии платформы, не
+  код-ошибка), плюс 20 (профиль инструктора), ранее намеренно отложенная
+  до мержа 17 — теперь разблокирована. Каждый агент останавливается на
+  создании PR, мерж — оркестрирующая сессия по одному, с ручным
+  разрешением конфликтов на общих файлах (course-detail.tsx/
+  course-card.tsx между 13/17(уже смержена)/20). Отдельно, вне очереди,
+  по прямому запросу администратора выполнен редизайн (не из
+  schedule/): дефолтная тема — тёплая нейтральная палитра конкретного
+  референса с фиолетовым primary вместо его оранжевого (2 прохода,
+  2026-08-06/07), постраничный PageHeader-баннер — ветка
+  design/purple-theme-and-page-headers, PR #29 (открыт, ждёт решения
+  администратора о мерже).
+completedSchedules: [00-verify-setup, 01-auth, 02-courses-catalog, 03-course-editor, 06-analytics-dashboard, 05-checkout, 04-learning-player, 08-e2e-tests, 09-production-ready, 07-polish-animations, 10-design-overhaul-pixel-perfect, 11-settings-personalization, 12-dashboard-shell-navigation, 17-course-reviews-ratings]
 
 ## Что это значит
 
