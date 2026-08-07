@@ -23,7 +23,7 @@ export const THEMES: ThemeOption[] = [
     id: 'dark-purple',
     name: 'Тёмная — фиолетовая',
     mode: 'dark',
-    previewBackground: '#0f0a19',
+    previewBackground: '#262624',
     previewPrimary: '#8b5cf6',
   },
   {
