@@ -1,16 +1,19 @@
 import { Link } from '@tanstack/react-router';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Star } from 'lucide-react';
 import { Badge } from '@shared/ui/badge';
 import { Button } from '@shared/ui/button';
 import { Card, CardContent } from '@shared/ui/card';
 import { Skeleton } from '@shared/ui/skeleton';
-import { formatPrice } from '@shared/lib/utils';
+import { cn, formatPrice } from '@shared/lib/utils';
 import { useDocumentMeta } from '@shared/hooks/use-document-meta';
 import { useAuthStore } from '@features/auth/store';
 import { useEnroll } from '@features/enrollment/hooks/use-enroll';
 import { useEnrollmentStatus } from '@features/enrollment/hooks/use-enrollment-status';
 import { useCourse } from '../hooks/use-course';
-import { courseCategoryLabels } from '../schemas';
+import { useReviews, useSubmitReview } from '../hooks/use-reviews';
+import { courseCategoryLabels, type ReviewFormValues } from '../schemas';
+import { ReviewForm } from './review-form';
+import { ReviewList } from './review-list';
 
 interface CourseDetailProps {
   courseId: string;
@@ -62,9 +65,15 @@ export function CourseDetail({ courseId }: CourseDetailProps) {
           <h1 className="text-foreground text-4xl leading-tight font-bold tracking-tight">
             {course.title}
           </h1>
-          <p className="text-muted-foreground text-sm">Преподаватель: {course.instructorName}</p>
+          <div className="flex flex-wrap items-center gap-3">
+            <p className="text-muted-foreground text-sm">Преподаватель: {course.instructorName}</p>
+            {course.averageRating !== null && course.averageRating !== undefined && (
+              <AggregateRating rating={course.averageRating} count={course.reviewsCount ?? 0} />
+            )}
+          </div>
         </div>
         <p className="text-foreground text-base whitespace-pre-line">{course.description}</p>
+        <ReviewsSection courseId={courseId} />
       </div>
 
       <Card asChild className="h-fit">
@@ -141,5 +150,62 @@ function EnrollCta({ courseId, isFree }: { courseId: string; isFree: boolean }) 
         Записаться
       </Link>
     </Button>
+  );
+}
+
+function AggregateRating({ rating, count }: { rating: number; count: number }) {
+  return (
+    <div
+      className="flex items-center gap-1.5"
+      aria-label={`Рейтинг ${rating} из 5, ${count} отзывов`}
+    >
+      <div className="flex gap-0.5" aria-hidden="true">
+        {[1, 2, 3, 4, 5].map((star) => (
+          <Star
+            key={star}
+            className={cn(
+              'text-accent size-4',
+              star <= Math.round(rating) ? 'fill-accent' : 'fill-none',
+            )}
+          />
+        ))}
+      </div>
+      <span className="text-foreground text-sm font-medium tabular-nums">{rating.toFixed(1)}</span>
+      <span className="text-muted-foreground text-sm">({count})</span>
+    </div>
+  );
+}
+
+// Записанный пользователь без своего отзыва — форма "оставить". С
+// отзывом — форма "редактировать" (предзаполненная). Не записан или
+// гость — только список, без формы.
+function ReviewsSection({ courseId }: { courseId: string }) {
+  const user = useAuthStore((state) => state.user);
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const { isEnrolled } = useEnrollmentStatus(isAuthenticated ? courseId : '');
+  const { data: reviewsData, isPending } = useReviews(courseId);
+  const reviews = reviewsData?.data ?? [];
+  const ownReview = user ? reviews.find((review) => review.userId === user.id) : undefined;
+  const submitReview = useSubmitReview(courseId, ownReview?.id);
+
+  function handleSubmit(values: ReviewFormValues) {
+    submitReview.mutate(values);
+  }
+
+  return (
+    <div className="border-border/60 space-y-4 border-t pt-6">
+      <h2 className="text-foreground text-2xl leading-snug font-semibold tracking-tight">Отзывы</h2>
+      {isEnrolled && (
+        <ReviewForm
+          courseId={courseId}
+          initialValues={
+            ownReview ? { rating: ownReview.rating, comment: ownReview.comment ?? '' } : undefined
+          }
+          onSubmit={handleSubmit}
+          isPending={submitReview.isPending}
+        />
+      )}
+      {isPending ? <Skeleton className="h-24 w-full" /> : <ReviewList reviews={reviews} />}
+    </div>
   );
 }

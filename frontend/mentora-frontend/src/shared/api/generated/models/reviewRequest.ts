@@ -7,12 +7,12 @@
  * OpenAPI spec version: 0.0.1
  */
 
-export type CourseSort = (typeof CourseSort)[keyof typeof CourseSort];
-
-export const CourseSort = {
-  newest: 'newest',
-  price_asc: 'price_asc',
-  price_desc: 'price_desc',
-  popular: 'popular',
-  rating: 'rating',
-} as const;
+export interface ReviewRequest {
+  /**
+   * @minimum 1
+   * @maximum 5
+   */
+  rating: number;
+  /** @nullable */
+  comment?: string | null;
+}

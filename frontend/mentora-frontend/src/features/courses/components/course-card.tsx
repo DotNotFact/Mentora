@@ -1,4 +1,5 @@
 import { Link } from '@tanstack/react-router';
+import { Star } from 'lucide-react';
 import { Card, CardContent } from '@shared/ui/card';
 import { Badge } from '@shared/ui/badge';
 import { Progress } from '@shared/ui/progress';
@@ -26,7 +27,7 @@ export function CourseCard({ course, progress }: CourseCardProps) {
     <Link
       to="/courses/$courseId"
       params={{ courseId: course.id }}
-      className="focus-visible:ring-ring block rounded-xl transition-transform duration-200 ease-[var(--ease-out-expo)] hover:-translate-y-1 hover:rotate-[0.5deg] hover:scale-[1.02] focus-visible:ring-2 focus-visible:outline-none"
+      className="focus-visible:ring-ring block rounded-xl transition-transform duration-200 ease-[var(--ease-out-expo)] hover:-translate-y-1 hover:scale-[1.02] hover:rotate-[0.5deg] focus-visible:ring-2 focus-visible:outline-none"
     >
       <Card className="gap-0 overflow-hidden rounded-xl py-0 shadow-sm transition-shadow duration-200 ease-[var(--ease-out-expo)] hover:shadow-[0_4px_12px_-2px_rgba(15,23,42,0.15),0_8px_24px_-4px_rgba(99,102,241,0.25)]">
         <div className="bg-muted relative aspect-video overflow-hidden">
@@ -44,7 +45,15 @@ export function CourseCard({ course, progress }: CourseCardProps) {
           <h3 className="text-foreground line-clamp-2 text-base font-semibold tracking-tight">
             {course.title}
           </h3>
-          <p className="text-muted-foreground text-sm">{course.instructorName}</p>
+          <div className="flex items-center justify-between gap-2">
+            <p className="text-muted-foreground truncate text-sm">{course.instructorName}</p>
+            {Boolean(course.reviewsCount) && course.averageRating != null && (
+              <span className="text-muted-foreground flex shrink-0 items-center gap-0.5 text-xs">
+                <Star className="text-accent fill-accent size-3" aria-hidden="true" />
+                {course.averageRating.toFixed(1)}
+              </span>
+            )}
+          </div>
           {progress !== undefined && (
             <div className="space-y-1">
               <Progress value={progress} />

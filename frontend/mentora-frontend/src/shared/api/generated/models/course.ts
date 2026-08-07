@@ -18,4 +18,11 @@ export interface Course {
   category: CourseCategory;
   thumbnailUrl: string;
   createdAt: string;
+  /**
+   * Средний рейтинг 1-5, null если отзывов ещё нет (не 0 — ноль читался бы как "плохой курс").
+   * @nullable
+   */
+  averageRating?: number | null;
+  /** Число отзывов. 0, если отзывов нет — в этом случае averageRating тоже null. */
+  reviewsCount?: number;
 }

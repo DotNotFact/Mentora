@@ -191,6 +191,84 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Course'
+  /courses/{courseId}/reviews:
+    get:
+      tags: [courses]
+      operationId: listCourseReviews
+      summary: Отзывы и оценки курса
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Review'
+    post:
+      tags: [courses]
+      operationId: createCourseReview
+      summary: Оставить отзыв (только записанный на курс пользователь, один отзыв на курс)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReviewRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Review'
+        '403':
+          description: Пользователь не записан на курс
+  /courses/{courseId}/reviews/{reviewId}:
+    put:
+      tags: [courses]
+      operationId: updateCourseReview
+      summary: Отредактировать свой отзыв
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: reviewId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReviewRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Review'
   /courses/{courseId}/chapters:
     get:
       tags: [courses]
@@ -588,12 +666,52 @@ components:
         createdAt:
           type: string
           format: date-time
+        averageRating:
+          type: number
+          nullable: true
+          description: Средний рейтинг 1-5, null если отзывов ещё нет (не 0 — ноль читался бы как "плохой курс").
+        reviewsCount:
+          type: integer
+          description: Число отзывов. 0, если отзывов нет — в этом случае averageRating тоже null.
     CourseCategory:
       type: string
       enum: [development, design, business, marketing, it, other]
     CourseSort:
       type: string
-      enum: [newest, price_asc, price_desc, popular]
+      enum: [newest, price_asc, price_desc, popular, rating]
+    Review:
+      type: object
+      required: [id, courseId, userId, userName, rating, createdAt]
+      properties:
+        id:
+          type: string
+        courseId:
+          type: string
+        userId:
+          type: string
+        userName:
+          type: string
+        rating:
+          type: integer
+          minimum: 1
+          maximum: 5
+        comment:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+    ReviewRequest:
+      type: object
+      required: [rating]
+      properties:
+        rating:
+          type: integer
+          minimum: 1
+          maximum: 5
+        comment:
+          type: string
+          nullable: true
     CourseMetaRequest:
       type: object
       required: [title, description, price, category]

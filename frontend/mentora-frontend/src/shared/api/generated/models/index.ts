@@ -36,6 +36,8 @@ export * from './loginRequest';
 export * from './refreshRequest';
 export * from './registerRequest';
 export * from './revenuePoint';
+export * from './review';
+export * from './reviewRequest';
 export * from './updateLessonProgressRequest';
 export * from './uploadLessonVideoBody';
 export * from './user';
