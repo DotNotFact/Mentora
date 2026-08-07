@@ -1,7 +1,9 @@
 import { lazy, Suspense } from 'react';
+import { PenLine } from 'lucide-react';
 import { CatchBoundary, createRoute } from '@tanstack/react-router';
 import { AuthGuard } from '@app/auth-guard';
 import { PageContainer } from '@app/layout/page-container';
+import { PageHeader } from '@app/layout/page-header';
 import { WidgetErrorFallback } from '@app/error-fallback';
 import { Card, CardContent, CardHeader, CardTitle } from '@shared/ui/card';
 import { CourseMetaForm } from '@features/course-editor/components/course-meta-form';
@@ -57,9 +59,15 @@ function CourseEditorPage({ courseId }: { courseId: string }) {
 
   return (
     <PageContainer className="space-y-6 py-8">
-      <h1 className="text-foreground text-4xl leading-tight font-bold tracking-tight">
-        {isNew ? 'Новый курс' : 'Редактирование курса'}
-      </h1>
+      <PageHeader
+        icon={PenLine}
+        title={isNew ? 'Новый курс' : 'Редактирование курса'}
+        description={
+          isNew
+            ? 'Заполните основные данные, затем добавьте главы и уроки.'
+            : 'Обновите метаданные, структуру и содержимое уроков курса.'
+        }
+      />
 
       <CourseMetaForm courseId={courseId} course={course} />
 

@@ -48,8 +48,9 @@
  * shared/config/themes.ts (schedule/11).
  */
 
-/* dark-indigo — дефолт (schedule/11: тёмная тема по умолчанию, не светлая) */
-:root,
+/* dark-indigo — не дефолт с 2026-08-06 (администратор: индиго слишком
+   "стерильно/корпоративно", предпочитает фиолетовый — см. dark-purple
+   ниже, теперь :root). Сохранена как выбираемая опция. */
 [data-theme='dark-indigo'] {
   --theme-primary: #6366f1;
   --theme-primary-hover: #818cf8;
@@ -137,6 +138,15 @@
   --theme-ring: #f43f5e;
 }
 
+/* dark-purple — дефолт с 2026-08-06 (заменил dark-indigo: администратор
+   явно попросил фиолетовый вместо индиго — "не та цветовая гамма").
+   Поверхности НЕ переиспользуют нейтральный slate остальных тёмных тем —
+   мягкий фиолетовый тинт (а не серый) на background/card/secondary/
+   border/muted-foreground, чтобы тема читалась как цельная, "фирменная",
+   а не "тёмная версия дефолтной серой" — прямой ответ на находку
+   "слишком стерильно/корпоративно". accent остаётся amber — фиолетовый+
+   янтарный дают выразительную, не типовую для LMS-плаформ пару. */
+:root,
 [data-theme='dark-purple'] {
   --theme-primary: #8b5cf6;
   --theme-primary-hover: #a78bfa;
@@ -148,21 +158,21 @@
   --theme-destructive: #ef4444;
   --theme-destructive-foreground: #ffffff;
 
-  --theme-background: #020617;
-  --theme-foreground: #f8fafc;
-  --theme-surface: #0f172a;
-  --theme-card: #0f172a;
-  --theme-card-foreground: #f8fafc;
-  --theme-popover: #0f172a;
-  --theme-popover-foreground: #f8fafc;
+  --theme-background: #0f0a19;
+  --theme-foreground: #f5f3fa;
+  --theme-surface: #1a1425;
+  --theme-card: #1a1425;
+  --theme-card-foreground: #f5f3fa;
+  --theme-popover: #1a1425;
+  --theme-popover-foreground: #f5f3fa;
 
-  --theme-secondary: #1e293b;
-  --theme-secondary-foreground: #f1f5f9;
-  --theme-muted: #1e293b;
-  --theme-muted-foreground: #94a3b8;
+  --theme-secondary: #251d33;
+  --theme-secondary-foreground: #ede9f5;
+  --theme-muted: #251d33;
+  --theme-muted-foreground: #a99fc0;
 
-  --theme-border: #334155;
-  --theme-input: #334155;
+  --theme-border: #3d3252;
+  --theme-input: #3d3252;
   --theme-ring: #8b5cf6;
 }
 

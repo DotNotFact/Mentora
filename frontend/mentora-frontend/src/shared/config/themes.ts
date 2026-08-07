@@ -6,7 +6,7 @@
 
 export type ThemeId = 'dark-indigo' | 'dark-green' | 'dark-red' | 'dark-purple' | 'light-indigo';
 
-export const DEFAULT_THEME: ThemeId = 'dark-indigo';
+export const DEFAULT_THEME: ThemeId = 'dark-purple';
 
 export interface ThemeOption {
   id: ThemeId;
@@ -19,6 +19,13 @@ export interface ThemeOption {
 }
 
 export const THEMES: ThemeOption[] = [
+  {
+    id: 'dark-purple',
+    name: 'Тёмная — фиолетовая',
+    mode: 'dark',
+    previewBackground: '#0f0a19',
+    previewPrimary: '#8b5cf6',
+  },
   {
     id: 'dark-indigo',
     name: 'Тёмная — индиго',
@@ -39,13 +46,6 @@ export const THEMES: ThemeOption[] = [
     mode: 'dark',
     previewBackground: '#020617',
     previewPrimary: '#f43f5e',
-  },
-  {
-    id: 'dark-purple',
-    name: 'Тёмная — фиолетовая',
-    mode: 'dark',
-    previewBackground: '#020617',
-    previewPrimary: '#8b5cf6',
   },
   {
     id: 'light-indigo',

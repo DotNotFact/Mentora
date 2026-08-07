@@ -10,7 +10,8 @@ description: Mentora LMS design system constraints. ALWAYS apply when creating o
 > `shadow-sm`, a consistent radius scale, tight heading tracking, restrained
 > motion, well-designed empty/loading states). Mentora's palette is
 > themeable since schedule/11 (2026-08-06) — see "Themes" below — but the
-> STRUCTURE is fixed: indigo primary/amber accent by default, and every
+> STRUCTURE is fixed: violet primary/amber accent by default (changed from
+> indigo 2026-08-06, see "Themes"), and every
 > theme keeps the same token roles (primary/accent/success/destructive
 > stay semantically stable across themes). Don't introduce ad-hoc new
 > colors outside the theme system to chase this look; the lift comes from
@@ -19,33 +20,33 @@ description: Mentora LMS design system constraints. ALWAYS apply when creating o
 ## Colors
 
 Brand/status tokens — the ones you reach for directly when building UI.
-Values below are the `dark-indigo` theme (the default since schedule/11 —
-NOT light, despite this table historically showing light values). See
-"Themes" for the other 4 presets and how values swap at runtime:
+Values below are the `dark-purple` theme (the default since 2026-08-06,
+replacing `dark-indigo` — see "Themes"). See "Themes" for the other 4
+presets and how values swap at runtime:
 
-| Token            | Value                 | Usage                         |
-| ---------------- | --------------------- | ----------------------------- |
-| primary          | #6366F1 (indigo-500)  | Buttons, links, active states |
-| primary-hover    | #818CF8 (indigo-400, lighter than base — dark-mode hover brightens) | Hover (named-token cases only) |
-| accent           | #F59E0B (amber-500)   | CTAs, progress, badges — same across all themes |
-| background       | #020617 (slate-950)   | Page background               |
-| foreground       | #F8FAFC (slate-50)    | Primary text                  |
-| muted-foreground | #94A3B8 (slate-400)   | Secondary text                |
-| destructive      | #EF4444 (red-500)     | Errors — same across all themes |
-| success          | #10B981 (emerald-500) | Completed states — same across all themes |
+| Token            | Value                                                                | Usage                                           |
+| ---------------- | -------------------------------------------------------------------- | ----------------------------------------------- |
+| primary          | #8B5CF6 (violet-500)                                                 | Buttons, links, active states                   |
+| primary-hover    | #A78BFA (violet-400, lighter than base — dark-mode hover brightens)  | Hover (named-token cases only)                  |
+| accent           | #F59E0B (amber-500)                                                  | CTAs, progress, badges — same across all themes |
+| background       | #0F0A19 (violet-tinted near-black, not neutral slate — see "Themes") | Page background                                 |
+| foreground       | #F5F3FA (near-white, faint violet whisper)                           | Primary text                                    |
+| muted-foreground | #A99FC0 (soft lavender-gray)                                         | Secondary text                                  |
+| destructive      | #EF4444 (red-500)                                                    | Errors — same across all themes                 |
+| success          | #10B981 (emerald-500)                                                | Completed states — same across all themes       |
 
 shadcn/ui contract tokens — every color above (and below) also has its
 `-foreground` pair generated in `src/styles/globals.css`; use these when
 composing shadcn primitives (Button, Card, Dialog, Input…), not just the
 brand table:
 
-| Token          | Value               | Usage                                   |
-| -------------- | ------------------- | --------------------------------------- |
-| card / popover | #0F172A (slate-900) | Cards, modals, popovers (= surface) — one step lighter than background, not black |
-| secondary      | #1E293B (slate-800) | Low-emphasis buttons/badges backgrounds |
-| muted          | #1E293B (slate-800) | Subtle backgrounds (disabled, skeleton) |
-| border, input  | #334155 (slate-700) | Borders, input outlines                 |
-| ring           | #6366F1 (= primary) | Focus ring                              |
+| Token          | Value                   | Usage                                                                             |
+| -------------- | ----------------------- | --------------------------------------------------------------------------------- |
+| card / popover | #1A1425 (violet-tinted) | Cards, modals, popovers (= surface) — one step lighter than background, not black |
+| secondary      | #251D33 (violet-tinted) | Low-emphasis buttons/badges backgrounds                                           |
+| muted          | #251D33 (violet-tinted) | Subtle backgrounds (disabled, skeleton)                                           |
+| border, input  | #3D3252 (violet-tinted) | Borders, input outlines                                                           |
+| ring           | #8B5CF6 (= primary)     | Focus ring                                                                        |
 
 Не путать `muted` (светлый фон) и `muted-foreground` (серый текст) —
 это разные токены с разными значениями, несмотря на общий "muted"
@@ -72,15 +73,17 @@ intentional, don't add `accent-hover`, `success-hover`, etc. to
 
 5 готовых тем (schedule/11, 2026-08-06) — `shared/config/themes.ts`
 (метаданные для UI: id/название/превью) + `src/styles/globals.css`
-(фактические значения токенов). Дефолт — `dark-indigo`, НЕ светлая тема.
+(фактические значения токенов). Дефолт — `dark-purple` (сменил
+`dark-indigo` 2026-08-06 — администратор: индиго слишком "стерильно/
+корпоративно", предпочитает фиолетовый), НЕ светлая тема.
 
-| id            | primary   | Поверхности                                     |
-| ------------- | --------- | ------------------------------------------------ |
-| dark-indigo   | #6366F1   | background #020617, card #0F172A (дефолт)         |
-| dark-green    | #10B981   | те же тёмные поверхности, что и dark-indigo       |
-| dark-red      | #F43F5E   | те же тёмные поверхности                          |
-| dark-purple   | #8B5CF6   | те же тёмные поверхности                          |
-| light-indigo  | #6366F1   | background #F8FAFC, card #FFFFFF (исходная светлая палитра) |
+| id           | primary | Поверхности                                                     |
+| ------------ | ------- | --------------------------------------------------------------- |
+| dark-purple  | #8B5CF6 | фирменные фиолетовые: background #0F0A19, card #1A1425 (дефолт) |
+| dark-indigo  | #6366F1 | нейтральные тёмные: background #020617, card #0F172A            |
+| dark-green   | #10B981 | те же нейтральные тёмные поверхности, что и dark-indigo         |
+| dark-red     | #F43F5E | те же нейтральные тёмные поверхности                            |
+| light-indigo | #6366F1 | background #F8FAFC, card #FFFFFF (исходная светлая палитра)     |
 
 Механика: `@theme` в `globals.css` объявляет `--color-primary: var(--theme-primary)`
 и т.д. (не прямые hex-значения) — Tailwind генерирует утилиты
@@ -94,12 +97,16 @@ intentional, don't add `accent-hover`, `success-hover`, etc. to
 border/input/foreground/-foreground-пары).
 
 Тёмные поверхности — НЕ инверсия светлой палитры "в лоб" и не чистый
-чёрный: `background` #020617 (slate-950), `card`/`popover` на один шаг
-светлее — #0F172A (slate-900), `secondary`/`muted` — #1E293B
-(slate-800), `border`/`input` — #334155 (slate-700). Приподнятые
-поверхности читаются заметно светлее фона, как и требует "не инверсия
-в лоб" — не полагаться на одну лишь тень для разделения уровней в
-тёмном режиме.
+чёрный. `dark-purple` (дефолт) использует фирменный фиолетовый тинт,
+а не нейтральный slate: `background` #0F0A19, `card`/`popover` на один
+шаг светлее — #1A1425, `secondary`/`muted` — #251D33, `border`/`input`
+— #3D3252, `muted-foreground` — #A99FC0 (лавандовый, не серый). Три
+остальные тёмные темы (`dark-indigo`, `dark-green`, `dark-red`) делят
+между собой один нейтральный slate-стек (`background` #020617,
+`card`/`popover` #0F172A, `secondary`/`muted` #1E293B, `border`/`input`
+#334155) — только `primary`/`primary-hover`/`ring` различаются. Общее
+правило для всех тёмных тем: приподнятые поверхности читаются заметно
+светлее фона — не полагаться на одну лишь тень для разделения уровней.
 
 Добавляя новую тему: копировать структуру существующего `[data-theme=
 'dark-*']`-блока в `globals.css`, добавить запись в `THEMES` в
@@ -130,12 +137,14 @@ Rules:
 - Optional "glow" accent for a single emphasized surface per screen (the
   featured `PricingCard`, a primary hero CTA, an "upgrade" callout) —
   layer a tinted shadow on top of the normal level instead of inventing a
-  level 5: `shadow-[0_8px_24px_-4px_rgba(99,102,241,0.25)]` (the rgba is
-  `--color-primary` at 25% — keep it at 20-25%, never opaque). Use for at
+  level 5: `shadow-[0_8px_24px_-4px_rgba(139,92,246,0.25)]` (the rgba is
+  `--color-primary` at 25% for the default `dark-purple` theme — recompute
+  for other themes' primary, keep it at 20-25%, never opaque). Use for at
   most one element in view; if everything glows, nothing does.
 - Dark, heavy shadows (`shadow-2xl` and beyond, or opacity above ~25% on a
-  tinted shadow) are not part of this system — Mentora's surfaces are
-  light and the palette is bright; heavy shadows read muddy against it.
+  tinted shadow) are not part of this system — Mentora is dark-by-default
+  with tinted, not neutral-black, surfaces; heavy near-black shadows read
+  muddy against that palette.
 
 ## Border radius
 
@@ -314,6 +323,19 @@ legitimately empty, not just there):
 
 ## Component patterns
 
+PageHeader (`app/layout/page-header.tsx`, 2026-08-07): the standard top-of-
+page banner — `rounded-2xl border bg-gradient-to-br from-primary/15
+via-card to-card p-8 shadow-sm`, an optional large faded decorative icon
+(`text-primary/10`, absolute top-right), title (H1) + optional
+description + optional right-aligned `actions` slot (period selectors,
+CTA buttons). Replaces a bare `<h1>` sitting directly on the page
+background for any route-level page (dashboards, catalog, "Мои курсы",
+settings, course editor) — use it there instead of hand-rolling the
+title block. It's the one deliberately "featured" gradient surface a
+page gets (see Elevation → glow shadow rule: at most one glowing/tinted
+element per screen); pages that already have a bespoke hero (course
+detail's thumbnail + price card) keep their own treatment instead of
+also using `PageHeader` — don't stack two hero patterns on one page.
 CourseCard: rounded-xl border shadow-sm hover:shadow-md, 16:9 AspectRatio,
 line-clamp-2 title, price bottom-right, Progress bar if enrolled.
 Extended AAA hover (tilt+glow+lift) per aaa-ui-polish — no longer the
