@@ -56,6 +56,16 @@ export interface MockCheckoutSession {
   status: 'pending' | 'completed' | 'failed' | 'expired';
 }
 
+export interface MockReview {
+  id: string;
+  courseId: string;
+  userId: string;
+  userName: string;
+  rating: number;
+  comment: string | null;
+  createdAt: string;
+}
+
 export interface MockDb {
   users: MockUser[];
   courses: MockCourse[];
@@ -63,6 +73,7 @@ export interface MockDb {
   enrollments: MockEnrollment[];
   progress: Record<string, MockLessonProgress[]>;
   checkoutSessions: Record<string, MockCheckoutSession>;
+  reviews: Record<string, MockReview[]>;
   nextId: (prefix: string) => string;
 }
 
@@ -153,6 +164,7 @@ export function createMockDb(): MockDb {
     enrollments: [],
     progress: {},
     checkoutSessions: {},
+    reviews: {},
     nextId: (prefix: string) => {
       counter += 1;
       return `${prefix}-${counter}`;

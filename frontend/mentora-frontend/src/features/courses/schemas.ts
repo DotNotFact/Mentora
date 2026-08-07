@@ -9,7 +9,7 @@ export const courseCategorySchema = z.enum([
   'other',
 ]);
 
-export const courseSortSchema = z.enum(['newest', 'price_asc', 'price_desc', 'popular']);
+export const courseSortSchema = z.enum(['newest', 'price_asc', 'price_desc', 'popular', 'rating']);
 
 export const courseCategoryLabels: Record<z.infer<typeof courseCategorySchema>, string> = {
   development: 'Разработка',
@@ -25,6 +25,7 @@ export const courseSortLabels: Record<z.infer<typeof courseSortSchema>, string> 
   price_asc: 'Сначала дешевле',
   price_desc: 'Сначала дороже',
   popular: 'По популярности',
+  rating: 'По рейтингу',
 };
 
 const priceFieldSchema = z
@@ -60,3 +61,10 @@ export const defaultCourseFilters: CourseFiltersValues = {
   priceMax: '',
   sort: '',
 };
+
+export const reviewSchema = z.object({
+  rating: z.number().min(1, 'Поставьте оценку').max(5),
+  comment: z.string().max(1000, 'Слишком длинный отзыв').optional(),
+});
+
+export type ReviewFormValues = z.infer<typeof reviewSchema>;

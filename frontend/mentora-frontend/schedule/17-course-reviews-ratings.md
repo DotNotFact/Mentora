@@ -1,6 +1,6 @@
 # 17 — Отзывы и рейтинги курсов
 
-Статус: [ ] не начата
+Статус: [x] выполнена
 
 ## Контекст
 
@@ -74,3 +74,21 @@ purchase"-бейджи сверх самой проверки записи на 
 ## Коммит
 
 `feat: отзывы и рейтинги курсов`
+
+## Отклонения от исходного плана
+
+- `use-reviews.ts`: `useSubmitReview(courseId, reviewId?)` явно вызывает
+  `updateCourseReview` (PUT), когда у пользователя уже есть свой отзыв
+  (`reviewId` передан из `course-detail.tsx` через `ownReview?.id`), и
+  `createCourseReview` (POST) иначе — соответствует контракту `openapi.yaml`
+  буквально (PUT для редактирования), а не полагается только на
+  upsert-по-userId в моке.
+- Добавлен `tests/e2e/reviews.spec.ts` (3 сценария: гость видит отзывы без
+  формы, записанный пользователь оставляет/редактирует отзыв, сортировка
+  каталога "По рейтингу") и `tests/components/features/courses/hooks/
+use-reviews.test.tsx` (юнит-тесты на оба хука) — сверх минимального
+  скриншот-гейта из шага 7, т.к. это новая бизнес-логика (403 для
+  незаписанных, апсерт своего отзыва), а не только визуальные изменения.
+- Скриншот-гейт (375/768/1280): `docs/qa-screenshots/
+schedule-17-course-reviews-ratings/{course-detail-with-reviews,
+review-form,catalog-rating-badge}/`.

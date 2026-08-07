@@ -9,7 +9,15 @@
 import * as axios from 'axios';
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 
-import type { Chapter, Course, CourseMetaRequest, CoursePage, ListCoursesParams } from '../models';
+import type {
+  Chapter,
+  Course,
+  CourseMetaRequest,
+  CoursePage,
+  ListCoursesParams,
+  Review,
+  ReviewRequest,
+} from '../models';
 
 export const getCourses = (axiosInstance: AxiosInstance = axios.default) => {
   /**
@@ -53,6 +61,36 @@ export const getCourses = (axiosInstance: AxiosInstance = axios.default) => {
     return axiosInstance.put(`/courses/${courseId}`, courseMetaRequest, options);
   };
   /**
+   * @summary Отзывы и оценки курса
+   */
+  const listCourseReviews = (
+    courseId: string,
+    options?: AxiosRequestConfig,
+  ): Promise<AxiosResponse<Review[]>> => {
+    return axiosInstance.get(`/courses/${courseId}/reviews`, options);
+  };
+  /**
+   * @summary Оставить отзыв (только записанный на курс пользователь, один отзыв на курс)
+   */
+  const createCourseReview = (
+    courseId: string,
+    reviewRequest: ReviewRequest,
+    options?: AxiosRequestConfig,
+  ): Promise<AxiosResponse<Review>> => {
+    return axiosInstance.post(`/courses/${courseId}/reviews`, reviewRequest, options);
+  };
+  /**
+   * @summary Отредактировать свой отзыв
+   */
+  const updateCourseReview = (
+    courseId: string,
+    reviewId: string,
+    reviewRequest: ReviewRequest,
+    options?: AxiosRequestConfig,
+  ): Promise<AxiosResponse<Review>> => {
+    return axiosInstance.put(`/courses/${courseId}/reviews/${reviewId}`, reviewRequest, options);
+  };
+  /**
    * @summary Структура курса — главы с вложенными уроками (в порядке order)
    */
   const listChapters = (
@@ -72,11 +110,24 @@ export const getCourses = (axiosInstance: AxiosInstance = axios.default) => {
   ): Promise<AxiosResponse<Chapter[]>> => {
     return axiosInstance.put(`/courses/${courseId}/chapters`, chapter, options);
   };
-  return { listCourses, createCourse, getCourse, updateCourse, listChapters, saveChapters };
+  return {
+    listCourses,
+    createCourse,
+    getCourse,
+    updateCourse,
+    listCourseReviews,
+    createCourseReview,
+    updateCourseReview,
+    listChapters,
+    saveChapters,
+  };
 };
 export type ListCoursesResult = AxiosResponse<CoursePage>;
 export type CreateCourseResult = AxiosResponse<Course>;
 export type GetCourseResult = AxiosResponse<Course>;
 export type UpdateCourseResult = AxiosResponse<Course>;
+export type ListCourseReviewsResult = AxiosResponse<Review[]>;
+export type CreateCourseReviewResult = AxiosResponse<Review>;
+export type UpdateCourseReviewResult = AxiosResponse<Review>;
 export type ListChaptersResult = AxiosResponse<Chapter[]>;
 export type SaveChaptersResult = AxiosResponse<Chapter[]>;
