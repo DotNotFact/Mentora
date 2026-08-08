@@ -20,4 +20,8 @@ export type ListCoursesParams = {
   priceMin?: number;
   priceMax?: number;
   sort?: CourseSort;
+  /**
+   * Только курсы конкретного инструктора — используется страницей управления "Мои курсы" (роль instructor/admin) и публичным профилем инструктора.
+   */
+  instructorId?: string;
 };
