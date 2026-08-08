@@ -11,6 +11,7 @@ import { useEnrollmentStore } from '../store';
 import { LessonSidebar } from './lesson-sidebar';
 import { ProgressBar } from './progress-bar';
 import { LessonContent } from './lesson-content';
+import { LessonDiscussion } from './lesson-discussion';
 
 // vidstack — тяжёлая библиотека (media-ui чанк), нужна только на странице
 // обучения, не при каждом визите в приложение.
@@ -130,6 +131,10 @@ export function LearningPage({ courseId }: LearningPageProps) {
             {currentLesson.title}
           </h1>
           <LessonContent html={currentLesson.contentHtml} />
+          {/* key на id урока — сбрасывает локальное UI-состояние треда
+              (открытые формы ответа, "Показать ещё") при переключении
+              урока, не только данные запроса. */}
+          <LessonDiscussion key={currentLesson.id} lessonId={currentLesson.id} courseId={courseId} />
         </div>
         <LessonSidebar
           className="lg:w-80 lg:shrink-0"

@@ -66,6 +66,17 @@ export interface MockReview {
   createdAt: string;
 }
 
+export interface MockComment {
+  id: string;
+  lessonId: string;
+  userId: string;
+  userName: string;
+  userRole: MockRole;
+  parentId: string | null;
+  body: string;
+  createdAt: string;
+}
+
 export interface MockDb {
   users: MockUser[];
   courses: MockCourse[];
@@ -74,6 +85,7 @@ export interface MockDb {
   progress: Record<string, MockLessonProgress[]>;
   checkoutSessions: Record<string, MockCheckoutSession>;
   reviews: Record<string, MockReview[]>;
+  comments: Record<string, MockComment[]>;
   nextId: (prefix: string) => string;
 }
 
@@ -165,6 +177,7 @@ export function createMockDb(): MockDb {
     progress: {},
     checkoutSessions: {},
     reviews: {},
+    comments: {},
     nextId: (prefix: string) => {
       counter += 1;
       return `${prefix}-${counter}`;
