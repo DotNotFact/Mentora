@@ -386,6 +386,59 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/VideoUploadResponse'
+  /lessons/{lessonId}/comments:
+    get:
+      tags: [lessons]
+      operationId: listLessonComments
+      summary: >
+        Обсуждение/Q&A под уроком. Плоский список — вложенность максимум
+        один уровень (ответ на комментарий через parentId), не дерево.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: lessonId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Comment'
+    post:
+      tags: [lessons]
+      operationId: createLessonComment
+      summary: >
+        Оставить вопрос/комментарий или ответить на существующий (только
+        записанные на курс пользователи и инструктор курса)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: lessonId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommentRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+        '403':
+          description: Пользователь не записан на курс и не является его инструктором
   /enrollments:
     get:
       tags: [enrollments]
@@ -771,6 +824,38 @@ components:
       properties:
         videoUrl:
           type: string
+    Comment:
+      type: object
+      required: [id, lessonId, userId, userName, userRole, body, createdAt]
+      properties:
+        id:
+          type: string
+        lessonId:
+          type: string
+        userId:
+          type: string
+        userName:
+          type: string
+        userRole:
+          $ref: '#/components/schemas/UserRole'
+        parentId:
+          type: string
+          nullable: true
+          description: Id родительского комментария при ответе. Вложенность — один уровень, ответ не может ссылаться на другой ответ.
+        body:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+    CommentRequest:
+      type: object
+      required: [body]
+      properties:
+        body:
+          type: string
+        parentId:
+          type: string
+          nullable: true
     CoursePage:
       type: object
       required: [items, total, page, pageSize]

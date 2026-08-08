@@ -15,6 +15,8 @@ export * from './checkoutRequest';
 export * from './checkoutSession';
 export * from './checkoutSessionStatus';
 export * from './checkoutSessionStatusValue';
+export * from './comment';
+export * from './commentRequest';
 export * from './course';
 export * from './courseCategory';
 export * from './courseEnrollmentPoint';

@@ -10,6 +10,8 @@ import * as axios from 'axios';
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 
 import type {
+  Comment,
+  CommentRequest,
   Lesson,
   LessonContentRequest,
   UploadLessonVideoBody,
@@ -41,7 +43,30 @@ export const getLessons = (axiosInstance: AxiosInstance = axios.default) => {
 
     return axiosInstance.post(`/lessons/${lessonId}/video`, formData, options);
   };
-  return { saveLessonContent, uploadLessonVideo };
+  /**
+ * @summary Обсуждение/Q&A под уроком. Плоский список — вложенность максимум один уровень (ответ на комментарий через parentId), не дерево.
+
+ */
+  const listLessonComments = (
+    lessonId: string,
+    options?: AxiosRequestConfig,
+  ): Promise<AxiosResponse<Comment[]>> => {
+    return axiosInstance.get(`/lessons/${lessonId}/comments`, options);
+  };
+  /**
+ * @summary Оставить вопрос/комментарий или ответить на существующий (только записанные на курс пользователи и инструктор курса)
+
+ */
+  const createLessonComment = (
+    lessonId: string,
+    commentRequest: CommentRequest,
+    options?: AxiosRequestConfig,
+  ): Promise<AxiosResponse<Comment>> => {
+    return axiosInstance.post(`/lessons/${lessonId}/comments`, commentRequest, options);
+  };
+  return { saveLessonContent, uploadLessonVideo, listLessonComments, createLessonComment };
 };
 export type SaveLessonContentResult = AxiosResponse<Lesson>;
 export type UploadLessonVideoResult = AxiosResponse<VideoUploadResponse>;
+export type ListLessonCommentsResult = AxiosResponse<Comment[]>;
+export type CreateLessonCommentResult = AxiosResponse<Comment>;

@@ -1,5 +1,12 @@
 import type { Page, Route } from '@playwright/test';
-import { createMockDb, type MockChapter, type MockCourse, type MockDb, type MockUser } from './db';
+import {
+  createMockDb,
+  type MockChapter,
+  type MockComment,
+  type MockCourse,
+  type MockDb,
+  type MockUser,
+} from './db';
 
 // Единственный источник правды по контракту — openapi/openapi.yaml. Этот
 // мок реализует его поверх page.route (реального бэкенда для e2e нет —
@@ -217,6 +224,50 @@ export async function installApiMocks(page: Page, db: MockDb = createMockDb()): 
         review.rating = rating;
         review.comment = comment ?? null;
         return json(200, review);
+      }
+
+      // --- lesson comments (обсуждение/Q&A) ---
+      const commentsMatch = path.match(/^\/lessons\/([^/]+)\/comments$/);
+      if (commentsMatch) {
+        const lessonId = commentsMatch[1];
+        if (method === 'GET') {
+          return json(200, db.comments[lessonId] ?? []);
+        }
+        if (method === 'POST') {
+          if (!userId) return json(401, { message: 'Unauthorized' });
+          const author = db.users.find((u) => u.id === userId);
+          if (!author) return json(401, { message: 'Unauthorized' });
+          const courseId = Object.keys(db.chapters).find((id) =>
+            (db.chapters[id] ?? []).some((chapter) =>
+              chapter.lessons.some((lesson) => lesson.id === lessonId),
+            ),
+          );
+          const isEnrolled = Boolean(
+            courseId && db.enrollments.some((e) => e.userId === userId && e.courseId === courseId),
+          );
+          const course = courseId ? db.courses.find((c) => c.id === courseId) : undefined;
+          const isCourseInstructor = Boolean(course && course.instructorId === userId);
+          if (!isEnrolled && !isCourseInstructor) {
+            return json(403, { message: 'Not enrolled' });
+          }
+          const { body: commentBody, parentId } = body as {
+            body: string;
+            parentId?: string | null;
+          };
+          const comment: MockComment = {
+            id: db.nextId('comment'),
+            lessonId,
+            userId,
+            userName: author.fullName,
+            userRole: author.role,
+            parentId: parentId ?? null,
+            body: commentBody,
+            createdAt: new Date().toISOString(),
+          };
+          const entries = (db.comments[lessonId] ??= []);
+          entries.push(comment);
+          return json(201, comment);
+        }
       }
 
       const chaptersMatch = path.match(/^\/courses\/([^/]+)\/chapters$/);
