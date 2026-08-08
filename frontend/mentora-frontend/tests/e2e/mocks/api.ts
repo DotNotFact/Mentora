@@ -126,12 +126,16 @@ export async function installApiMocks(page: Page, db: MockDb = createMockDb()): 
         const search = url.searchParams.get('search')?.toLowerCase();
         const category = url.searchParams.get('category');
         const sort = url.searchParams.get('sort');
+        const instructorId = url.searchParams.get('instructorId');
         let items = db.courses;
         if (search) {
           items = items.filter((c) => c.title.toLowerCase().includes(search));
         }
         if (category) {
           items = items.filter((c) => c.category === category);
+        }
+        if (instructorId) {
+          items = items.filter((c) => c.instructorId === instructorId);
         }
         let rated = items.map((c) => withRating(db, c));
         if (sort === 'rating') {

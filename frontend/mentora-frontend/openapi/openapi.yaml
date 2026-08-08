@@ -122,6 +122,11 @@ paths:
           in: query
           schema:
             $ref: '#/components/schemas/CourseSort'
+        - name: instructorId
+          in: query
+          description: Только курсы конкретного инструктора — используется страницей управления "Мои курсы" (роль instructor/admin) и публичным профилем инструктора.
+          schema:
+            type: string
       responses:
         '200':
           description: OK
